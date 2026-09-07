@@ -1,0 +1,233 @@
+---
+title: "M01-2-Introduction to Literate Programming-Application Assignment"
+author: "Dani Meza"
+date: "`r format(Sys.time())`"
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    number-sections: true
+    code-line-numbers: true
+    code-fold: false
+    code-link: true
+    embed-resources: true
+editor: visual
+execute:
+  freeze: auto
+  warning: false
+---
+
+This codebook works through the ten M01-2 exercises on literate programming in Quarto. Each exercise question is quoted from the assignment as a blockquote, followed by any hint (as a `callout-tip`), then the code chunk that answers it. Every wrangled object is printed after it's created, per the assignment's instruction, so the result of each step is visible even when the exercise didn't explicitly ask for output.
+
+# Exercise 1: Creating a Variable
+
+> Create a variable called X and assign the text "This is my first assignment" to it.
+
+::: callout-tip
+## Hint
+
+Use `<-` to assign a variable to the text.
+:::
+
+```{r}
+# Ex 1: create a character variable and assign a string to it
+X <- "This is my first assignment"
+
+X # print X to confirm the assignment worked
+```
+
+# Exercise 2: Adding Texts in Base R
+
+> Adding texts in Base R.
+
+Since there are two sub-exercises for this exercise, sub-headings are used below to keep each part separate.
+
+## Exploring `paste()` Using the Help Examples
+
+> Look up `paste()` function from help to learn how to use it. In the help document, you will find some use cases as examples toward the bottom of the page. Copy some of them and paste them into your codebook inside a code chunk right below this instruction. Execute one line at a time and learn how they work.
+
+::: callout-tip
+## Hint
+
+This exercise is to illustrate how you can learn by using the sample code available from most of the help documents for any function in R. You may execute each line to see how `paste()` and `paste0()` work differently.
+:::
+
+```{r}
+# Ex 2(1): sample use cases copied from the ?paste help page, run one at a
+# time to compare how paste() and paste0() behave
+paste("1st", "2nd", "3rd")
+paste0("1st", "2nd", "3rd")
+paste("x", 1:3, sep = "")
+paste0("x", 1:3)
+paste(c("1st", "2nd", "3rd"), "place")
+paste(1:3, c("st", "nd", "rd"), sep = "")
+```
+
+Running these line by line shows that `paste()` inserts a space between arguments by default (`sep = " "`), while `paste0()` is just shorthand for `paste(..., sep = "")` — no space at all. Both functions also vectorize automatically, pairing up elements from each vector, which is why the last two lines each return three separate strings instead of one.
+
+## Using `paste()` to Modify X
+
+> Using `paste()` function, add "and I'm loving it!" to `X`, the variable that you just created.
+
+```{r}
+# Ex 2(2): append text onto the existing X object and overwrite it
+X <- paste(X, "and I'm loving it!")
+
+X # confirm X was updated
+```
+
+# Exercise 3: Creating and Modifying a Vector
+
+> Create a vector called Y with the numbers 2, 3, 4, and 5. Next, multiply the vector by 2 and save it as Y again.
+
+```{r}
+# Ex 3: build a numeric vector, then overwrite Y with the doubled values
+Y <- c(2, 3, 4, 5)
+Y <- Y * 2
+
+Y # confirm Y was doubled
+```
+
+# Exercise 4: Printing X and Y
+
+> Print both the variable (X) and the vector (Y).
+
+```{r}
+# Ex 4: print both objects created so far
+X
+Y
+```
+
+# Exercise 5: Minimum and Maximum of Y
+
+> Show the maximum and the minimum value of the vector Y that you created.
+
+```{r}
+# Ex 5: summary statistics for Y
+max(Y)
+min(Y)
+```
+
+# Exercise 6: Loading `ggplot2` and Previewing `economics`
+
+> Load up the `ggplot2` package and take a look at the first six rows of the data called, "economics," which is available with the package.
+
+::: callout-tip
+## Hint
+
+For this task, just type the three lines below inside a code chunk.
+:::
+
+```{r}
+# install.packages("ggplot2") # already installed on this machine -- left
+# commented out so it isn't reinstalled every time this document renders
+library(ggplot2)
+head(economics)
+```
+
+::: callout-important
+Comment out (or delete) `install.packages()` once a package is installed. Leaving it active means Quarto tries to reinstall the package every time the document renders, which slows down rendering and can fail entirely on a machine without an internet connection.
+:::
+
+# Exercise 7: Exploring and Visualizing `economics`
+
+> Use the data set "economics," which is from ggplot2 package. First understand the data by referring to help document. Since there are only six variables, provide the definition of the variables nicely in bullets to aid readers who will not have access to the help document. Pick two variables that you think are somehow related. Then draw a chart using ggplot2 package. Assign "plot" to the basic layers of data, aesthetics, and geometry, which are the minimum elements to generate a chart according to the grammar of graphics. Further, using the function `labs()`, add the title and labels for the x-axis and y-axis.
+
+::: callout-tip
+## Hint
+
+All the variables are continuous, so you can use a scatter plot (`geom_point`) for the two variables. The help document has unabridged labels for the variables — use the full variable names for the x- and y-axis labels in the chart.
+:::
+
+::: callout-note
+## About the `economics` data set
+
+`economics` is a US macroeconomic time series bundled with `ggplot2`, sourced from the Federal Reserve Economic Data (FRED) archive. It has six variables:
+
+-   `date` — the month of the observation
+-   `pce` — personal consumption expenditures, in billions of dollars
+-   `pop` — total US population, in thousands
+-   `psavert` — personal savings rate, as a percent
+-   `uempmed` — median duration of unemployment, in weeks
+-   `unemploy` — number of unemployed people, in thousands
+:::
+
+I picked `unemploy` and `uempmed`, since it seems reasonable that the more people who are unemployed at a given time, the longer, on average, it might take any one of them to find a new job.
+
+```{r}
+# Ex 7: minimum layers for a plot -- data, aesthetics, geometry -- saved as
+# an object called "plot"
+plot <- ggplot(data = economics, aes(x = unemploy, y = uempmed)) +
+  geom_point()
+
+plot +
+  labs(title = "Unemployment Count vs. Median Duration of Unemployment",
+       x = "Number of Unemployed (thousands)",
+       y = "Median Duration of Unemployment (weeks)")
+```
+
+# Exercise 8: Replicating the Chart with a Pipe Operator
+
+> This time, replicate the chart above using a pipe operator and without saving the initial plot as a plot object. In other words, use one long chain of code from the data at the top of the lines to the last addition to the chart. Now, add a label and caption to the figure so that the figure to be created can be cross-referenced. Also, make the width of the figure 5 with an aspect ratio of 0.6.
+
+::: callout-tip
+## Hint
+
+Once you replicate the chart, you can use `#|` inside the code chunk to control the label, caption, and size of the figure.
+:::
+
+```{r}
+#| label: fig-unemployment
+#| fig-cap: "Unemployment count versus median duration of unemployment, 1967-2015"
+#| fig-width: 5
+#| fig-asp: 0.6
+
+# Ex 8: same chart as Exercise 7, but as one piped chain with no
+# intermediate "plot" object
+library(ggplot2)
+economics |>
+  ggplot(aes(x = unemploy, y = uempmed)) +
+  geom_point() +
+  labs(title = "Unemployment Count vs. Median Duration of Unemployment",
+       x = "Number of Unemployed (thousands)",
+       y = "Median Duration of Unemployment (weeks)")
+```
+
+# Exercise 9: Describing the Findings
+
+> Using one of the callout blocks, describe your findings. In doing so, use cross-referencing to refer to the figure you created earlier.
+
+```{r}
+# Ex 9: back up the visual pattern in @fig-unemployment with the actual
+# correlation coefficient between the two variables
+cor(economics$unemploy, economics$uempmed)
+```
+
+::: callout-note
+## Findings
+
+@fig-unemployment shows a positive relationship between the number of unemployed people and how long they tend to stay unemployed: as `unemploy` rises, `uempmed` tends to rise with it. The correlation coefficient calculated above confirms this is a fairly strong positive relationship, not just a visual impression. This tracks with what you'd expect in a weak labor market — more job seekers competing for fewer open roles generally means longer average job searches.
+:::
+
+# Exercise 10: Polishing the Codebook
+
+> Make sure your codebook is well organized, easy to navigate, and beautiful. Implement as many tools as you learned in Step 1 to make your report reproducible and effective throughout the report.
+
+```{r}
+# Ex 10: record the R and package versions used to render this document, so
+# a future me (or anyone else) can reproduce these results exactly
+sessionInfo()
+```
+
+## Below is a summary of the ten Quarto/Markdown tools used throughout this codebook:
+
+1.  Section numbering with `#`, `##`, and `###` — paired with `number-sections: true` in the YAML, so every exercise and sub-heading above is automatically numbered.
+2.  **Bold font** — used to emphasize key terms, such as the labels inside the callout titles.
+3.  *Italicized font* — available for emphasis in the narrative text (see the emphasis used throughout the explanatory paragraphs).
+4.  `callout-tip` blocks — reproduce every "Hint" from the original assignment prompt (Exercises 2, 6, 7, and 8).
+5.  `callout-note` blocks — used to describe the `economics` data set (Exercise 7) and to summarize the findings (Exercise 9).
+6.  `callout-important` block — flags the `install.packages()` best practice (Exercise 6).
+7.  Blockquotes (`>`) — used consistently to set off every exercise's original question text from my own narrative, so the two are never confused.
+8.  Backticks (`` ` ``) — wrap every function and object name mentioned in the narrative text, e.g. `paste()`, `head()`, `ggplot()`, `economics`.
+9.  Cross-referencing — `@fig-unemployment` in Exercise 9 links back to the figure labeled in Exercise 8; Quarto numbers and hyperlinks it automatically.
+10. Chunk options (`#|`) — set the figure's label, caption, width, and aspect ratio inside the Exercise 8 code chunk.
