@@ -1,0 +1,139 @@
+---
+title: "M01-1: How to use Quarto's visual mode"
+author: "Dani Meza"
+date: "`r format(Sys.time())`"
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    number-sections: true
+    code-line-numbers: true
+    code-fold: false
+    code-link: true
+    embed-resources: true
+    theme: cosmo
+editor: visual
+execute:
+  freeze: auto
+  warning: false
+  message: false
+---
+
+```{=html}
+<!--
+Notes on Video 1 (project setup + self-contained rendering):
+- A .qmd mixes text and R code chunks. Rendering executes the code and
+  produces a combined output document (HTML by default; PDF needs LaTeX
+  installed; Word also possible but HTML is what this course wants).
+- Keep data files in a data/ subfolder and images in an images/ subfolder
+  inside the project, alongside the .qmd, so file paths stay simple.
+- By default, rendering can dump supporting files into a separate folder
+  next to the HTML -- fine normally, but not what you want for submitting
+  a single file.
+- Fix: embed-resources: true under format > html (already in the YAML
+  above -- this is the current Quarto name for what used to be called
+  "self-contained" in R Markdown). Bundles everything into one HTML file.
+-->
+```
+
+# Iron Maiden
+
+## Band Members
+
+My favorite band members are:
+
+-   Adrian Smith
+-   Dave Murray
+
+## Logo
+
+![Iron Maiden's logo](images/IM-red_white_blackoutline-1-01.svg){#fig-logo fig-alt="A picture of Iron Maiden's logo"}
+
+[Visit their website](https://www.ironmaiden.com)
+
+@fig-logo shows the band's logo.
+
+```{=html}
+<!--
+Note: the {#fig-logo ...} tag after the image is a cross-reference label.
+Once labeled this way, don't manually type "Figure 1" in the caption --
+Quarto auto-numbers it based on order of appearance, and @fig-logo in the
+text becomes a clickable hyperlink straight to the image. Label must start
+with "fig-" for it to be recognized as a figure.
+-->
+```
+
+## My Favorite Albums
+
+1.  [Peace of Mind](https://en.wikipedia.org/wiki/Piece_of_Mind)
+2.  Powerslave
+
+### Lyrics
+
+Here's a quote from a decent song called *Wasted Years*:
+
+> *Don't waste your time always searching for those wasted years*
+
+### Spotify Data
+
+I got this data using the `spotifyr` package.
+
+{r}
+library(readr)
+library(spotifyr)
+eddie_tib \<- here::here("data/eddiefy.csv") \|\> read_csv()
+eddie_tib \|\>
+dplyr:: sample_n(10) \|\>
+knitr:: kable(caption = "Spotify data for the band Iron Maiden", digits = 2)
+
+{r}
+#\| label: preview-data
+head(tracks)
+
+## Equation
+
+$$
+\text{Happiness} = \beta_0 + \beta_1(\text{Iron Maiden Listening})
+$$
+
+::: callout-important
+## Fun fact
+
+I saw Iron Maiden live when I was 13 years old.
+:::
+
+```{=html}
+<!--
+Callout types available: note, tip, important, caution, warning -- each
+renders with a different color, useful for flagging things like "caution:
+interpret this carefully" in a real analysis report.
+-->
+```
+
+@fig-scatter shows the relationship between valence and energy scores for Iron Maiden studio tracks.
+
+{r}
+#\| label: fig-scatter
+#\| fig-cap: "Scatter plot of the energy and valence scores for Iron Maiden tracks, 1980 to 2021"
+ggplot(tracks, aes(x = valence, y = energy)) +
+geom_point()
+
+@tbl-spotify shows data from the Spotify API for Iron Maiden's studio albums.
+
+{r}
+#\| label: tbl-spotify
+#\| tbl-cap: "Data from the Spotify API for Iron Maiden studio albums, 1980 to 2021"
+knitr::kable(head(tracks))
+
+# References
+
+```         
+```
+
+A few notes worth keeping in your actual codebook comments, since this is the densest lecture yet:
+
+Citations (`Insert` → `Citation`) need a bibliography file to write to — the dialog will prompt you to create one the first time (YAML, BibTeX, or CSL-JSON; YAML is fine) and that's the `references.bib` referenced in the YAML above. You don't need Zotero for this — the same dialog lets you search "From DOI" or search PubMed/Crossref directly, which is the path to use if you don't have a reference manager set up. Toggling "Insert in-text citation" on gives you `Author (Year)` style; off gives you a bracketed citation. Once you've inserted at least one citation and added the `# References` heading at the bottom, Quarto auto-populates that section on render — you never type the reference list by hand.
+
+The `@fig-` / `@tbl-` cross-reference system is the standout feature from Part 5: any label starting with `fig-` or `tbl-` gets auto-numbered in order of appearance and turned into a clickable link wherever you reference it with `@label-name`, so if you later reorder sections, the numbering updates itself on the next render — no manual renumbering ever.
+
+For the `#| label:` and `#| fig-cap:` lines inside code chunks — those are chunk options written Quarto-style (`#|` prefix) rather than the R-Markdown-style `{r label, fig.cap="..."}` in the header. Both exist; Quarto docs favor the `#|` style, which is what the video uses in Part 5.
