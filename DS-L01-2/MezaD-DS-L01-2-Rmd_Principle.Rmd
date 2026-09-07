@@ -1,0 +1,222 @@
+---
+title: "R Markdown: Reproducible Report in Data Science"
+author: "Danielle Meza"
+date: "`r format(Sys.time())`"
+output:
+  html_document:
+    code_folding: show
+    toc: yes
+    toc_depth: 4
+    toc_float:
+      collapsed: false
+    highlight: espresso
+    theme: journal
+    number_sections: yes
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# R Markdown
+
+R Markdown is a format for writing reproducible, dynamic reports with R.
+Use it to embed R code and results into slideshows, PDFs, HTML
+documents, Word files, and more.
+
+# Structure
+
+1.  YAML Header
+2.  Text Area
+3.  Code chunk
+
+# Workflow
+
+1.  **Open** – Open a file that uses the .Rmd extension.
+2.  **Write** – Write content with the easy-to-use R Markdown syntax.
+3.  **Embed** – Embed R code that creates output to include in the
+    report.
+4.  **Render** – Replace R code with its output and transform the report
+    into a slideshow, PDF, HTML, or MS Word file (done by clicking
+    **Knit**).
+
+# Text Area Formatting Tools
+
+Plain text just types normally. End a line with two trailing spaces to
+force a new paragraph/line break.
+
+*italics* and *italics*
+
+**bold** and **bold**
+
+superscript^2^
+
+~~strikethrough~~
+
+Hyperlink:
+[CCIDM](https://www.cpp.edu/cba/customer-insights-lab/index.shtml)
+
+# Header 1
+
+## Header 2
+
+### Header 3
+
+#### Header 4
+
+##### Header 5
+
+###### Header 6
+
+endash: -- emdash: --- inline equation: $A = \pi*r^2$ slide break:
+
+------------------------------------------------------------------------
+
+> Block quote
+
+1.  Ordered list 1
+2.  Ordered list 2
+    -   sub-item 1
+    -   sub-item 2
+
+| Table Header | Second Header |
+|:------------:|--------------:|
+|  Table Cell  |        Cell 2 |
+|    Cell 3    |        Cell 4 |
+
+# YAML Header Explained
+
+> A YAML header is a set of key: value pairs at the start of your file.
+> Begin and end the header with a line of three dashes (`---`). (From
+> the Rmd cheatsheet:
+> <https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf>)
+
+My YAML header above is different from the plain default RStudio
+generates automatically — that's because I customized the `output`
+options, and those settings control how the knitted HTML file will look.
+
+-   **date**: `` `r format(Sys.time())` ``
+    -   This prints the current date/time every time I knit the file,
+        instead of a hardcoded date.
+    -   Can be customized several ways:
+        -   date-time: `` `r Sys.time()` ``
+        -   Day, Month, date, Year:
+            `` `r format(Sys.time(), "%A, %B, %d, %Y")` ``
+        -   m/d/Y format: `` `r format(Sys.time(), "%m/%d/%Y")` ``
+
+------------------------------------------------------------------------
+
+-   **code_folding**: show
+    -   Lets readers collapse/expand code chunks in the knitted HTML,
+        but shows the code by default.
+-   **toc**: yes
+    -   Turns on the table of contents. It gets hyperlinks in the HTML
+        output so readers can jump to sections quickly.
+-   **toc_depth**: 4
+    -   Table of contents will show up to 4 levels of headings deep.
+-   **toc_float**: (nested, collapsed: false)
+    -   Moves the TOC from the top of the document to a floating sidebar
+        that stays visible as you scroll.
+    -   By default the floating TOC starts collapsed (not showing all
+        headings) — setting `collapsed: false` under it keeps it
+        expanded.
+-   **highlight**: espresso
+    -   Controls the syntax-highlight style of code chunks — espresso
+        gives a black background for the code area.
+-   **theme**: journal
+    -   Overall visual theme of the knitted document. Lots of built-in
+        options to try (cosmo, flatly, journal, united, etc.).
+-   **number_sections**: yes
+    -   Auto-numbers your headings, which is why I don't need to
+        manually number sections above (e.g. "1 R Markdown", "2
+        Structure", etc.)
+    -   Try swapping these values and re-knitting to see what changes.
+
+# Embed Codes
+
+## Code chunk
+
+### Sample
+
+Insert a new code chunk with **Cmd + Option + I** (Mac)
+
+```{r penguins, message=FALSE, warning=FALSE}
+# use ctl + Enter simultaneous to execute a line
+# Use # to comment out a code
+
+# install.packages("tidyverse")
+library(tidyverse)
+
+# install.packages("palmerpenguins")
+library(palmerpenguins)
+penguins
+
+dim(penguins)
+
+# install.packages("skimr")
+skimr::skim(penguins)
+
+# Sex distribution
+penguins %>%
+  count(sex) %>%
+  ggplot(aes(sex, n)) +
+  geom_col()
+
+# Number of male
+sum(penguins$sex == "male", na.rm = TRUE)
+
+# Total observation
+nrow(penguins)
+
+# Percent of Males
+m_per <- round((sum(penguins$sex == "male", na.rm = TRUE) / nrow(penguins)) * 100, digits = 1)
+
+# Percent of Females
+f_per <- round((sum(penguins$sex == "female", na.rm = TRUE) / nrow(penguins)) * 100, digits = 1)
+```
+
+### Code chunk options
+
+Chunk options (like `message=FALSE, warning=FALSE` in the
+`{r penguins, ...}` header above) control what shows up in the knitted
+output for that specific chunk — e.g. suppressing package-load
+messages/warnings so they don't clutter the report. For the full list of
+options, see <https://yihui.org/knitr/options/>
+
+## Inline coding
+
+Inline code lets you drop a single R value directly into a sentence of
+regular text, instead of only showing results inside a chunk. Syntax is
+a single backtick, the letter `r`, your code, then a closing backtick.
+
+-   Sample characteristics: There are `r nrow(penguins)` penguins in the
+    data, `r m_per`% of which are males and `r f_per`% of which are
+    females.
+
+(Notice this sentence will always stay accurate even if the underlying
+data changes — that's the "reproducible" part of reproducible reporting:
+re-knit and the numbers update automatically instead of me manually
+retyping them.)
+
+# Navigation
+
+-   Outline (right side) — jumps between headings in your source file
+-   Status bar (bottom) — shows your current cursor location/section
+
+# Expectations for Organizing Your Assignment Report with an Rmd File
+
+## DS-L01-2 Rmd Principle Assignment
+
+(The instructor's own version of this template says "M01-1 Principle
+Assignment" here, since he reuses this file across different courses —
+swap in your actual assignment name so the heading matches this
+assignment.)
+
+# References
+
+-   R Markdown cheatsheet:
+    <https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf>
+-   knitr chunk options: <https://yihui.org/knitr/options/>
