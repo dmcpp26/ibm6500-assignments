@@ -1,0 +1,194 @@
+---
+title: "M02-Introduction to Data Science in R-Reflection"
+author: "Danielle Meza"
+date: "`r format(Sys.time())`"
+format:
+  html:
+    output-file: index
+    toc: true
+    toc-depth: 4
+    toc-expand: 2
+    number-sections: true
+    code-link: true
+    embed-resources: true
+    code-fold: true
+    code-tools: true
+    code-overflow: wrap
+    code-line-numbers: true
+    theme: flatly
+editor: visual
+execute:
+  freeze: auto
+---
+
+This document reflects on Module 2 -- Introduction to Data Science in R -- covering reproducible research, literate coding, the Tidyverse, additional R packages, the R vs. Python debate, and Quarto's advanced authoring features. Each prompt from the assignment is quoted in a blockquote, with my response directly below it.
+
+# Reproducible Data Science and Literate Coding
+
+> Summarize new things you learned in this module about reproducible data science and literate coding.
+
+The workshop's framing that stuck with me most is that reproducibility is "an opportunity for more rigorous inquiry rather than just a crisis-response measure" -- I'd always thought of reproducibility as a defensive habit (covering yourself in case someone asks "how did you get this number"), not as something that actively makes the analysis *better*. Reframing it as a design choice you make from the start, rather than paperwork you do at the end, changed how I think about my own workflows.
+
+A few specific concepts were new to me:
+
+-   **The Reproducibility Pyramid** -- a layered framework running from foundational data management, up through version control and scripted analysis, to archiving and reporting at the top. I liked that it's a pyramid and not a checklist -- it implies each layer depends on the one below it actually being solid.
+-   **The Project TIER Protocol** -- a structured way for someone new to reproducibility to organize a project into three phases (pre-data, data work, and wrap-up), with a standard folder hierarchy (original data, documentation, command files) and required documents like a README and a data appendix.
+-   **Literate coding** -- instead of explaining your code with scattered `#` comments, tools like Quarto let you interleave full natural-language explanation, code, and output in one narrative document, which is "significantly easier for others (or your future self) to follow". This is the concept that ties directly back into why we've been building `.qmd` files all module.
+
+::: callout-note
+## TIER Protocol, in plain terms
+
+Pre-data (plan your folder structure and documentation *before* you touch data) → Data work (keep raw data untouched, script every transformation) → Wrap-up (README + data appendix so someone else -- or you, in six months -- can reconstruct exactly what happened).
+:::
+
+Version control with Git/GitHub rounds this out: instead of a folder full of `report_v2_FINAL_useThisOne.docx` files, Git keeps a full, queryable history of every change, which is what makes the archiving layer of the pyramid actually trustworthy.
+
+# The Instructor's Quarto Lecture {#sec-quarto-lecture}
+
+> Summarize the instructor's lecture about Quarto that you found impressive. Do you see yourself using Quarto every day for your job or study, like taking notes in your class or preparing a presentation? More eye-catching effects will be introduced in later modules.
+
+## What I Found Impressive
+
+The advanced literate programming lecture covered a much wider toolkit than I expected going in -- it wasn't just "here's how to write text and code in the same file," it was a full authoring and publishing system. Splitting it into two tabs below, roughly matching how the lecture itself was organized:
+
+::: panel-tabset
+## Authoring Features
+
+-   **Cross-references** for figures, tables, equations, and sections (`@fig-`, `@tbl-`, `@eq-`, `@sec-`), so numbering and hyperlinks update automatically if content gets reordered -- I actually used this below in @sec-tidyverse.
+-   **Footnotes and asides** -- asides push supplementary notes into the margin instead of interrupting the main text.
+-   **Callout blocks** (note, important, tip, caution, warning) as pre-styled, color-coded boxes.
+-   **Code annotation** -- numbered markers (`# <1>`) inside a code chunk link to an explanation list right below it, which seems like a great way to walk someone through a complex chunk line-by-line.
+-   **Panel tabsets** and multi-column layouts, for showing related content side-by-side instead of stacked.
+-   **Citations** with auto-generated reference lists and embedded DOI links.
+
+## HTML & Publishing Features
+
+-   **Table of contents controls** -- `toc-depth`, `toc-expand`, and `toc-location` -- for tuning exactly how much structure shows up in the sidebar.
+-   **Code folding and code tools** -- `code-fold`, a "Hide All Code / Show All Code / View Source" dropdown, and per-chunk overrides -- which is exactly what I used in this document (folded by default, with the demo chunk in @sec-tidyverse forced open).
+-   **Themes** -- Quarto ships with 25+ Bootswatch themes on top of the Bootstrap 5 default, and you can go further with custom SCSS variables and separate light/dark themes.
+-   **`embed-resources: true`** to bundle everything into one portable HTML file -- this is what makes the file I'm submitting self-contained.
+-   **Direct publishing** to Quarto Pub, GitHub Pages, Netlify, or Posit Connect straight from the terminal with `quarto publish`.
+:::
+
+## Would I Use Quarto Every Day?
+
+Honestly, yes -- more for work than for class notes, though both apply. In my current role I'm regularly pulling social/SEO/email performance numbers together into something I hand to a manager or client, and right now that's a mix of a spreadsheet, a slide deck, and whatever screenshots I remember to grab. A `.qmd` file that pulls the numbers, generates the chart, and writes the narrative around it in one document -- and that I can re-render next month with new data without rebuilding it from scratch -- is a genuinely better version of that workflow. I could see using it for recurring campaign reports, and I'm curious enough about the note-taking angle that I may try it for this class going forward instead of a separate notes app.
+
+# Reproducibility in My Field {#sec-reproducibility}
+
+> Summarize the video presentation about reproducibility crisis. What do you think about reproducible crisis in your field? How can Quarto help address the concerns you have about reproducibility in the line of your work?
+
+The reproducibility video's core argument is that the "crisis" framing -- usually associated with failed replications in psychology and biomedical research -- undersells the point. The real issue is that most research and analysis work simply isn't built to be checked or rebuilt at all, and treating reproducibility as a first-class design goal (via the Reproducibility Pyramid and the TIER Protocol described above) prevents the crisis rather than just responding to it after the fact.
+
+::: callout-important
+## My take, for digital marketing
+
+Marketing analytics has its own quieter version of this problem. A "reproducibility crisis" in my field doesn't usually look like a failed academic replication -- it looks like a dashboard number that changes when someone else pulls the same report, because the underlying query, date range, or attribution model wasn't documented anywhere. I've seen (and produced) plenty of Google Analytics or campaign performance reports that exist only as a final number in a slide, with no trail back to exactly how it was calculated. If a client or manager asks "how did you get this number" three months later, the honest answer is sometimes "I'm not entirely sure I can get that exact number again."
+:::
+
+This is where Quarto is a genuinely practical fix, not just an academic exercise: a `.qmd` report that pulls data with code, transforms it with visible `dplyr` steps, and generates the chart or table in the same document *is* the documentation. Re-running it later reproduces the exact same numbers by construction, and anyone (including future-me) can read the code to see precisely how a metric was defined. For campaign reporting specifically, that also means less manual copy-pasting between tools, which is where a lot of small, hard-to-trace errors creep in.
+
+# The Tidyverse Ecosystem {#sec-tidyverse}
+
+> Summarize what you learned in this module about the Tidyverse ecosystem in R. What can you do with R?
+
+The Tidyverse is described as "an opinionated collection of R packages designed for data science that share a common underlying philosophy, grammar, and data structure". Rather than being a random assortment of tools, the packages are built to snap together into one pipeline, generally moving through four stages:
+
+| Stage | Purpose | Key Package(s) | Example Functions |
+|------------------|------------------|------------------|------------------|
+| Import | Read raw data into R | `readr`, `readxl` | `read_csv()`, `read_excel()` |
+| Tidy | One variable per column, one observation per row, one value per cell | `tidyr` | `pivot_longer()`, `pivot_wider()` |
+| Transform | Filter, reshape, and summarize data | `dplyr` | `filter()`, `select()`, `mutate()`, `group_by()`, `summarize()` |
+| Visualize | Build layered, publication-quality graphics | `ggplot2` | `ggplot()`, `geom_*()`, `labs()` |
+
+: The Tidyverse workflow, import through visualization {#tbl-tidyverse}
+
+@tbl-tidyverse summarizes the pipeline described in the lecture. To make this concrete, the chunk below builds a tiny example dataset of marketing-channel performance and pushes it through the transform and visualize stages:
+
+```{r}
+#| label: fig-channels
+#| fig-cap: "Example conversions by marketing channel, built with dplyr and ggplot2"
+#| code-fold: show
+#| code-summary: "Show the tidyverse demo code"
+#| message: false
+#| warning: false
+
+library(tidyverse)
+
+channel_data <- tibble(
+  channel = c("Email", "Organic Search", "Paid Social", "Paid Search", "Referral"),
+  sessions = c(1200, 3400, 2100, 1800, 900),
+  conversions = c(96, 187, 143, 122, 41)
+)
+
+channel_data |>
+  mutate(conversion_rate = conversions / sessions) |>
+  arrange(desc(conversion_rate)) |>
+  ggplot(aes(x = reorder(channel, conversion_rate), y = conversion_rate)) +
+  geom_col(fill = "#2C3E50") +
+  coord_flip() +
+  labs(
+    title = "Conversion Rate by Marketing Channel",
+    x = NULL,
+    y = "Conversion Rate"
+  ) +
+  theme_minimal()
+```
+
+@fig-channels is a small illustration, but it's exactly the kind of report I'd actually build day to day -- swap the `tibble()` for a real `read_csv()` pull from a campaign export, and the rest of the pipeline doesn't change.
+
+**What can you do with R?** Between the Tidyverse and the RStudio IDE, the honest answer is "most of what I currently do across three or four separate tools." R moves you "beyond manual button-clicking" into code-based workflows that are reproducible and shareable by construction, and it scales from simple arithmetic and data cleaning all the way to statistical modeling and polished, stakeholder-ready visualization and reporting.
+
+# Two Packages Beyond Tidyverse, Base R, and Quarto
+
+> Refer to the video introducing 20 packages. Among the various packages introduced, choose two packages beyond the Tidyverse ecosystem, base R, and Quarto that could enhance your job/career. Tell me why you think so.
+
+::: panel-tabset
+## `data.table`
+
+Introduced at in the packages video. `data.table` is built for speed and scale -- it handles datasets with hundreds of thousands (or millions) of rows far faster than base R or standard `dplyr` workflows, which matter once a dataset stops being "a CSV I can open comfortably" and starts being "a full year of raw event-level web analytics data." As someone who works with Google Analytics exports and email/social platform data that can get large fast, this feels like the tool I'd reach for the moment a `dplyr` pipeline starts to lag.
+
+```{r}
+#| eval: false
+#| code-fold: true
+#| code-summary: "Illustrative data.table syntax (not run in this document)"
+
+library(data.table)
+dt <- as.data.table(large_ga_export)
+dt[, .(avg_session_duration = mean(session_duration)), by = channel]
+```
+
+## `reticulate`
+
+Introduced `reticulate` lets you call Python code directly from inside an R script or `.qmd` document. The pitch that landed for me: you don't have to pick a side in the R-vs-Python debate (more on that below) -- you can stay in the R/Quarto environment I'm already comfortable in while still reaching into Python's machine learning or NLP libraries when a project genuinely calls for them. For a marketing analytics career specifically, that could mean pulling in a Python sentiment-analysis library on social comments while keeping the rest of the reporting pipeline in R and Quarto.
+
+```{r}
+#| eval: false
+#| code-fold: true
+#| code-summary: "Illustrative reticulate syntax (not run in this document)"
+
+library(reticulate)
+py_run_string("import pandas as pd")
+```
+:::
+
+# The R vs. Python Debate
+
+> Refer to the debate on R vs. Python. What is your take on this debate? In your response, consider how Quarto enables people using R and Python in the same team to still collaborate, as illustrated in the video you watched in a few modules ahead: "Mine Çetinkaya-Rundel & Julia Stewart Lowndes \| Hello Quarto: Share, Collaborate, Teach, Reimagine."
+
+The speaker's position is that "R vs. Python" is the wrong question in the first place -- both are worth learning eventually, so the real decision is just which one to learn *first*, based on your actual goals. Their rule of thumb: Python if you're headed toward computer science, data engineering, or general-purpose programming; R if you're focused on statistics, economics, academic research, or advanced data visualization. Either way, the main point is to stop treating the debate itself as a reason to delay actually starting.
+
+My take: given my background is statistics-adjacent data analysis and visualization for marketing rather than software engineering, R was the more natural entry point for me, and this module has reinforced that -- but I don't read that as a vote against ever learning Python. `reticulate` (above) is a good example of why treating this as an either/or choice is outdated even at the individual level.
+
+::: callout-tip
+## Where Quarto fits in
+
+The "Hello Quarto" keynote makes the team-level version of this same point. Quarto runs R code through the `knitr` engine and Python (along with Julia and Observable) through the Jupyter engine, and the presenters describe this multilingual support as deliberately "designed to be expandable to more engines and languages, even those that might not exist today." In their framing, Quarto is built to work "regardless of your background with R Markdown, the computing language(s) you may use, and your tool of choice for authoring" -- which is exactly the collaboration problem a mixed R/Python team runs into. A team doesn't have to standardize on one language to standardize on one reporting format; an R user and a Python user can each write their part in the language they're strongest in and still ship a single unified `.qmd` document together.
+:::
+
+That's directly relevant to how I'd expect to work on a real analytics team: a data engineer or data scientist doing the heavier modeling in Python, and someone in my kind of role doing the reporting and visualization layer in R, both contributing to the same document instead of two disconnected sets of files that someone has to manually reconcile.
+
+# Appendix {.appendix}
+
+-   **GitHub Repository:** <https://github.com/dmcpp26/ibm6500-assignments>
+-   **GitHub Pages Site:** <https://dmcpp26.github.io/ibm6500-assignments/>
