@@ -4,7 +4,6 @@ author: "Danielle Meza"
 date: "`r format(Sys.time())`"
 format:
   html:
-    output-file: index
     toc: true
     toc-depth: 4
     toc-expand: 2
