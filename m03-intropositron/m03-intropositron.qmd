@@ -1,0 +1,123 @@
+---
+title: "W02-Reflection Essay-Introduction to Positron"
+author: "Danielle Meza"
+date: "`r format(Sys.time())`"
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-expand: 2
+    number-sections: true
+    code-link: true
+    output-file: index
+    embed-resources: true
+    code-fold: true
+    code-tools: true
+    code-overflow: wrap
+    theme: litera
+editor: visual
+execute:
+  freeze: auto
+---
+
+# Getting Started with Positron
+
+> Download and Install Positron. As you watch the videos in Step 1 and Step 3, follow the activities in the video and be familiar with Positron.
+
+Installing Positron itself is quick -- download from [positron.posit.co](https://positron.posit.co/) and run the installer. The one catch is that Positron is just the IDE shell, so R and/or Python still need to be installed separately if they aren't already on the machine (the setup video uses `uv` to install Python and a normal download-and-install for R). The other adjustment coming from RStudio is that Positron defines a project by which *folder* you open rather than a `.Rproj` file, so "Open Folder" on the assignment folder is the equivalent first step, and once R and Python interpreters are detected, Positron lets you switch between them from the top-right corner instead of committing to one at setup.
+
+# Positron vs. RStudio
+
+> Based on what you learned from Step 1 and Step 3, what do you like about Positron compared with RStudio?
+
+@tbl-comparison summarizes the main differences Positron's own documentation highlights between the two IDEs (Posit's "Comparing RStudio and Positron Features" page, <https://positron.posit.co/migrate-rstudio-compare.html>).
+
+| Area | Positron | RStudio |
+|------------------------|------------------------|------------------------|
+| Language support | Python is a first-class citizen alongside R | R-focused |
+| Development pace | Actively developed, rapidly expanding feature set | Stable, mostly bug fixes at this point |
+| Data inspection | Built-in Data Explorer for dataframes and files (CSV, Parquet, etc.) | Environment pane + Viewer |
+| R sessions | Multiple R versions/interpreters, concurrent sessions | Single active R session |
+| Extensions | Large third-party extension marketplace (it's built on Code-OSS, the same base as VS Code) | Limited to RStudio add-ins |
+| Remote work | Native remote SSH sessions (local UI, remote compute) | Less seamless remote support |
+| Workspace persistence | Less built-in | Saves/reloads R workspace state automatically |
+| Package tooling | General extension-based | Dedicated panes for profiling, package development |
+
+: Positron vs. RStudio, by feature area
+
+The Step 1 overview video puts the same idea more informally than the docs do: *"Positron effectively takes all the good things about RStudio and all the good things about VS Code and marries them together."* That lines up with @tbl-comparison -- Python-as-a-first-class-citizen and the extension marketplace are the VS Code half of that sentence, while multiple concurrent R sessions and a dedicated Data Explorer are the RStudio half, just modernized. On that last point, the Data Explorer isn't only for looking at a data frame -- the overview video demos filtering a data set right in the grid (scores greater than 75) and then clicking "convert to code" to turn that filter into the equivalent R code, so a point-and-click exploration step doesn't just disappear once you're done with it. Ryan Johnson's workflow demo shows the same feature working in Python and notes that, at the time of filming, the R version of "convert to code" was still rolling out.
+
+The two things that stand out most from @tbl-comparison are Python being a true first-class language alongside R, and the built-in Data Explorer -- both closing gaps RStudio has always had for anyone bouncing between R and Python workflows. The extension marketplace inherited from VS Code is the other big shift: instead of being limited to RStudio's smaller add-in ecosystem, Positron opens up to whatever VS Code extensions already exist, which is a meaningful jump in flexibility for a data science IDE without giving up the parts of RStudio (the Environment/Variables pane, the plots pane, the console) that already worked well.
+
+```{r}
+#| code-fold: show
+#| code-summary: "Confirm the R session details Positron is running"
+
+R.version.string
+```
+
+# AI Tools Inside Positron
+
+## Ways to Use AI Inside Positron
+
+> Describe the various ways you can use AI inside Positron. Some are free while others are not.
+
+Because Positron is built on the same open-source base as VS Code, it inherits a large extension ecosystem, and Posit also ships its own first-party AI chat client built directly into the IDE, called **Positron Assistant** -- the little robot icon in the left-hand activity bar (Posit's "Features: Positron Assistant" documentation, <https://positron.posit.co/assistant.html>). Separately, there's an AI extension called **Databot**, covered in its own section below -- the two aren't the same tool, and the workflow demo was pretty clear that they're meant for different jobs: Positron Assistant for a specific task (debug this error, build this table), Databot for open-ended exploration of a new dataset.
+
+Positron Assistant follows what Posit calls a "bring your own model" philosophy: Positron itself doesn't sell you AI access, it just gives the chat panel (and the inline-edit feature below) a slot to plug a provider into. In Ryan Johnson's workflow demo, Anthropic was the main officially supported model at the time of recording, with AWS Bedrock, Gemini, and GitHub Copilot (for code completion, with full chat support "hopefully" coming later) being tested -- so it's worth checking the current docs rather than assuming that list is fixed. The other two videos both show it working end-to-end with a real provider: the overview video sets it up with GitHub Copilot (enable the assistant, add it as a chat provider, sign in and get an auth code, authorize in the browser, reload), and Isabella Velasquez's tour sets it up with Anthropic instead (add model provider, paste an API key, sign in).
+
+@tbl-ai-options summarizes the free vs. paid AI options that actually came up across the videos; the tabs just below it break each one out with a bit more detail.
+
+| Provider | Tier | Notes |
+|------------------------|------------------------|------------------------|
+| GitHub Copilot | Free (Education) / limited free tier for any account | Shown working as a full Positron Assistant chat provider in the overview video |
+| Anthropic (Claude) | Paid, via API key | Model shown working most consistently across all three videos |
+| Amazon Bedrock | Paid, pay-as-you-go through AWS | Already configured in Ryan Johnson's Posit Workbench demo environment |
+| Gemini and others | Still being tested | Rolling out as Positron Assistant comes out of preview |
+
+: Free vs. paid AI options for Positron Assistant, per the course videos
+
+::: panel-tabset
+## Free (or free-tier) options
+
+- **GitHub Copilot** -- free for verified students and teachers through GitHub Education (see below); also has a limited free tier for any GitHub account. Shown working as a full Positron Assistant chat provider in the overview video.
+- Any AI provider you already pay for elsewhere and connect via API key at no *additional* cost tied to Positron itself.
+
+## Paid options
+
+- **Anthropic (Claude)** -- via API key; the model shown working most consistently across all three videos, and the only one Ryan Johnson called "officially supported" at the time of his demo.
+- **Amazon Bedrock** -- pay-as-you-go through AWS; shown already configured in Ryan Johnson's Posit Workbench demo environment.
+- **Gemini and others** -- listed as being tested/added to the supported-provider list as Positron Assistant comes out of preview.
+:::
+
+Two more features of Positron Assistant stood out in the workflow demo, beyond just the sidebar chat:
+
+- **Environment-as-context awareness** -- Positron Assistant can already see what's loaded in your R/Python session (open scripts, variables, your last plot, console output and error messages), so a prompt as short as "help me fix the error" works without pasting in code or a traceback first.
+- **Inline edits with Cmd/Ctrl+I** -- instead of the sidebar, this drops a small prompt box right at the cursor. Ryan Johnson uses it three times in the demo: once to fix a `ggplot2` call that was erroring out because the code referenced `happiness_data` when the object was actually named `happiness`, again to fix a missing-quotes error on a color name (`gray70` needed to be a string), and once to build a `gt` table from scratch just by describing what he wanted.
+
+### Databot: AI for Fast Exploratory Data Analysis
+
+Databot is a separate extension (installed and opened like any other Positron extension, not built in) purpose-built for exploratory data analysis, and it works differently from Positron Assistant's one-question-at-a-time chat. You hand it a prompt like "combine these CSVs and explore the data," and it runs what Ryan Johnson calls the **WEAR loop**: **W**rite some R or Python code, **E**xecute it immediately, **A**nalyze the results, and **R**egroup with a suggestion for what to look at next -- then it waits for your instructions before looping again. In the demo, Databot merges five years of a country-happiness dataset on its own (hitting, and recovering from, a couple of real errors along the way because the column names weren't consistent year to year), builds several exploratory plots, and then, on request, digs into which countries have a high GDP but a lower-than-expected happiness score -- pulling in outside context the underlying model already knows (things like social support and corruption indices) that wasn't actually present in the spreadsheet.
+
+One detail worth noting: every Databot suggestion is still just R/Python code running in front of you, not a black-box answer, and you can set it to ask permission before each run ("allow once") or run autonomously once you trust it ("allow always"). Once an exploration feels complete, typing `/report` in the Databot chat has it draft a Quarto document summarizing the whole analysis -- outline first, then the full `.qmd` -- which is a good example of Quarto showing up as something AI *produces* for you, not just something I'm writing by hand for this course.
+
+## AI Tools I've Set Up
+
+> Which AI tools have you installed or set up? Which AI tools did you find beneficial for you?
+
+The free GitHub Copilot tier (through GitHub Education, see below) is the AI tool I set up inside Positron, using it both as the sidebar chat and for inline Cmd/Ctrl+I suggestions. In general, a tool like this tends to be most useful for boilerplate and repetitive code -- writing out a `dplyr` pipeline, fixing a missing quote or a mismatched object name, generating a first draft of a plot -- and least useful (sometimes actively distracting) when I'm still trying to learn the underlying R syntax myself, since it's easy to accept a suggestion without understanding why it works. That's tracked with what I've noticed so far: it speeds up the mechanical parts of coding without doing much to teach me anything new, so it works best paired with actually reading what it suggests rather than reflexively accepting it.
+
+## GitHub Copilot Education
+
+> I strongly recommend using GitHub Copilot, which is free if you apply for an education account. Apply for it and take a screenshot showing you were accepted into the education program. Play with it and do you find it helpful or distracting? Please elaborate.
+
+![GitHub Education acceptance confirmation](images/Screenshot%202026-09-10%20at%2012.14.49%E2%80%AFPM.png){#fig-copilot fig-alt="Screenshot confirming acceptance into GitHub Education"}
+
+As shown in @fig-copilot, I was accepted into GitHub Education, and overall I found Copilot more helpful than distracting inside Positron. It's fastest at things like generating a first pass of a `ggplot2` chart, fixing small syntax slips, and explaining an error message in plain English. The distracting side shows up when it suggests a full pipeline before I've thought through the logic myself -- accepting that too quickly is a shortcut worth resisting while I'm still learning the fundamentals.
+
+# Publishing to GitHub Pages
+
+> Publish this report to GitHub Pages. Note that although both GitHub Pages and the GitHub repo are online, they are different. GitHub Pages is a website publishing service that hosts the rendered HTML from a QMD file.
+
+- **GitHub Repository:** <https://github.com/dmcpp26/ibm6500-assignments>
+- **GitHub Pages Site:** <https://dmcpp26.github.io/ibm6500-assignments/>
