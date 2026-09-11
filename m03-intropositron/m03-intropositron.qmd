@@ -9,7 +9,6 @@ format:
     toc-expand: 2
     number-sections: true
     code-link: true
-    output-file: index
     embed-resources: true
     code-fold: true
     code-tools: true
