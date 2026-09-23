@@ -9,7 +9,6 @@ format:
 editor: visual
 execute:
   freeze: auto
-output-file: index
 ---
 
 ## Qualtrics Survey — Main Page
