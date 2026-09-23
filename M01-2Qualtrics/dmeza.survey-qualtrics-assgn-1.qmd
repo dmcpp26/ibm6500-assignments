@@ -1,0 +1,23 @@
+---
+title: "MR Educational Needs Survey — Qualtrics Assignment #1"
+author: "Danielle Meza"
+date: today
+format:
+  html:
+    embed-resources: true
+    theme: cosmo
+editor: visual
+execute:
+  freeze: auto
+output-file: index
+---
+
+## Qualtrics Survey — Main Page
+
+![](images/paste-1.png)
+
+## Appendix
+
+- **GitHub Repository:** <https://github.com/dmcpp26/ibm6500-assignments>
+
+- **GitHub Pages:** <https://dmcpp26.github.io/ibm6500-assignments/>
