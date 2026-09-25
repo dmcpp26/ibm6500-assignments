@@ -1,0 +1,61 @@
+---
+title: Class Notes for Week 05
+date: today
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    toc-expand: 1
+    toc-location: right-body
+    embed-resources: true
+    number-sections: true
+    code-link: true
+    code-fold: true
+    code-tools: true
+    code-overflow: wrap
+    theme: litera
+editor: visual
+execute:
+  freeze: auto
+---
+
+# **IBM 6500 - 09/24 - Class Participation**
+
+## **Research Process**
+
+1.  Define the problem
+
+2.  Develop an Approach to the problem 
+
+    1.  Conduct exploratory research
+
+        1.  Opinions of industry expert, analysis of secondary data, qualitative research, pilot studies
+
+    2.  Formulate research questions & hypotheses
+
+        1.  Including theoretical framework, analytical models
+
+    3.  Formulate Research Design 
+
+        1.  Methods for collecting qualitative Data, survey, observation, and explanation
+
+        2.  Measurement and scale
+
+        3.  Questionnaire design 
+
+        4.  Sampling process and Sample Size
+
+    4.  Doing field work nd collecting Data
+
+We are starting with primary data because the time takes to get approved by IRB\
+If you get denied from IRB review it will take at least another week!\
+
+Applied Research example from marketing research consulting class\
+Consulting project example: a maker of medical device\
+Is there a need for entries diagnostic panel (RQ1)\
+\
+—\
+Overview of the next 5weeks from syllabus for 45 mins\
+—
+
+\*\*Class PO and AO Presentations\*\*
