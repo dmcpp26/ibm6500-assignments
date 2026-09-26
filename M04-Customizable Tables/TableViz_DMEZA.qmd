@@ -1,0 +1,182 @@
+---
+title: "M05: Visualizing Data with Tables for MSDM CEP"
+author: "Danielle Meza"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-expand: true
+    number-sections: true
+    code-link: true
+    code-tools: true
+    code-fold: show
+    code-overflow: wrap
+    embed-resources: true
+    theme: cosmo
+editor: visual
+execute:
+  freeze: auto
+---
+
+# M05: Visualizing Data with Tables {#sec-m05}
+
+This report reflects on the gt and gtExtras video materials and demonstrates a formatted summary table using the `pizzaplace` sample dataset as a stand-in for my CEP data, which is not yet accessible pending Clover and online store platform permissions.
+
+## Reflection Essay {#sec-reflection}
+
+> Summarize what you learned from the videos you watched. What did you like about the gt and gtExtras packages demonstrated in the videos? How do tables complement charts for data visualization? Under what circumstances would you prefer to use tables rather than charts to visualize data?
+
+### What I Learned from the Videos
+
+Across the four videos, I learned that gt treats a table as being made up of distinct, addressable parts — what the second video called the "six table elements": the header, footer, body, column labels, stub, and stub head. Once I understood that structure, functions like `tab_header()`, `cols_label()`, `tab_stubhead()`, `tab_source_note()`, and `tab_footnote()` made a lot more sense, since each one is really just targeting one of those six parts.
+
+The first video (using the penguins dataset) showed how to build a table piece by piece: adding a Markdown-formatted title and subtitle with `tab_header()`, summarizing raw data with dplyr's `group_by()` and `summarize()` before piping it into `gt()`, turning a grouping variable into row labels with `rowname_col()`, relabeling columns with `cols_label()`, formatting and rescaling numbers with `fmt_number()` (including converting grams to kilograms using `scale_by`), adjusting column widths with `cols_width()`, and adding both general source notes and cell-specific footnotes. I also learned that gt automatically numbers and orders footnotes even if you add them out of sequence, and that the footnote marks themselves can be customized to numbers, letters, or custom symbols with `opt_footnote_marks()`. The video also covered `tab_style()` for conditionally coloring cells and text, `data_color()` for turning a numeric column into a heatmap, and `opt_table_font()` for swapping in a Google Font.
+
+The second video (using household income quintile data) reinforced the same workflow using `fmt_currency()` instead of `fmt_number()`, and added control over alignment with `cols_align()` and borders with `tab_options()`.
+
+The third video was less about gt syntax and more about *why* certain table design choices matter, based on John Schwabish's table design guidelines. I learned that visually separating the header from the body helps readers orient themselves, that too many gridlines can be just as distracting as too few, that numbers should generally be right-aligned so decimal places line up while text should be left-aligned, that outliers or values needing attention can be highlighted with conditional logic rather than manually, and that repeating a group label in every row often just adds clutter — using `text_transform()` to blank out duplicate labels within a group makes a table easier to scan.
+
+The fourth video introduced the gtExtras package, which wraps common styling patterns — like the Guardian, 538, or New York Times themes — into single function calls instead of dozens of lines of repeated `tab_style()` and `tab_options()` code, and showed how to embed small visualizations, like `gt_plot_summary()` for a quick statistical overview of an entire dataset, or `gt_plt_dist()` for putting a miniature distribution plot directly inside a table cell, so a single table can show exact numbers and a visual pattern at the same time.
+
+### What I Liked About gt and gtExtras
+
+What I liked most is gt's iterative workflow — building a table piece by piece and immediately seeing the result in the viewer — which makes it easy to experiment without needing to get everything right on the first try. I also liked the "grammar of tables" framing, since it mirrors ggplot2's grammar of graphics and gave me a mental model for *where* a given customization belongs (header vs. stub vs. footer) instead of just guessing at function names.
+
+From gtExtras, `gt_plt_dist()` and the other inline chart functions stood out the most, since they let a single cell communicate both an exact value and its overall pattern — something that would otherwise require a separate chart next to the table. The built-in themes were also appealing because they show that a lot of "professional-looking" table design is really just consistent application of a handful of styling decisions, which is exactly the kind of repeated styling gtExtras is designed to save you from retyping every time.
+
+### How Tables Complement Charts
+
+Tables and charts serve **complementary, not competing, purposes** in data visualization. A chart is built to reveal *patterns* — trends, comparisons, and outliers — at a glance, but it necessarily sacrifices precision to do so. A table preserves exact values, allowing a reader to look up a specific number with confidence, but it asks more cognitive effort to spot a trend across many rows. Well-designed reports often use both: a chart to draw attention to *what's happening*, and a table nearby to let the reader verify *exactly how much*.
+
+To illustrate, here is the same underlying data shown both ways:
+
+::: {.panel-tabset}
+## As a Chart
+
+```{r}
+#| label: fig-pizza-chart
+#| fig-cap: "Total Revenue by Pizza Category"
+#| message: false
+#| warning: false
+
+library(dplyr)
+library(ggplot2)
+library(gt)
+
+pizza_summary <- pizzaplace |>
+  group_by(type) |>
+  summarize(
+    orders = n(),
+    total_revenue = sum(price),
+    avg_price = mean(price),
+    .groups = "drop"
+  ) |>
+  arrange(desc(total_revenue))
+
+ggplot(pizza_summary, aes(x = reorder(type, -total_revenue), y = total_revenue)) +
+  geom_col(fill = "steelblue") +
+  labs(x = "Pizza Category", y = "Total Revenue ($)") +
+  theme_minimal()
+```
+
+## As a Table
+
+```{r}
+#| message: false
+#| warning: false
+
+pizza_summary |>
+  gt() |>
+  cols_label(
+    type = "Category",
+    orders = "Orders",
+    total_revenue = "Total Revenue",
+    avg_price = "Avg. Price"
+  ) |>
+  fmt_currency(columns = c(total_revenue, avg_price), decimals = 2)
+```
+:::
+
+The chart makes it immediate that Classic pizzas generate the most revenue, but only the table tells you *exactly* how much more, down to the cent.
+
+### When to Prefer Tables Over Charts
+
+Tables are the better choice when precision matters more than pattern recognition — for example, a financial report where a stakeholder needs exact figures, not an impression. Tables also win when the data has too many categories or dimensions for a chart to stay readable (a chart with 40 bars becomes visual noise, while a sortable table handles 40 rows fine), or when the audience needs to reference specific values repeatedly, such as a pricing sheet or a lookup reference. Charts are better when the goal is to persuade or orient — showing that revenue is trending up matters more, in that moment, than the exact number.
+
+## Building a Table with gt and gtExtras {#sec-table}
+
+::: {.callout-note}
+## Data Source Note
+
+My actual analytics objective (AO2) will eventually use Clover POS and online store order data once platform access is granted. Until then, I'm using the `pizzaplace` dataset — built into the `gt` package — to practice the same table-building workflow I'll apply to real storefront data: grouping by a category, calculating summary metrics, and formatting the result into a polished, presentation-ready table.
+:::
+
+Before building the table, I wrangled the data in a few steps:
+
+1. Grouped the `pizzaplace` orders by pizza `type` (category).
+2. Calculated the number of orders, total revenue, and average price per category.
+3. Sorted categories from highest to lowest total revenue.
+
+```{r}
+#| label: tbl-pizza-summary
+#| tbl-cap: "Pizza Sales Summary by Category"
+#| message: false
+#| warning: false
+
+library(gtExtras)
+
+pizza_gt <- pizza_summary |>
+  gt(rowname_col = "type") |>
+  tab_header(
+    title = "Pizza Place Sales Summary",
+    subtitle = "Order Volume, Revenue, and Average Price by Pizza Category"
+  ) |>
+  tab_stubhead(label = "Pizza Category") |>
+  cols_label(
+    orders = "Number of Orders",
+    total_revenue = "Total Revenue",
+    avg_price = "Average Price"
+  ) |>
+  tab_spanner(
+    label = "Sales Metrics",
+    columns = c(total_revenue, avg_price)
+  ) |>
+  fmt_currency(columns = c(total_revenue, avg_price), decimals = 2) |>
+  fmt_number(columns = orders, decimals = 0) |>
+  data_color(
+    columns = total_revenue,
+    palette = "Blues"
+  ) |>
+  gt_plt_bar(column = orders, color = "steelblue") |>
+  tab_source_note(
+    source_note = "Source: pizzaplace dataset, gt package (built-in sample data)."
+  ) |>
+  tab_footnote(
+    footnote = "Average price is calculated across all sizes and orders within each category.",
+    locations = cells_column_labels(columns = avg_price)
+  ) |>
+  gt_theme_538()
+
+pizza_gt
+```
+
+This table (@tbl-pizza-summary) uses several gt and gtExtras features together: a title and subtitle, a labeled stub head, relabeled column names, a spanner grouping the two sales metrics, currency formatting, a color gradient on total revenue, an inline bar chart on order count via `gt_plt_bar()`[^gt-note], a source note, and a footnote clarifying how average price was calculated.
+
+[^gt-note]: The `gt` package reference site documents dozens of additional formatting and layout functions beyond what's used here — see the [gt function reference](https://gt.rstudio.com/reference/index.html).
+
+Functions used in this table, for reference:
+
+- `tab_header()`, `tab_stubhead()`, `cols_label()`, `tab_spanner()`
+- `fmt_currency()`, `fmt_number()`, `data_color()`
+- `gtExtras::gt_plt_bar()`, `gtExtras::gt_theme_538()`
+- `tab_source_note()`, `tab_footnote()`
+
+## Why This Table Matters for My MSDM Project {#sec-significance}
+
+This table format is directly transferable to my MSDM project. Once Clover reporting access and online store platform permissions are granted, this same structure — grouping transactions by product category or sales channel, then summarizing order count, total revenue, and average order value — could be used to evaluate how well the Farm Store's Clover-integrated storefront is actually performing. The inline bar chart on order volume would make it easy to spot at a glance which categories or channels are underperforming, which is especially useful for a presentation setting where I won't have time to walk through raw numbers row by row. Adding a color scale to the revenue column, the same way I did here, would also let me visually flag categories with sync discrepancies or unexpectedly low online revenue without needing to call them out individually.
+
+# Appendix {.unnumbered}
+
+- **GitHub Repository:** https://github.com/dmcpp26/ibm6500-assignments
+- **GitHub Pages:** https://dmcpp26.github.io/ibm6500-assignments/
