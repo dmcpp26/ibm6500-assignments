@@ -1,0 +1,163 @@
+---
+title: "SEM01: Reading Notes on Anderson & Gerbing (1988)"
+subtitle: "A Review and Recommended Two-Step Approach to Structural Equation Modeling"
+author: "Danielle Meza"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    embed-resources: true
+    code-tools: true
+    code-overflow: wrap
+editor: visual
+bibliography: references.bib
+csl: styles/chicago-author-date.csl
+---
+
+# Introduction
+
+These notes summarize @anderson1988, a methods article that reviews how structural equation modeling (SEM) was being used in practice as of the late 1980s and lays out a recommended **two-step approach**: fit and validate the *measurement model* first, then test the *structural model* second, rather than estimating both simultaneously in a single step. The article's central argument is that separating these two stages produces a more interpretable, more diagnosable, and more defensible test of a researcher's substantive theory than trying to do everything at once.
+
+The notes below follow the article's own major sections in order, then pull the two-step recommendation and the reasoning behind it into their own dedicated sections, since that is the part of the article this assignment is most focused on.
+
+# Background
+
+## Exploratory versus Confirmatory Analyses
+
+Anderson and Gerbing distinguish between SEM used in an *exploratory* mode (where the researcher has little theory to guide model specification and lets the data suggest relationships) and SEM used in a *confirmatory* mode (where a specific, theory-driven model is tested against the data). The article is written for the confirmatory case: a researcher who already has hypotheses about which indicators measure which constructs, and which constructs relate to which other constructs.
+
+## Complementary Approaches for Theory Testing versus Predictive Application
+
+The authors note that theory-testing and purely predictive uses of SEM call for different priorities. When the goal is to test or develop theory, correctly representing the underlying constructs and their relationships matters more than raw predictive accuracy. When the goal is prediction, a model can sometimes sacrifice some theoretical purity for better fit. The two-step approach discussed later in the article is aimed squarely at the theory-testing case, since that is where getting the measurement model right, before testing structural claims, has the biggest payoff.
+
+## Estimation Methods
+
+The article discusses maximum likelihood (ML) estimation, which assumes multivariate normality among the observed variables, and asymptotically distribution-free (ADF) methods, which relax that assumption but require considerably larger samples (the article notes guidelines suggesting at least 400–500 cases for ADF). Anderson and Gerbing note that ML tends to be reasonably robust to moderate violations of multivariate normality when it comes to the parameter estimates themselves, though the standard errors (and therefore significance tests) can still be affected.
+
+# The Measurement Model
+
+## Why It Comes First: Confirmatory Factor Analysis
+
+The **measurement model** is the part of an SEM that links observed indicators (survey items, scale scores, etc.) to the unobserved (latent) constructs they are meant to measure. In matrix form, Anderson and Gerbing write it as:
+
+$$x = \Lambda\xi + \delta$$
+
+where $x$ is the set of observed indicators, $\xi$ represents the underlying latent constructs, $\Lambda$ contains the factor loadings connecting indicators to constructs, and $\delta$ is measurement error. This is essentially a confirmatory factor analysis (CFA): the researcher specifies in advance which indicators load on which constructs, then tests whether that pattern holds up statistically.
+
+The authors describe the measurement model as providing "a confirmatory assessment of convergent validity and discriminant validity" (Anderson and Gerbing 1988, 412) — in other words, it is the step where you find out whether your indicators actually hang together the way your theory says they should, and whether supposedly distinct constructs are, in fact, statistically distinguishable from one another.
+
+## The Need for Unidimensional Measurement
+
+A major theme of this section is **unidimensionality**: the idea that each set of indicators assigned to a construct should reflect *one* underlying trait, not a blend of several. Anderson and Gerbing call achieving unidimensional measurement "a crucial undertaking in theory testing and development" (1988, 414). They lay out two conditions that support a judgment of unidimensionality:
+
+1. **Internal consistency** — the correlations among indicators of the *same* construct should be consistent with those indicators sharing one common factor.
+2. **External consistency** — an indicator's relationship to a *different* construct should be fully explained by the correlation between the two constructs themselves, not by some leftover direct relationship between the indicator and the other construct.
+
+If a construct's indicators fail these checks, the measurement model — not just the eventual structural model — needs to be revisited.
+
+## Specifying the Measurement Model
+
+A few practical specification issues come up:
+
+- **Setting the scale of each factor.** Rather than arbitrarily fixing one indicator's loading to 1.0 (a common older practice, which prevents that one loading from being tested for significance), the authors recommend fixing the diagonal of the factor correlation matrix (phi) at 1.0 instead, which allows every loading to be freely estimated and tested.
+- **Single-indicator constructs.** When a construct has only one available indicator, there is no way to statistically separate true score from measurement error, so the choice of how much error variance to assume becomes somewhat arbitrary. The authors suggest conservative options, such as fixing the error variance at roughly 10% of the indicator's observed variance.
+- **Sample size.** Based on their own simulation work, Anderson and Gerbing suggest a sample of at least 150 is typically needed to get standard errors small enough to be practically useful, with larger samples needed when a factor has only two indicators.
+
+## Assessing Measurement Model Fit
+
+Two validity checks anchor this stage:
+
+- **Convergent validity** is supported when each indicator's loading on its intended construct is statistically significant — i.e., the indicator is meaningfully related to the construct it is supposed to measure.
+- **Discriminant validity** is tested by constraining the correlation between two constructs to 1.0 and running a chi-square difference test against the freely estimated model. If fixing the correlation at 1.0 makes the model fit significantly worse, the two constructs are statistically distinguishable from each other.
+
+## Respecifying the Measurement Model
+
+If the measurement model does not fit well, Anderson and Gerbing are careful to caution that "respecification decisions should not be based on statistical considerations alone but rather in conjunction with theory and content considerations" (1988, 416) — fit statistics should never be the only reason a researcher changes a model.
+
+They also rank respecification strategies by how much they preserve unidimensionality:
+
+- **Preferred:** reassigning a problematic indicator to a different construct, or dropping it altogether.
+- **Discouraged:** letting an indicator load on more than one factor, or adding correlated measurement errors between indicators. The authors are especially blunt about correlated errors, warning that they "take advantage of chance...with a consequent loss of interpretability" (1988, 417) — meaning this kind of fix can make a model fit better in this particular sample without representing anything theoretically meaningful.
+
+# The Structural Model
+
+Once the measurement model is judged acceptable, attention shifts to the **structural model**, which specifies the hypothesized causal or predictive relationships *among* the constructs themselves (rather than between constructs and their indicators). Anderson and Gerbing write this portion as:
+
+$$\eta = B\eta + \Gamma\xi + \zeta$$
+
+where $\eta$ represents endogenous (outcome) constructs, $\xi$ represents exogenous (predictor) constructs, $B$ captures effects of constructs on other constructs, $\Gamma$ captures effects of exogenous constructs on endogenous ones, and $\zeta$ is residual/disturbance variance. This is the part of the model that tests the actual substantive theory — for example, whether one construct predicts another.
+
+## The Interpretational Confounding Problem
+
+The article's key warning about testing the structural model at the same time as the measurement model is **interpretational confounding**: when a construct's empirical meaning — what it actually captures once the model is estimated — ends up different from what the researcher intended before estimation (1988, 418). In practice, this shows up as loadings changing noticeably depending on which structural paths are included in the model. If a construct's loadings shift every time the structural theory changes, it is hard to argue that the construct maintains a stable meaning independent of the theory being tested — which undermines the whole point of measuring it in the first place.
+
+# One-Step versus Two-Step Modeling Approaches
+
+A **one-step approach** estimates the measurement model and the structural model simultaneously, in a single run. Anderson and Gerbing's central critique is that this conflates two very different questions — "are my indicators valid measures of these constructs?" and "do these constructs relate to each other the way my theory predicts?" — into one test, so that problems in either part can be hidden by, or mistaken for, problems in the other.
+
+# The Recommended Two-Step Approach
+
+## Step 1: Establish the Measurement Model First
+
+In Step 1, the researcher estimates and, if necessary, respecifies the confirmatory measurement model *on its own*, with no structural paths imposed between constructs (constructs are simply allowed to freely correlate). The goal is to reach a measurement model with acceptable fit and unidimensional constructs, evaluated purely on measurement grounds — convergent validity, discriminant validity, and overall fit — before any structural theory is layered on top.
+
+## Step 2: Test the Structural Model
+
+Once the measurement model is finalized, Step 2 tests the structural relationships. Anderson and Gerbing recommend doing this through a sequence of **nested models**, compared using chi-square difference tests (they call these sequential chi-square difference tests, or SCDTs):
+
+- **Ms (saturated model):** every possible structural path between constructs is freely estimated. This model is "formally equivalent to a confirmatory measurement model" (1988, 418) since it imposes no structural restrictions at all.
+- **Mt (theoretical model):** the researcher's actual hypothesized structural model — the one representing their real theory.
+- **Mc (constrained alternative):** a more restrictive model than Mt, with additional constraints (e.g., a path fixed to zero that Mt estimates freely).
+- **Mu (unconstrained alternative):** a less restrictive model than Mt, with additional paths freed relative to Mt.
+- **Mn (null model):** all structural paths fixed at zero — essentially, "the constructs are unrelated."
+
+These nest in order of restrictiveness: **Mn < Mc < Mt < Mu < Ms**. The general logic of the comparisons:
+
+1. Compare **Mt against Ms** first, to see whether the theoretical model explains the relationships among constructs about as well as the fully unrestricted model does.
+2. Compare **Mc against Mt**, to check whether the extra constraints in Mt are justified.
+3. Compare **Mt against Mu**, to check whether relaxing Mt (adding more paths) meaningfully improves fit.
+4. If needed, compare **Mu against Ms** to look further afield for a better-fitting structural model.
+
+Because these comparisons are asymptotically independent of one another (1988, 419), a researcher can draw conclusions from each comparison without one test's result distorting the next.
+
+## Why the Two-Step Approach Is Preferable to a One-Step Approach
+
+This is the heart of the article's recommendation, and the reasoning has several distinct parts:
+
+- **It avoids interpretational confounding.** Because the measurement model is fixed *before* structural paths are tested, the pattern coefficients "should change only trivially" (1988, 418) once the structural submodel is added — so the constructs keep a stable, interpretable meaning regardless of which structural theory is ultimately supported.
+- **It separates two different kinds of misfit.** Anderson and Gerbing stress that "separate assessments of the measurement model and the structural model preclude having good fit of one model compensate for (and potentially mask) poor fit of the other, which can occur with a one-step approach" (1988, 421). In a one-step model, a strong measurement model can make a weak structural theory look better than it is, and vice versa — the two-step approach prevents that kind of masking.
+- **It gives you a genuine diagnostic test of the structural theory.** Testing Mt against Ms provides "an assessment of whether any structural model would give acceptable fit" (1988, 418) — essentially checking whether the constructs are related at all before asking whether *this specific* theory describes that relationship well.
+- **It allows every loading to be tested for significance.** In a one-step model, at least one loading per factor is typically fixed just to set the scale, which means it cannot be tested. Handling the measurement model separately, with the phi-matrix scaling approach described earlier, avoids that trade-off.
+- **It protects the ability to make causal inferences.** The authors point out a direct trade-off between model fit and the strength of causal inference: "Adding more paths will likely improve goodness of fit, but it correspondingly compromises the ability to make meaningful, causal inferences" (1988, 421). Because the two-step approach establishes the measurement model independently, the structural stage can focus purely on that trade-off within the structural relationships, rather than having structural modifications quietly reshape what the constructs even mean.
+
+Taken together, these points are why Anderson and Gerbing argue that testing measurement and structure as two separate, sequential steps yields both better statistical practice and a more honest test of the researcher's actual theory than folding everything into one simultaneous estimation.
+
+# Additional Considerations in Structural Model Interpretation
+
+A few further cautions round out the article:
+
+- **Respecification can shift a study from confirmatory to exploratory.** If Mt fits significantly worse than Ms, but Mu does not, the authors suggest respecifying Mu into a new alternative and continuing the search — but they are explicit that this "shift[s] from being confirmatory to being increasingly exploratory" (1988, 420), and that shift should be reported honestly rather than presented as if the original model had been confirmed outright.
+- **Statistical significance is not the only consideration.** Practical fit indices (like the normed fit index) can support keeping a more parsimonious model "even though the SCDT...indicates a statistically significant difference" (1988, 421), if the practical difference in fit is trivial.
+- **Several classic cautions about causal inference apply to SEM just as much as to any other causal claim:** "models are never confirmed by data; rather, they gain support by failing to be disconfirmed" (1988, 421); temporal order alone does not establish causality; and naming a construct does not mean the researcher truly understands what it represents (what the authors call the nominalistic fallacy). Respecifying a model after the fact generally weakens, rather than strengthens, any causal claims that follow.
+- **Small samples increase the risk of nonconvergence and improper solutions** (e.g., negative error variances), and when an improper solution appears to be a sampling-error fluke, fixing that one parameter at a reasonable boundary value (such as zero) tends to have minimal effect on the rest of the model's estimates.
+
+# Conclusion
+
+Anderson and Gerbing's core contribution is procedural as much as statistical: before a researcher ever asks "do my constructs relate to each other the way I think they do," they should first make sure "my indicators actually measure what I think they measure, cleanly and separably from each other." Skipping that first question, and jumping straight to a simultaneous test of measurement and structure, risks a model where good measurement hides bad theory, bad measurement hides good theory, and the constructs themselves shift meaning depending on which structural story is being tested. The two-step approach — confirm the measurement model, *then* test the structural model through a sequence of nested comparisons — is presented as a more disciplined, more diagnosable, and ultimately more trustworthy way to bring SEM to bear on a substantive theory.
+
+# References
+
+::: {#refs}
+:::
+
+# Appendix
+
+**GitHub Repository:** TODO — insert the clickable link to this repository here once confirmed accessible (e.g., `[ibm6500-assignments Repository](https://github.com/YOUR-USERNAME/ibm6500-assignments)`). If the repository is private, add your instructor as a collaborator before submitting.
+
+**GitHub Pages:** TODO — insert the clickable link to this report's published GitHub Pages URL here once rendered and pushed (e.g., `[Published SEM01 Report](https://YOUR-USERNAME.github.io/ibm6500-assignments/SEM01/SEM01-Anderson-Gerbing_DMEZA.html)`).
+
+::: {.callout-important}
+Before submitting: click both links directly in the rendered HTML and confirm they open correctly. Do not submit the bare URLs as separate text — they must be clickable links with descriptive text, as required by Step 8.
+:::
