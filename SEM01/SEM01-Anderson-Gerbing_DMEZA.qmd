@@ -52,8 +52,8 @@ The authors describe the measurement model as providing "a confirmatory assessme
 
 A major theme of this section is **unidimensionality**: the idea that each set of indicators assigned to a construct should reflect *one* underlying trait, not a blend of several. Anderson and Gerbing call achieving unidimensional measurement "a crucial undertaking in theory testing and development" (1988, 414). They lay out two conditions that support a judgment of unidimensionality:
 
-1. **Internal consistency** — the correlations among indicators of the *same* construct should be consistent with those indicators sharing one common factor.
-2. **External consistency** — an indicator's relationship to a *different* construct should be fully explained by the correlation between the two constructs themselves, not by some leftover direct relationship between the indicator and the other construct.
+1.  **Internal consistency** — the correlations among indicators of the *same* construct should be consistent with those indicators sharing one common factor.
+2.  **External consistency** — an indicator's relationship to a *different* construct should be fully explained by the correlation between the two constructs themselves, not by some leftover direct relationship between the indicator and the other construct.
 
 If a construct's indicators fail these checks, the measurement model — not just the eventual structural model — needs to be revisited.
 
@@ -113,12 +113,12 @@ Once the measurement model is finalized, Step 2 tests the structural relationshi
 - **Mu (unconstrained alternative):** a less restrictive model than Mt, with additional paths freed relative to Mt.
 - **Mn (null model):** all structural paths fixed at zero — essentially, "the constructs are unrelated."
 
-These nest in order of restrictiveness: **Mn < Mc < Mt < Mu < Ms**. The general logic of the comparisons:
+These nest in order of restrictiveness: **Mn \< Mc \< Mt \< Mu \< Ms**. The general logic of the comparisons:
 
-1. Compare **Mt against Ms** first, to see whether the theoretical model explains the relationships among constructs about as well as the fully unrestricted model does.
-2. Compare **Mc against Mt**, to check whether the extra constraints in Mt are justified.
-3. Compare **Mt against Mu**, to check whether relaxing Mt (adding more paths) meaningfully improves fit.
-4. If needed, compare **Mu against Ms** to look further afield for a better-fitting structural model.
+1.  Compare **Mt against Ms** first, to see whether the theoretical model explains the relationships among constructs about as well as the fully unrestricted model does.
+2.  Compare **Mc against Mt**, to check whether the extra constraints in Mt are justified.
+3.  Compare **Mt against Mu**, to check whether relaxing Mt (adding more paths) meaningfully improves fit.
+4.  If needed, compare **Mu against Ms** to look further afield for a better-fitting structural model.
 
 Because these comparisons are asymptotically independent of one another (1988, 419), a researcher can draw conclusions from each comparison without one test's result distorting the next.
 
@@ -138,14 +138,14 @@ Taken together, these points are why Anderson and Gerbing argue that testing mea
 
 A few further cautions round out the article:
 
-- **Respecification can shift a study from confirmatory to exploratory.** If Mt fits significantly worse than Ms, but Mu does not, the authors suggest respecifying Mu into a new alternative and continuing the search — but they are explicit that this "shift[s] from being confirmatory to being increasingly exploratory" (1988, 420), and that shift should be reported honestly rather than presented as if the original model had been confirmed outright.
+- **Respecification can shift a study from confirmatory to exploratory.** If Mt fits significantly worse than Ms, but Mu does not, the authors suggest respecifying Mu into a new alternative and continuing the search — but they are explicit that this "shift\[s\] from being confirmatory to being increasingly exploratory" (1988, 420), and that shift should be reported honestly rather than presented as if the original model had been confirmed outright.
 - **Statistical significance is not the only consideration.** Practical fit indices (like the normed fit index) can support keeping a more parsimonious model "even though the SCDT...indicates a statistically significant difference" (1988, 421), if the practical difference in fit is trivial.
 - **Several classic cautions about causal inference apply to SEM just as much as to any other causal claim:** "models are never confirmed by data; rather, they gain support by failing to be disconfirmed" (1988, 421); temporal order alone does not establish causality; and naming a construct does not mean the researcher truly understands what it represents (what the authors call the nominalistic fallacy). Respecifying a model after the fact generally weakens, rather than strengthens, any causal claims that follow.
 - **Small samples increase the risk of nonconvergence and improper solutions** (e.g., negative error variances), and when an improper solution appears to be a sampling-error fluke, fixing that one parameter at a reasonable boundary value (such as zero) tends to have minimal effect on the rest of the model's estimates.
 
 # Conclusion
 
-Anderson and Gerbing's core contribution is procedural as much as statistical: before a researcher ever asks "do my constructs relate to each other the way I think they do," they should first make sure "my indicators actually measure what I think they measure, cleanly and separably from each other." Skipping that first question, and jumping straight to a simultaneous test of measurement and structure, risks a model where good measurement hides bad theory, bad measurement hides good theory, and the constructs themselves shift meaning depending on which structural story is being tested. The two-step approach — confirm the measurement model, *then* test the structural model through a sequence of nested comparisons — is presented as a more disciplined, more diagnosable, and ultimately more trustworthy way to bring SEM to bear on a substantive theory.
+Anderson and Gerbing's core contribution is procedural as much as statistical: before a researcher ever asks "do my constructs relate to each other the way I think they do," they should first make sure "my indicators actually measure what I think they measure, cleanly and separably from each other." Skipping that first question, and jumping straight to a simultaneous test of measurement and structure, risks a model where good measurement hides bad theory, bad measurement hides good theory, and the constructs themselves shift meaning depending on which structural story is being tested. The two-step approach confirm the measurement model, *then* test the structural model through a sequence of nested comparisons is presented as a more disciplined, more diagnosable, and ultimately more trustworthy way to bring SEM to bear on a substantive theory.
 
 # References
 
@@ -154,10 +154,6 @@ Anderson and Gerbing's core contribution is procedural as much as statistical: b
 
 # Appendix
 
-**GitHub Repository:** TODO — insert the clickable link to this repository here once confirmed accessible (e.g., `[ibm6500-assignments Repository](https://github.com/YOUR-USERNAME/ibm6500-assignments)`). If the repository is private, add your instructor as a collaborator before submitting.
+**GitHub Repository:** [ibm6500-assignments Repository](https://github.com/dmcpp26/ibm6500-assignments)
 
-**GitHub Pages:** TODO — insert the clickable link to this report's published GitHub Pages URL here once rendered and pushed (e.g., `[Published SEM01 Report](https://YOUR-USERNAME.github.io/ibm6500-assignments/SEM01/SEM01-Anderson-Gerbing_DMEZA.html)`).
-
-::: {.callout-important}
-Before submitting: click both links directly in the rendered HTML and confirm they open correctly. Do not submit the bare URLs as separate text — they must be clickable links with descriptive text, as required by Step 8.
-:::
+**GitHub Pages:** [Published SEM01 Report](https://dmcpp26.github.io/ibm6500-assignments/SEM01/SEM01-Anderson-Gerbing_DMEZA.html)
