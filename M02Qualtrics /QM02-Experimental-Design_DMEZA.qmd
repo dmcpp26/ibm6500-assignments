@@ -25,10 +25,10 @@ To scientifically compare the two ad types, participants must be split into two 
 - Each branch sets an `Ad Type` Embedded Data value (`reviewer` or `ads`).
 - Two **Branch If** elements route participants to `Show Block: social_media_review` or `Show Block: ads` based on their assigned `Ad Type`.
 
-![](images/Screenshot 2026-09-30 at 4.29.17 PM.png){width="614"}\
+![](images/Screenshot%202026-09-30%20at%204.29.17%20PM.png){width="614"}\
 \[Screenshot 1 — full Survey Flow, top half showing Embedded Data + Randomizer\]
 
-![](images/Screenshot 2026-09-30 at 5.57.13 PM.png){width="622"}\
+![](images/Screenshot%202026-09-30%20at%205.57.13%20PM.png){width="622"}\
 \[Screenshot 2 — Survey Flow, Branch If elements and routed blocks\]
 
 ![](images/paste-1.png){width="613"}\
@@ -40,7 +40,7 @@ The original Q2.2 asked respondents to report their overall social media usage a
 
 **Before:**
 
-![](images/Screenshot 2026-09-30 at 5.25.34 PM.png){width="619"}\
+![](images/Screenshot%202026-09-30%20at%205.25.34%20PM.png){width="619"}\
 \[Screenshot 4 — original Q2.2, single combined-usage question\]
 
 **After:** Q2.2 was converted into a multi-select question asking which platforms respondents use, allowing more than one answer to be checked. A follow-up Matrix Table question then asks usage frequency, with its rows populated using the **Carry Forward Choices** function pulling the selected platforms from Q2.2 — so each respondent only sees frequency rows for the platforms they actually use.
@@ -65,7 +65,7 @@ Randomize the answer-choice order on attitude/Likert questions (removes order-ef
 
 ### Improvement 2: added "Prefer not to answer" option
 
-![](images/Screenshot 2026-09-30 at 5.35.31 PM.png){width="636"}
+![](images/Screenshot%202026-09-30%20at%205.35.31%20PM.png){width="636"}
 
 *Prefer not to answer" to sensitive demographic questions (reduces forced non-response bias)*
 
