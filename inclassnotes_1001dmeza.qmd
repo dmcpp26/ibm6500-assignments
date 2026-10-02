@@ -1,0 +1,70 @@
+---
+title: Class Notes for Week 06
+date: today
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    toc-expand: 1
+    toc-location: right-body
+    embed-resources: true
+    number-sections: true
+    code-link: true
+    code-fold: true
+    code-tools: true
+    code-overflow: wrap
+    theme: litera
+editor: visual
+execute:
+  freeze: auto
+---
+
+# Annoucements
+
+- Google Certifications free for CPP Students [(CPP - Coursa application)](www.cpp.edu/cba/cutomer-insights-lab)
+
+- Google Digital Marketing and E-commerce Professional Certificate
+
+  "in GitHub pages. as a single page is. And then also use study to learn. to publish as a website, like home page, and then multiple pages together under there. And that was one of the group assignment. One of those same math and So continuing that, you have this formal, um, You know, portfolio, website proposal. And then this proposal is simply in week 10, you are planning. You are not required to create a website. that time you're telling me how. And was the... Components was the component of your website? How many taps you'll have, what are the titles of those web pages?"
+
+- Personal Website Portfoilio presentation due week 16. We need to give feed back to atl east 5 of the classmate websites
+
+- CEP Written Report Template was update but content is the same
+
+  - add PO over AO in each individual AO section in the written report so whomever is reviewing the report can easily see a PO over and AO.
+
+  - ADD bib:refernce.bib
+
+  - ADD csl: styles/american-marketing-association.csl
+
+    - ![](images/paste-1.png){width="368"}
+
+- Last year he noticed groups have multiple data sets. Like group 5, so we need to appropriately modify chapter 3 to allow for multiple data sets. It is possible that multiple AOs will share a data set.
+
+# Overview of week 6 and More
+
+- starting this week there will be an extra module - Data Science Hang out Series - Every thursday at 12pm PST. If you have time please join the webinar. Communicating complex statistical findings \| Liz Eisenhauer
+
+- MO6 - 1 Advanced Wrangling and revealing presentation slides
+
+  - Data prepartion Demo with Case Study 31
+
+  - Reveal Presentatuon Demo with Case Study 31
+
+    - W04-M06-Reflection Assignment, DUE 10/04
+
+  - MO6-2 Questionaire Design (1): COnstruct Operationalization
+
+  - Quiz for CH 11
+
+  - IC5-1-1:GP Proposal (CH1 +CH2) Presentation
+
+- WO6-3 - Case 31: Construct and Measurement Table
+
+  - create cep05 questionaire Desin Word version + Qualtrics Versions DUE 10/08
+
+  - 
+
+# CEP Presentation on CEP 03 - Revision of CH 1 and lit review of Ch2
+
+# CEP Group Meeting
