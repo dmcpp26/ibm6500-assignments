@@ -16,9 +16,9 @@ For this assignment, I joined YouGov's consumer panel to experience survey resea
 
 To complete this assignment, I registered for YouGov's consumer panel, completed the initial profiling/set-up survey required to activate my account, and was subsequently invited to complete two additional surveys through the platform.
 
-![](images/yougov-points-1.png){width="515"}
+![](images/yougov-setup.png){width="515"}
 
-![](images/yougov-setup.png){width="525"}
+![](images/yougov-points-1.png){width="525"}
 
 I did not capture screenshots of the individual survey questions in the moment, so the specific questions I flagged as unusual are described below from memory rather than shown as images.
 
