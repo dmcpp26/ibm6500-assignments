@@ -1,0 +1,28 @@
+/*-- scss:defaults --*/
+// Farm Store palette (Sass variables)
+$farm-green: #1F3A2E;
+$farm-gold: #C98A3B;
+$farm-parchment: #F3E6D0;
+
+$body-bg: #FBFBF8;
+$body-color: #3F4F42;
+$link-color: #A8691F;
+$presentation-heading-color: $farm-green;
+$presentation-heading-font: Georgia, "Times New Roman", serif;
+
+/*-- scss:rules --*/
+.reveal blockquote {
+  border-left: 6px solid $farm-gold;
+  background: $farm-parchment;
+  padding: 0.4em 1em;
+  font-style: italic;
+  color: $farm-green;
+}
+
+.reveal .footer {
+  color: #6B7A6E;
+}
+
+.reveal .slide-logo {
+  max-height: 70px !important;
+}

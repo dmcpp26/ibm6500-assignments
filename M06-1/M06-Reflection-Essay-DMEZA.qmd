@@ -1,0 +1,199 @@
+---
+title: "M06-Reflection Essay-Advanced Data Wrangling"
+author: "Danielle Meza"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    toc-expand: 2
+    number-sections: true
+    code-link: true
+    code-fold: true
+    code-tools: true
+    code-overflow: wrap
+    theme: cosmo
+    embed-resources: true
+editor: visual
+execute:
+  freeze: auto
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(tidyverse)
+library(knitr)
+```
+
+# Revealjs Slides
+
+## My Impression
+
+My first impression of Revealjs was how *professional and minimal* the slides look. Compared with the busy templates I usually see in PowerPoint, the clean layouts let the content stand out, and the soft animated transitions between slides make a presentation feel polished without being distracting. What impressed me most is that all of this is controlled by a few lines of text. The look and feel, including the style, transitions, and layout, comes from settings in the YAML header under `revealjs`, so I can change the whole presentation by editing one option instead of reformatting slide by slide.
+
+## Capabilities
+
+From the example presentations, Revealjs slides can do much more than static slides. Because they are built from plain text and rendered as a web page, they can:
+
+-   mix **narrative, live R code, tables, and charts** in one source file, so every result is reproducible;
+-   use **themes, transitions, incremental lists, and fragments** to control how content appears;
+-   arrange content in **columns** and add **speaker notes**, **footers**, and **logos**;
+-   be published to the web, so anyone can open the slides with a single link.
+
+## Revealjs vs. PowerPoint
+
+::: {.panel-tabset}
+### Strengths
+
+1.  **Reproducibility:** charts and tables are generated from code, so they update automatically when the data change.
+2.  **Consistency:** one theme and one YAML header control the look of every slide.
+3.  **Version control:** a text file works well with Git, so changes are easy to track.
+4.  **Sharing:** a link opens the deck in any browser, with no software to install.
+
+### Weaknesses
+
+1.  **Learning curve:** there is no drag-and-drop editor, so layout takes practice.
+2.  **Fine-tuning visuals:** custom animations and exact positioning are easier in PowerPoint.
+3.  **Collaboration:** teammates who do not use Quarto cannot easily co-edit a deck.
+4.  **Required formats:** many organizations still expect a `.pptx` file.
+:::
+
+Overall, I see Revealjs as the better choice when a presentation includes analysis that must stay reproducible, and PowerPoint as the better choice when quick visual editing or collaboration with non-technical teammates matters most.[^1]
+
+[^1]: A practical tip: I started from the professor's example files and changed one setting at a time, which made it easy to see what each option did.
+
+# My Presentation
+
+## Link
+
+[**View my published Revealjs presentation**](https://01a10a37-d710-1a1c-39c9-fa88411ef662.share.connect.posit.cloud/){target="_blank"}
+
+## Topic
+
+The presentation is a proposal talk for Analytics Objective 1 (AO1) of my Culminating Experience Project with the CPP Farm Store. It follows the storytelling structure from the assignment: a problem statement, the analytics objective and why it matters, a literature review on omnichannel integration and inventory visibility, and the planned methods. AO1 asks whether the Farm Store's new online storefront, integrated with its Clover point-of-sale system, performs well and where friction points limit online sales.
+
+The presentation includes a reproducible table and a chart, both built from R code that runs when the slides render. Because Clover data access has not been confirmed yet, they use [simulated data]{.mark} that I labeled "Illustrative" on the slides, so they show the planned analysis without being presented as real Farm Store results. The slides also compute the sample size with inline R code instead of typing it by hand.
+
+## What I Learned
+
+Building this presentation showed me how much control the YAML header gives me. Options like `transition`, `transition-speed`, `theme`, and `footer` set the behavior and style of the whole deck, and I could still override a transition on a single slide (I used fade and zoom on a few) when I wanted variety. I also learned that a presentation can contain real, reproducible analysis. The table and chart come from R code that runs when the slides render, and the sample size in my narrative is calculated with inline code.
+
+The biggest takeaway is how useful this will be going forward. Publishing the slides to the web also made sharing easy, because anyone can open one link. I am excited to use Revealjs for future projects and especially for my year-long CEP, where I can reuse the same theme and update the charts automatically once the Farm Store data become available.
+
+# Advanced Wrangling
+
+I chose one function from each of three categories in the lecture: **Relational Data & Joins** (`left_join()`), **Rankings** (`min_rank()`), and **Conditional Statements** (`case_when()`). To keep the examples reproducible, I built small Farm Store tables directly in R.
+
+## Example Data
+
+::: {.panel-tabset}
+### `orders`
+
+```{r}
+#| label: tbl-orders
+#| tbl-cap: "Sample online orders"
+orders <- tribble(
+  ~order_id, ~product_id, ~qty,
+  1, "P1", 2,
+  2, "P2", 1,
+  3, "P1", 3,
+  4, "P4", 1
+)
+kable(orders)
+```
+
+### `products`
+
+```{r}
+#| label: tbl-products
+#| tbl-cap: "Sample product catalog"
+products <- tribble(
+  ~product_id, ~product_name, ~category,
+  "P1", "Farm Eggs (12 ct)", "Eggs",
+  "P2", "Strawberries (1 lb)", "Produce",
+  "P3", "Succulent Plant (4 in)", "Plants"
+)
+kable(products)
+```
+:::
+
+The first example uses @tbl-orders and @tbl-products.
+
+## Joining: `left_join()` {#sec-join}
+
+**When to use it:** use `left_join()` when one table is the main table (here, `orders`) and you want to add matching information from a second table (here, `products`) without losing any rows from the main table. This is a core relational-data skill, because details such as orders and products are usually stored in separate tables linked by a shared key.
+
+```{r}
+#| label: tbl-left-join
+#| tbl-cap: "Orders joined to product details with left_join()"
+orders_joined <- orders |>
+  left_join(products, by = "product_id")
+kable(orders_joined)
+```
+
+**Reading the output:** @tbl-left-join keeps all four orders. Order 4 uses product `P4`, which is not in the catalog, so its `product_name` and `category` are `NA`. An `inner_join()` would have silently dropped that order. That is why I would choose `left_join()` for the Farm Store: it exposes the data-quality problem instead of hiding it.
+
+::: {.callout-tip}
+## Tip
+Joining on a shared key such as `product_id` is the R version of the `JOIN ... ON` pattern I practiced in SQL and BigQuery.
+:::
+
+## Rankings: `min_rank()` {#sec-rank}
+
+**When to use it:** use `min_rank()` when you need to rank rows from best to worst, such as top-selling categories, and you want tied values to share the same rank. It is one of the ranking functions from the lecture, alongside `row_number()` and `dense_rank()`.
+
+```{r}
+#| label: tbl-rank
+#| tbl-cap: "Category sales ranked with min_rank()"
+category_sales <- tribble(
+  ~category, ~total_sales,
+  "Eggs",     405,
+  "Produce",  305,
+  "Honey",    305,
+  "Plants",   175
+)
+
+category_ranked <- category_sales |>
+  mutate(sales_rank = min_rank(desc(total_sales)))
+kable(category_ranked)
+```
+
+**Reading the output:** `desc()` makes the highest sales rank first. Produce and Honey tie at 305, so both receive rank 2, and the next category (Plants) receives rank 4, because `min_rank()` leaves a gap after a tie. `dense_rank()` would give Plants rank 3 instead. I would use `min_rank()` when the gap is meaningful, for example "two categories outrank Plants" versus "Plants is third-best."
+
+## Conditions: `case_when()` {#sec-case}
+
+**When to use it:** use `case_when()` to create a new variable from several if/else rules at once. It is easier to read than a chain of nested `if_else()` calls, and the rules are checked in order, so the first one that is true wins.
+
+```{r}
+#| label: tbl-case
+#| tbl-cap: "Sales tiers created with case_when()"
+category_tiers <- category_ranked |>
+  mutate(
+    tier = case_when(
+      total_sales >= 350 ~ "Top seller",
+      total_sales >= 250 ~ "Steady",
+      TRUE               ~ "Needs attention"
+    )
+  )
+kable(category_tiers)
+```
+
+**Reading the output:** Eggs (405) lands in "Top seller," Produce and Honey (305) in "Steady," and Plants (175) falls through to the final `TRUE` rule, "Needs attention." The last `TRUE ~` line is the catch-all for anything that matched none of the earlier rules. A grouping like this could help a store manager see which categories deserve promotion or a closer look.
+
+## Summary
+
+| Function | Lecture category | Use it when |
+|:---------------|:---------------|:-------------------------------------------|
+| `left_join()` | Relational data & joins | You need to add details from another table and keep every row of the main one |
+| `min_rank()` | Rankings | You need to rank rows and let ties share a rank |
+| `case_when()` | Conditional statements | You need a new variable based on several rules |
+
+: Summary of the three functions {#tbl-summary}
+
+@tbl-summary shows how the three functions fit a typical analysis workflow: join the data (@sec-join), rank the results (@sec-rank), and label them with business rules (@sec-case). For my capstone, joining supports combining Clover and online store data, ranking supports finding top and bottom SKUs, and `case_when()` supports tiering categories for the dashboards.
+
+::: {.callout-important}
+## Takeaway
+Each of these functions turns raw tables into something a decision-maker can act on: a complete combined dataset, a ranked list, and a labeled priority.
+:::

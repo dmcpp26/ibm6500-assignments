@@ -1,0 +1,33 @@
+/* Title slide text on the dark green background */
+#title-slide h1.title,
+#title-slide .subtitle,
+#title-slide .author,
+#title-slide .institute,
+#title-slide .date {
+  color: #F5F1E6;
+}
+
+/* Small helper classes used in the slides */
+.illustrative {
+  display: inline-block;
+  background: #C98A3B;
+  color: #ffffff;
+  font-size: 0.55em;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 0.15em 0.7em;
+  border-radius: 999px;
+}
+
+.big-number {
+  font-size: 2.2em;
+  font-weight: 700;
+  color: #1F3A2E;
+  line-height: 1.1;
+}
+
+.reveal table {
+  margin-left: auto;
+  margin-right: auto;
+}

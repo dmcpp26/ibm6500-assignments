@@ -1,0 +1,298 @@
+---
+title: "Farm Store Online Storefront Performance"
+subtitle: "Proposal Presentation: Analytics Objective 1"
+author: "Danielle Meza"
+institute: "MSDM Culminating Experience Project, Cal Poly Pomona"
+date: "`r Sys.Date()`"
+bibliography: references.bib
+csl: chicago-author-date.csl
+format:
+  revealjs:
+    theme: [serif, custom.scss]
+    width: 1600
+    height: 900
+    footer: "CPP Farm Store | Clover-Online Storefront (AO1)"
+    logo: images/logo.svg
+    transition: slide
+    transition-speed: default
+    incremental: false
+    toc: true
+    toc-depth: 1
+    slide-number: true
+    scrollable: true
+    smaller: true
+    code-fold: false
+    code-overflow: wrap
+    number-sections: false
+    number-depth: 5
+    embed-resources: true
+    css: styles.css
+    title-slide-attributes:
+      data-background-color: "#1F3A2E"
+editor: visual
+execute:
+  echo: true
+  freeze: auto
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(tidyverse)
+library(knitr)
+```
+
+# Introduction
+
+## Problem Statement
+
+The CPP Farm Store sells produce, eggs, plants, and specialty products in the store and through an online store linked from cpp.com.[^1]
+
+[^1]: Source: client meeting and Chapter 1 of the CEP proposal.
+
+::: incremental
+- Inventory is tracked in **Clover**, but entry is largely **manual**, which is slow and error-prone.
+- Manual entry contributes to **inventory shrink**, because mismatches between recorded and actual stock are hard to catch.
+- The online store's performance and visibility appear **underdeveloped**.
+- The effectiveness of past promotions has **not been systematically measured**.
+:::
+
+::: notes
+Open with the business context. The Farm Store is a university-run operation, so it has to balance its educational mission with running efficiently. The client's main message was that they need data-driven decisions, and that is where this analytics objective comes in.
+:::
+
+## Analytics Objective {transition="fade"}
+
+> Generate insights from online store and Clover POS data to assess online storefront performance and identify friction points in the Clover-integrated purchase process.
+
+. . .
+
+**Supports PO1:** launch an online storefront and implement the best feasible Clover-Online store approach for payments, catalog, inventory, orders, and customer data.
+
+::::: columns
+::: {.column width="50%"}
+### Data sources
+
+- Clover POS reports
+- Online store order data
+- *(subject to access)*
+:::
+
+::: {.column width="50%"}
+### What we will examine
+
+- Conversion rate
+- Add-to-cart rate
+- Share of revenue from online orders
+- Clover vs. online catalog discrepancies
+:::
+:::::
+
+::: notes
+Read the objective aloud, then explain that PO1 is the project objective this analytics objective serves. The two columns separate what data we need from what we will measure with it.
+:::
+
+## Importance {transition="zoom"}
+
+::: {.fragment .fade-in}
+The store has just launched an integrated storefront, so it needs **evidence** about whether the Clover connection works.
+:::
+
+::: {.fragment .fade-in}
+Findings will show **where the integration works and where friction** (such as sync delays or fulfillment issues) limits online sales.
+:::
+
+::: {.fragment .highlight-red}
+That gives PO1 a data-backed basis for deciding **what to fix next**.
+:::
+
+::: aside
+Chapter 1 of the CEP proposal describes how the four analytics objectives follow one customer journey.
+:::
+
+# Literature Review
+
+## Well-Established Models
+
+Prior work on omnichannel retail gives a starting framework for AO1.
+
+::: incremental
+- @gallino_integration_2014 found that sharing inventory availability information changed customers' purchasing behavior across channels. The **accuracy** of shared inventory data matters, not just its existence.
+- @liu2024 link stronger omnichannel integration to better customer experience, satisfaction, and loyalty.
+- @zhang_demonstrating_2024 find that connectivity improves the **utilitarian** experience, meaning the trust that a listed product is really available.
+- @thenoz2024a add a caution: e-commerce transformation succeeds or stalls based on **organizational and operational factors**, not storefront design alone.
+:::
+
+::: notes
+The Farm Store's problem is described as a manual-process issue, not only a technology gap. That is why the Thenoz et al. caution matters here, and why AO1 treats the inventory sync as a process to diagnose.
+:::
+
+## Adequateness of Information
+
+::::: columns
+::: {.column width="50%"}
+### What would be sufficient
+
+Clover transaction, catalog, and inventory data, combined with online store order data, would directly support the planned measures:
+
+- conversion rate
+- add-to-cart rate
+- revenue share
+- inventory-sync discrepancies
+:::
+
+::: {.column width="50%"}
+### What is still pending
+
+**Pending:** Clover POS reporting access and online store platform permissions **have not been confirmed**.
+
+. . .
+
+Without access, the objective cannot move from planning to analysis.
+:::
+:::::
+
+## Need for Additional Analysis
+
+::: nonincremental
+Beyond the core transaction data, the objective would be stronger with:
+:::
+
+::: incremental
+- a record of **how often and how long** Clover inventory and the online catalog fall out of sync,
+- any customer-facing **error or fulfillment logs**, and
+- a defined **baseline period** before any Clover-online changes, so pre/post comparisons are possible.
+:::
+
+. . .
+
+**RQ1:** To what extent does the level of integration between Clover POS and the online storefront affect online conversion rate and the share of revenue captured online?
+
+**H1:** Inventory/catalog discrepancies are associated with lower online conversion rates and a smaller share of revenue from the online channel.
+
+# Methods
+
+## Data and Sampling
+
+- **Unit of analysis:** one week of storefront activity.
+- **Planned sources:** Clover POS reports and online store orders, subject to access.
+- **Sampling:** all available weeks in the study period, with a baseline period before any changes.
+
+::: callout-warning
+## Illustrative data
+
+Until Clover access is confirmed, the charts and tables in the next slides use **simulated data**. They show the planned analysis, not real Farm Store results.
+:::
+
+```{r}
+#| label: simulate-data
+set.seed(6500)
+weeks_raw <- tibble(
+  week           = 1:12,
+  sku_mismatches = rpois(12, lambda = 6),
+  sessions       = round(rnorm(12, mean = 900, sd = 60)),
+  conv_rate      = round(pmax(1.5, 4.2 - 0.15 * sku_mismatches +
+                                rnorm(12, 0, 0.3)), 2)
+)
+```
+
+## Data Wrangling {.scrollable}
+
+Planned steps: join Clover and online records by SKU, count weekly mismatches, then compute the measures. Here the same logic is applied to the simulated weeks.
+
+```{r}
+#| label: wrangle
+weeks <- weeks_raw |>
+  mutate(
+    orders = round(sessions * conv_rate / 100),
+    sync_level = case_when(
+      sku_mismatches <= 4 ~ "Low",
+      sku_mismatches <= 8 ~ "Medium",
+      TRUE                ~ "High"
+    ),
+    sync_level = factor(sync_level, levels = c("Low", "Medium", "High"))
+  )
+
+head(weeks, 5)
+```
+
+## Sample Characteristics
+
+The simulated sample has **`r nrow(weeks)` weeks** and **`r sum(weeks$orders)` online orders**. [Illustrative]{.illustrative}
+
+::::: columns
+::: {.column width="45%"}
+```{r}
+#| label: tbl-sample
+#| tbl-cap: "Weekly averages by sync-mismatch level (simulated)"
+weeks |>
+  group_by(sync_level) |>
+  summarise(
+    weeks     = n(),
+    sessions  = round(mean(sessions)),
+    conv_rate = round(mean(conv_rate), 2)
+  ) |>
+  kable()
+```
+:::
+
+::: {.column width="55%"}
+```{r}
+#| label: fig-pattern
+#| fig-cap: "Conversion rate vs. weekly SKU mismatches (simulated)"
+#| fig-width: 7
+#| fig-height: 4.2
+ggplot(weeks, aes(sku_mismatches, conv_rate)) +
+  geom_point(size = 3, color = "#1F3A2E") +
+  geom_smooth(method = "lm", se = FALSE, color = "#C98A3B") +
+  labs(x = "SKU mismatches per week", y = "Conversion rate (%)") +
+  theme_minimal(base_size = 14)
+```
+:::
+:::::
+
+::: notes
+Point out that the sample size in the first sentence is computed with inline code, so it updates automatically if the data change. Stress that these are simulated numbers, used only to demonstrate the planned analysis.
+:::
+
+## Measures
+
+| Measure | Definition |
+|:---------------------------|:-------------------------------------------|
+| Conversion rate | Online orders ÷ store sessions |
+| Add-to-cart rate | Sessions with an add-to-cart event ÷ sessions |
+| Online revenue share | Online order revenue ÷ total revenue |
+| Sync discrepancy | SKUs whose Clover quantity differs from online availability |
+
+## Analytics Methods
+
+::: incremental
+1.  **Descriptive statistics** of the four measures over time.
+2.  **Association check:** correlation and a simple regression of conversion rate on weekly mismatches (the test of H1).
+3.  **Pre/post comparison** against the baseline period once Clover-online changes are made.
+:::
+
+. . .
+
+```{r}
+#| label: lm-demo
+fit <- lm(conv_rate ~ sku_mismatches, data = weeks)
+round(coef(summary(fit)), 3)
+```
+
+The negative slope in this simulated example is what H1 predicts. [Illustrative]{.illustrative}
+
+# References {.scrollable}
+
+::: {#refs}
+:::
+
+# Appendix
+
+## Links {.smaller}
+
+- [Published slides ](https://01a10a37-d710-1a1c-39c9-fa88411ef662.share.connect.posit.cloud/){target="_blank"}
+- [Gallino & Moreno (2014)](https://doi.org/10.1287/mnsc.2014.1951){target="_blank"}
+- [Zhang et al. (2024)](https://doi.org/10.1016/j.jretconser.2023.103622){target="_blank"}
+- [Thenoz et al. (2024)](https://doi.org/10.1007/s12525-024-00740-0){target="_blank"}
+- [Quarto Revealjs documentation](https://quarto.org/docs/presentations/revealjs/){target="_blank"}
