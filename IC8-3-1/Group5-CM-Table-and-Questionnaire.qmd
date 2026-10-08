@@ -1,0 +1,132 @@
+---
+title: "IC8-3-1 C&M Table and Questionnaire"
+subtitle: "Group 5 | CPP Farm Store"
+author: "Cecilia Espina, Danielle Meza, Julieta Diaz, Jungmin Woo"
+date: today
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    transition: fade
+    incremental: false
+    width: 1280
+    height: 720
+    embed-resources: true
+    footer: "IBM 6500 | Group 5 | CEP04 and CEP05"
+    include-in-header:
+      - text: |
+          <style>
+            .reveal h1, .reveal h2 { color: #1F3A2E; }
+            .reveal table { font-size: 0.55em; }
+            .reveal table th { background: #1F3A2E; color: #fff; }
+            .reveal table td, .reveal table th { vertical-align: top; }
+            .reveal .small { font-size: 0.7em; }
+            .reveal .tiny { font-size: 0.55em; }
+          </style>
+---
+
+## C&M table: one per analytics objective
+
+| AO | Hypothesis | Key measures | Data source |
+|:-----|:--------------------------|:--------------------------|:--------------|
+| **AO1** Clover-online storefront | **H1:** Clover-to-online mismatches go with lower conversion and a smaller online revenue share | I.V.: availability and catalog mismatch, sync delay. D.V.: conversion rate, online revenue share | Clover and online store records |
+| **AO2** Inventory and assortment | **H2:** Stronger historical demand goes with higher inventory turnover | I.V.: historical product demand. D.V.: inventory turnover | Clover sales and inventory reports |
+| **AO3** SEO and paid search | **H3 (proposed):** Paid search visits convert at a higher rate than organic visits | I.V.: traffic source. D.V.: conversion rate. Also survey items on Google ads | GA4, Google Ads, survey items |
+| **AO4** Digital loyalty program | **H4 (proposed):** Usefulness, ease of use, and trust each go with higher intention to use | I.V.: usefulness, ease of use, trust. D.V.: intention to use | **Customer survey** |
+
+::: {.small}
+Every table uses the same six columns: construct and definition, operationalization, source, type of scale, RQ/H, and role in analysis. **This questionnaire covers AO4.**
+:::
+
+## From H4 to the questionnaire
+
+::: {.small}
+**H4:** Perceived usefulness, perceived ease of use, and trust in data handling are each positively associated with intention to use a digital loyalty program.
+:::
+
+| Construct | Role | Scale | Questions |
+|:-------------------|:--------------|:----------------------------|:----------|
+| Perceived usefulness | I.V. | Interval (multi-item, 5-point agreement) | Q13-Q16 |
+| Perceived ease of use | I.V. | Interval (multi-item, 5-point agreement) | Q17-Q19 |
+| Trust in data handling | I.V. | Interval (multi-item, 5-point agreement) | Q20-Q23 (Q22 reverse-coded) |
+| **Intention to use** | **D.V.** | Interval (multi-item, 5-point agreement) | Q27-Q29 |
+| Attitude toward the program | Exploratory | Interval (multi-item, 5-point agreement) | Q24-Q26 |
+| Store usage, other loyalty programs, respondent type, age, gender | Control / grouping | Ordinal and nominal | Q2, Q4-Q8, Q12, Q33-Q34 |
+| Eligibility | Screening | Nominal | Q1, Q3 |
+
+::: notes
+This is the traceability slide. Each hypothesis variable maps to a block of questions, and every other question has a role (control, grouping, screening, or descriptive).
+:::
+
+## The predictors: Section B items {.smaller}
+
+| Q | Construct | Item (1 = Strongly disagree, 5 = Strongly agree) |
+|:-----|:-------------|:----------------------------------------------------|
+| Q13 | Usefulness | A digital loyalty program would be useful when I shop at the Farm Store. |
+| Q14 | Usefulness | It would give me rewards or discounts I care about. |
+| Q15 | Usefulness | It would make me feel my repeat purchases are recognized. |
+| Q16 | Usefulness | A digital loyalty program would make it easier to keep track of my rewards. *(optional)* |
+| Q17 | Ease of use | Signing up for a digital loyalty program would be easy. |
+| Q18 | Ease of use | Using it at checkout would be simple and quick. |
+| Q19 | Ease of use | I would not need help to learn how to use it. |
+| Q20 | Trust | I would feel comfortable sharing my email or phone number to join. |
+| Q21 | Trust | I trust the Farm Store to keep my personal information secure. |
+| Q22 | Trust | I am concerned about how my purchase data would be used. *(reverse-coded)* |
+| Q23 | Trust | I trust the Farm Store to use my purchase history only in ways I have agreed to. *(optional)* |
+
+## The outcome: Section C items
+
+| Q | Construct | Item (1 = Strongly disagree, 5 = Strongly agree) |
+|:-----|:-------------|:----------------------------------------------------|
+| Q24 | Attitude | I have a favorable attitude toward a digital loyalty program at the Farm Store. |
+| Q25 | Attitude | A digital loyalty program is a good idea for the Farm Store. |
+| Q26 | Attitude | I would rather use a digital loyalty program than a paper punch card. |
+| Q27 | **Intention to use** | I would sign up for a digital loyalty program if it were offered. |
+| Q28 | **Intention to use** | I would use it regularly when I shop at the Farm Store. |
+| Q29 | **Intention to use** | I would recommend it to others. |
+
+::: {.small}
+Each multi-item scale will be checked with **Cronbach's alpha**. If the items hang together, we average them into one composite score. Q22 is reverse-coded first.
+:::
+
+## Screening, controls, and grouping
+
+| Q | Question | Scale | Role |
+|:-----|:----------------------------------|:-----------|:-------------|
+| Q1, Q3 | Are you 18 or older? Purchased from the Farm Store in the past 12 months? | Nominal (Yes / No) | Screening |
+| Q2 | Which best describes you? (student, faculty or staff, family or community, other) | Nominal | Grouping |
+| Q4-Q6 | How often you buy, how recently, and typical spend per visit | Ordinal | Control |
+| Q7 | Usual shopping channel (in person, online, both) | Nominal | Control |
+| Q8-Q11 | Punch card use, plus satisfaction items if used | Nominal; Interval | Descriptive |
+| Q12 | Number of other loyalty programs | Ordinal | Control |
+| Q33-Q34 | Age range and gender | Ordinal; Nominal | Control |
+
+::: {.small}
+Category numbers (1, 2, 3...) on nominal questions are **labels only**.
+:::
+
+## Questionnaire flow and skip logic
+
+| Section | Questions | Purpose | Logic |
+|:----------------|:--------|:------------------------------|:------------------------|
+| Cover page and consent | Consent | Study purpose, voluntary, anonymous, contact, 18+ confirmation | "No" = terminate survey |
+| A. Screening and store usage | Q1-Q12 | Eligible customers; shopping behavior; punch card; other programs | Q1 or Q3 = No exits; Q9-Q11 only if Q8 = Yes |
+| B. Perceptions | Q13-Q23 | Usefulness, ease of use, trust | |
+| C. Attitude and intention | Q24-Q29 | Attitude, intention to use | |
+| D. Preferences | Q30-Q32 | Joining method, rewards, consent to purchase records | |
+| E. Demographics | Q33-Q34 | Age range, gender | |
+
+::: {.small}
+34 questions, about 8 to 10 minutes. Easy, relevant questions come first and personal questions come last.
+:::
+
+
+## Links
+
+::: {.small}
+- **C&M Table (Google Doc):** https://docs.google.com/document/d/1rVPvxKA6PC6DupW6xYZfjSLNLQGawKUNHdKa0EjpfN8/edit
+- **Questionnaire (Google Doc):** https://drive.google.com/file/d/1jb5LOWu6VzzVC_pUZ8cyynGNgsS5IyvG/view?usp=drivesdk
+
+:::
+
+**Thank you.** Questions?
