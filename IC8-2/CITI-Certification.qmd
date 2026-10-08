@@ -1,0 +1,17 @@
+---
+title: "IC8-2: CITI Certification"
+author: "Danielle Meza"
+date: today
+format:
+  html:
+    toc: true
+    embed-resources: true
+---
+
+![CITI Training and Certificate - Danielle Meza (OCT 2026)](images/citiCompletionCertificate_16154600_80169756.png)
+
+# Appendix {.unnumbered}
+
+**GitHub Repository:** [ibm6500-assignments Repository](https://github.com/dmcpp26/ibm6500-assignments)
+
+**GitHub Pages:** [Published IC8-2 Assignment](https://dmcpp26.github.io/ibm6500-assignments/IC8-2/CITI-Certification.html)
