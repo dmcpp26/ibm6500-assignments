@@ -9,6 +9,7 @@ files = [
     "/Group5-CM-Table-and-Questionnaire.qmd",
     "/.posit/publish/IC8-3-1 C&M Table and Question-NE3E.toml",
     "/.posit/publish/deployments/deployment-B85U.toml",
+    "/Group5-CM-Table-and-Questionnaire.html",
 ]
 validate = true
 product_type = "connect_cloud"

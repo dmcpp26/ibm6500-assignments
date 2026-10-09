@@ -1,0 +1,51 @@
+---
+title: Class Notes for Week 07
+date: today
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    toc-expand: 1
+    toc-location: right-body
+    embed-resources: true
+    number-sections: true
+    code-link: true
+    code-fold: true
+    code-tools: true
+    code-overflow: wrap
+    theme: litera
+editor: visual
+execute:
+  freeze: auto
+---
+
+# Accouncements
+
+## Fall IBM 6200 SCHEDULE LAST YEAR
+
+W\$ CEP kickoff\
+W6 ch4 - Most of them didi have data\
+W9 - 1st presentation (CH 2 and 3) most of them had the data analysis
+
+W12 - CH4 Data Analysis + CH5 Recommendation
+
+W15 - 2nd Presentation (CH 1, 2, 3,)
+
+W16 concrete Digitial Marketing Plan (For us our final presentation can help overwrite or bost our past assignment scores - since that past assignments are considered stepping stones for the overall project)
+
+## CONTENTS OF THE CLASS
+
+**IBM 6500 + SEM + BIG QUERY** (this is why it feels so heavy) \|
+
+## **Wall Street Journal Articles**
+
+Watching or Listen to while doing other tasks to help digest the information\
+
+alot of CEP assignments were so heavy in the beingin of the semster becasue data collection can take time. especially getting approved from IRB forms. After CH 1, 2,3 presentation - it will be less aggressive. And less CEP presentation.\
+
+## How to Push assignments to Git Hub Pages
+
+Dr. Jung demonstrates how tot create .qmd and render .html file to push to GitHub.\
+Using Source Control, to
+
+## Group Presentation: C&M Table and Questionnaire (Word version) and Peer Review
