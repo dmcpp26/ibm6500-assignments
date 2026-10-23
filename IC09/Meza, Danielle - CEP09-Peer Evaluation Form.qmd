@@ -1,0 +1,40 @@
+---
+title: "Group Member Evaluation Form"
+subtitle: "CEP09 – Peer Evaluation (Week 01 through Proposal Presentation Day)"
+author: "Danielle Meza"
+date: "2026-10-22"
+format:
+  html:
+    embed-resources: true
+    toc: false
+    theme: cosmo
+---
+
+**Name:** Danielle Meza  
+**Date:** October 22, 2026  
+**Group Name/Project Name:** Group 5 (Team Kiwi) – CPP Farm Store at Kellogg Ranch (Client Consulting Project)
+
+Please evaluate your group members (including you) from 1 to 100% scale. If you believe that a member equally contributed to the group project output submitted, give them 100%. If you believe that a member did not do his or her fair share, assign a percentage less than 100%. If you think there was a group leader who contributed to your group's success greatly above and beyond regular group members, please identify them below and make a comment. If there is a consensus, the MVP may receive up to 10% of the group's score on top of the group score.
+
+## Member Evaluations
+
+| # | Member Name | Grade (%) | MVP (yes/no) |
+|:-:|:------------|:---------:|:------------:|
+| 1 | Danielle Meza (self) | 100% | No |
+| 2 | Jungmin | 100% | No |
+| 3 | Cecilia Espina | 100% | No |
+| 4 | Julie Diaz | 100% | No |
+
+*No MVP was selected. All members contributed equally to the group project.*
+
+## Comments on Contributions
+
+**Danielle Meza (self) – 100%:** I owned AO1 (Online Storefront & Clover Integration), including the literature review, research question and hypothesis, and model-comparison work. I kept my section updated as our data-access situation with Clover changed after the client meeting, and I contributed to team meetings, agendas, and our shared deliverables through the proposal presentation.
+
+**Jungmin – 100%:** Jungmin owned AO2 (Inventory Visibility & Assortment Performance) and developed the research question, hypothesis, and category/SKU-level analysis plan. Jungmin identified the additional data needed to strengthen the analysis and carried a full share of the group's work.
+
+**Cecilia Espina – 100%:** Cecilia owned AO3 (Digital Loyalty Program) and built a well-supported section grounded in the Technology Acceptance Model and the team's primary survey. She was a reliable, engaged teammate who met her responsibilities throughout the project.
+
+**Julie Diaz – 100%:** Julie owned AO4 (SEO & Paid Search Optimization) and developed a combined Shopping Goal Theory and Effectiveness-Efficiency framework for her section. She also helped coordinate team documents, including the Faculty Lead Discussion Document, and consistently contributed her fair share.
+
+**Overall:** Every member contributed to the best of their ability, met expectations, and completed their assigned work. I'm giving everyone 100%.
