@@ -9,10 +9,10 @@ about:
   links:
     - icon: linkedin
       text: LinkedIn
-      href: https://www.linkedin.com/in/YOUR-LINKEDIN
+      href: https://www.linkedin.com/in/
     - icon: github
       text: GitHub
-      href: https://github.com/YOUR-GITHUB-USERNAME
+      href: https://github.com/
 ---
 
 ## Who am I, and what am I working toward?
