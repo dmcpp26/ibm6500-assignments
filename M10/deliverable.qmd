@@ -1,0 +1,13 @@
+---
+title: "M10 Hands-on Practice: Sharing Outputs with the Audience"
+author: "Danielle Meza"
+format: html
+---
+
+## Where can I see my website?
+
+[My published website](https://dmcpp26.github.io/ibm6500-assignments)
+
+## Where is the code?
+
+[My GitHub repository](https://github.com/dmcpp26/ibm6500-assignments)

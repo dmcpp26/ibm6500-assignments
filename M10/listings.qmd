@@ -1,0 +1,45 @@
+---
+title: "Listings in Quarto"
+listing:
+  id: cep-posts
+  contents: posts
+  type: grid
+  sort: "date desc"
+  categories: true
+  fields: [date, title, description, categories]
+  sort-ui: [date, title]
+  filter-ui: true
+page-layout: full
+---
+
+## What is a listing?
+
+A **listing** is a section that Quarto builds automatically from a folder of documents. Instead of writing links by hand, I point Quarto at a folder, and it creates a gallery or table with each document's title, date, description, and categories. It re-builds every time I render, so a new post shows up on its own.
+
+## How can I use listings in a portfolio?
+
+- A **projects** page that lists each case study as a card.
+- A **blog or progress log**, newest first, with categories to filter.
+- A **publications or presentations** page with a table view.
+
+## How do I set one up?
+
+Add a `listing:` block to a page's YAML and put the documents in a folder:
+
+```{.yaml}
+listing:
+  contents: posts          # folder of .qmd files
+  type: grid               # or: default, table
+  sort: "date desc"        # newest first
+  categories: true         # show category filters
+  fields: [date, title, description, categories]
+```
+
+Each post needs `title`, `date`, `description`, and `categories` in its own YAML.
+
+## What does a listing look like?
+
+The cards below are generated from the `posts/` folder. They show my CEP progress notes.
+
+::: {#cep-posts}
+:::

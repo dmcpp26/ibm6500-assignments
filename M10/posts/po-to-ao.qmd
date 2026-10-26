@@ -1,0 +1,8 @@
+---
+title: "From project objectives to analytics objectives"
+date: "2026-10-06"
+description: "How what the client wants becomes what we analyze."
+categories: [CEP, Methods]
+---
+
+A project objective (PO) says what the client wants for the business. An analytics objective (AO) says what we will analyze to help. For example, "replace punch cards" (PO4) becomes "what predicts customers' intention to use a digital loyalty program" (AO4).

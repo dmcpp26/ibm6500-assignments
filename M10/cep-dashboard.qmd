@@ -1,0 +1,111 @@
+---
+title: "CPP Farm Store: Online Storefront Dashboard"
+format:
+  dashboard:
+    orientation: rows
+    theme: [cosmo, styles.scss]
+    nav-buttons:
+      - icon: house
+        href: index.html
+        aria-label: Back to my site
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(dplyr)
+library(ggplot2)
+library(plotly)
+library(DT)
+library(scales)
+
+set.seed(26)
+
+# ILLUSTRATIVE (simulated) data: 26 weeks, 4 categories
+weeks <- seq(as.Date("2026-01-05"), by = "week", length.out = 26)
+cats  <- c("Produce", "Gifts", "Nursery", "Honey and wine")
+
+weekly <- expand.grid(week = weeks, category = cats, stringsAsFactors = FALSE) |>
+  as_tibble() |>
+  mutate(
+    sessions      = round(rnorm(n(), 450, 60) * ifelse(category == "Gifts", 1.3, 1)),
+    mismatches    = rpois(n(), ifelse(category == "Nursery", 5, 3)),
+    conv_rate     = pmax(0.01, 0.045 - 0.002 * mismatches + rnorm(n(), 0, 0.004)),
+    online_orders = round(sessions * conv_rate),
+    online_rev    = online_orders * runif(n(), 28, 55),
+    pos_rev       = online_rev / runif(n(), 0.08, 0.14)
+  )
+
+by_week <- weekly |>
+  group_by(week) |>
+  summarise(
+    conv_rate  = sum(online_orders) / sum(sessions),
+    online_rev = sum(online_rev),
+    share      = sum(online_rev) / sum(pos_rev),
+    .groups = "drop"
+  )
+```
+
+## Row {height=18%}
+
+```{r}
+#| content: valuebox
+#| title: "Online revenue (illustrative)"
+list(icon = "cart", color = "#1F3A2E",
+     value = dollar(sum(weekly$online_rev), accuracy = 1))
+```
+
+```{r}
+#| content: valuebox
+#| title: "Average conversion rate"
+list(icon = "percent", color = "#C48A3A",
+     value = percent(sum(weekly$online_orders) / sum(weekly$sessions), accuracy = 0.1))
+```
+
+```{r}
+#| content: valuebox
+#| title: "Mismatched item-weeks"
+list(icon = "exclamation-triangle", color = "#8A3B2E",
+     value = comma(sum(weekly$mismatches)))
+```
+
+## Row {height=37%}
+
+### Column {width=60%}
+
+```{r}
+#| title: "Does the conversion rate move over time?"
+p <- ggplot(by_week, aes(week, conv_rate)) +
+  geom_line(color = "#1F3A2E", linewidth = 1) +
+  geom_point(color = "#C48A3A") +
+  scale_y_continuous(labels = percent_format(accuracy = 0.1)) +
+  labs(x = NULL, y = "Conversion rate") +
+  theme_minimal()
+ggplotly(p)
+```
+
+### Column {width=40%}
+
+```{r}
+#| title: "Which categories have the most mismatches?"
+cat_mis <- weekly |>
+  group_by(category) |>
+  summarise(mismatches = sum(mismatches), .groups = "drop")
+p2 <- ggplot(cat_mis, aes(reorder(category, mismatches), mismatches)) +
+  geom_col(fill = "#C48A3A") +
+  coord_flip() +
+  labs(x = NULL, y = "Mismatched item-weeks") +
+  theme_minimal()
+ggplotly(p2)
+```
+
+## Row {height=45%}
+
+```{r}
+#| title: "Weekly data (searchable)"
+weekly |>
+  mutate(conv_rate = round(conv_rate, 3),
+         online_rev = round(online_rev),
+         pos_rev = round(pos_rev)) |>
+  datatable(options = list(pageLength = 8, scrollY = "200px", paging = FALSE), rownames = FALSE)
+```

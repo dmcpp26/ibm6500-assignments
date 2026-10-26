@@ -1,0 +1,38 @@
+/*-- scss:defaults --*/
+// Brand colors (same palette as our CEP presentation)
+$farm-green: #1F3A2E;
+$farm-gold:  #C48A3A;
+$farm-cream: #FAF6EE;
+
+$primary: $farm-green;
+$link-color: $farm-gold;
+$font-family-sans-serif: "Lato", "Helvetica Neue", Arial, sans-serif;
+$headings-font-weight: 700;
+
+/*-- scss:rules --*/
+// Gold underline under every top-level heading
+h1.title, h2 {
+  border-bottom: 3px solid $farm-gold;
+  padding-bottom: 0.2em;
+}
+
+// A reusable "highlight" box: add {.highlight} to any div
+.highlight {
+  background: $farm-cream;
+  border-left: 5px solid $farm-gold;
+  padding: 0.8em 1em;
+  border-radius: 4px;
+  margin: 1em 0;
+}
+
+// Navbar links get a gold hover color
+.navbar-nav .nav-link:hover {
+  color: $farm-gold !important;
+}
+
+// Dashboard value boxes: keep text white on the dark brand colors
+.bslib-value-box .value-box-title,
+.bslib-value-box .value-box-value,
+.bslib-value-box .value-box-showcase {
+  color: #ffffff !important;
+}

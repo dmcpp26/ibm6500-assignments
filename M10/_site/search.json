@@ -1,0 +1,198 @@
+[
+  {
+    "objectID": "  index.html",
+    "href": "  index.html",
+    "title": "Dani Meza",
+    "section": "",
+    "text": "I’m a digital marketing specialist finishing my M.S. in Digital Marketing Analytics at Cal Poly Pomona. I like turning website, sales, and customer data into decisions a small team can act on.\n\nCareer goal: a Digital Marketing Manager or E-commerce Marketing Specialist role in retail and e-commerce, where I can connect search, site, and sales data to growth."
+  },
+  {
+    "objectID": "  index.html#who-am-i-and-what-am-i-working-toward",
+    "href": "  index.html#who-am-i-and-what-am-i-working-toward",
+    "title": "Dani Meza",
+    "section": "",
+    "text": "I’m a digital marketing specialist finishing my M.S. in Digital Marketing Analytics at Cal Poly Pomona. I like turning website, sales, and customer data into decisions a small team can act on.\n\nCareer goal: a Digital Marketing Manager or E-commerce Marketing Specialist role in retail and e-commerce, where I can connect search, site, and sales data to growth."
+  },
+  {
+    "objectID": "  index.html#what-can-i-do",
+    "href": "  index.html#what-can-i-do",
+    "title": "Dani Meza",
+    "section": "What can I do?",
+    "text": "What can I do?\n\n\n\n\n\n\n\nArea\nWhat I work with\n\n\n\n\nDigital marketing\nSocial media, email marketing, content creation\n\n\nWeb and search\nSEO, website management\n\n\nMedia\nPodcast production, video editing\n\n\nAnalytics\nR and Quarto, Google Analytics, Clover and Qualtrics data (CEP)"
+  },
+  {
+    "objectID": "  index.html#where-did-i-study",
+    "href": "  index.html#where-did-i-study",
+    "title": "Dani Meza",
+    "section": "Where did I study?",
+    "text": "Where did I study?\n\nM.S., Digital Marketing Analytics, Cal Poly Pomona (in progress)\nB.S., Business Administration (Marketing), UC Riverside"
+  },
+  {
+    "objectID": "  index.html#what-am-i-working-on-now",
+    "href": "  index.html#what-am-i-working-on-now",
+    "title": "Dani Meza",
+    "section": "What am I working on now?",
+    "text": "What am I working on now?\nMy Culminating Experience Project (CEP) is with the CPP Farm Store at Kellogg Ranch. I’m responsible for analyzing the Clover-Online storefront. See the CEP dashboard for a preview of how that analysis will look."
+  },
+  {
+    "objectID": "dashboard.html",
+    "href": "dashboard.html",
+    "title": "CEP Dashboard",
+    "section": "",
+    "text": "This page links to a Quarto dashboard built for my Culminating Experience Project (CEP) with the CPP Farm Store at Kellogg Ranch. It shows how I plan to track online storefront performance (AO1): conversion, online revenue share, and which products have mismatches between the point of sale (Clover) and the online store.\n\nIllustrative data only. The Farm Store’s real Clover and GA4 data are not available yet, so this dashboard uses simulated weekly numbers. The layout and logic are what will carry over once the real exports arrive.\n\nOpen the full dashboard"
+  },
+  {
+    "objectID": "dashboard.html#what-is-this-dashboard",
+    "href": "dashboard.html#what-is-this-dashboard",
+    "title": "CEP Dashboard",
+    "section": "",
+    "text": "This page links to a Quarto dashboard built for my Culminating Experience Project (CEP) with the CPP Farm Store at Kellogg Ranch. It shows how I plan to track online storefront performance (AO1): conversion, online revenue share, and which products have mismatches between the point of sale (Clover) and the online store.\n\nIllustrative data only. The Farm Store’s real Clover and GA4 data are not available yet, so this dashboard uses simulated weekly numbers. The layout and logic are what will carry over once the real exports arrive.\n\nOpen the full dashboard"
+  },
+  {
+    "objectID": "dashboard.html#what-will-i-see-in-it",
+    "href": "dashboard.html#what-will-i-see-in-it",
+    "title": "CEP Dashboard",
+    "section": "What will I see in it?",
+    "text": "What will I see in it?\n\nHeadline numbers: online revenue, average conversion rate, and the number of mismatched items.\nTrends: weekly conversion rate and online revenue share.\nProducts: which categories carry the most mismatches.\nDetails: a searchable table of the underlying weekly data."
+  },
+  {
+    "objectID": "dashboard.html#can-i-preview-it-here",
+    "href": "dashboard.html#can-i-preview-it-here",
+    "title": "CEP Dashboard",
+    "section": "Can I preview it here?",
+    "text": "Can I preview it here?"
+  },
+  {
+    "objectID": "dashboard.html#how-was-it-built",
+    "href": "dashboard.html#how-was-it-built",
+    "title": "CEP Dashboard",
+    "section": "How was it built?",
+    "text": "How was it built?\nThe dashboard is a single QMD file with format: dashboard. Layout comes from headings (rows and columns), value boxes use {.valuebox}, and each chart is an R code chunk. See the CSS/SCSS and Listings pages for the other pieces of this site."
+  },
+  {
+    "objectID": "css.html",
+    "href": "css.html",
+    "title": "Styling a Quarto Website with CSS and SCSS",
+    "section": "",
+    "text": "Quarto ships with Bootswatch themes (like cosmo, which this site starts from), but a theme looks like everyone else’s site. CSS and SCSS let me add a consistent brand: colors, fonts, spacing, and reusable components. This whole site uses the green and gold from our CEP presentation."
+  },
+  {
+    "objectID": "css.html#why-would-i-style-my-website-beyond-a-built-in-theme",
+    "href": "css.html#why-would-i-style-my-website-beyond-a-built-in-theme",
+    "title": "Styling a Quarto Website with CSS and SCSS",
+    "section": "",
+    "text": "Quarto ships with Bootswatch themes (like cosmo, which this site starts from), but a theme looks like everyone else’s site. CSS and SCSS let me add a consistent brand: colors, fonts, spacing, and reusable components. This whole site uses the green and gold from our CEP presentation."
+  },
+  {
+    "objectID": "css.html#what-is-the-difference-between-css-and-scss",
+    "href": "css.html#what-is-the-difference-between-css-and-scss",
+    "title": "Styling a Quarto Website with CSS and SCSS",
+    "section": "What is the difference between CSS and SCSS?",
+    "text": "What is the difference between CSS and SCSS?\n\nCSSSCSS\n\n\nPlain CSS is a list of rules. It is loaded with css: in the YAML and applied on top of the theme.\nformat:\n  html:\n    theme: cosmo\n    css: styles.css\n.highlight {\n  background: #FAF6EE;\n  border-left: 5px solid #C48A3A;\n}\n\n\nSCSS (Sass) adds variables, nesting, and the ability to change the theme’s own settings. It is loaded inside theme: and has two sections.\nformat:\n  html:\n    theme: [cosmo, styles.scss]\n/*-- scss:defaults --*/\n$farm-green: #1F3A2E;\n$primary: $farm-green;      // changes the navbar, buttons, and links\n\n/*-- scss:rules --*/\n.highlight {\n  border-left: 5px solid #C48A3A;\n}"
+  },
+  {
+    "objectID": "css.html#when-do-i-use-scssdefaults-and-when-do-i-use-scssrules",
+    "href": "css.html#when-do-i-use-scssdefaults-and-when-do-i-use-scssrules",
+    "title": "Styling a Quarto Website with CSS and SCSS",
+    "section": "When do I use scss:defaults and when do I use scss:rules?",
+    "text": "When do I use scss:defaults and when do I use scss:rules?\n\n\n\n\n\n\n\n\nSection\nWhat it does\nExample from this site\n\n\n\n\nscss:defaults\nSets Bootstrap variables before the theme is built, so changes flow through the whole site\n$primary, $link-color, $font-family-sans-serif\n\n\nscss:rules\nAdds or overrides specific styles after the theme is built\n.highlight, navbar hover color, heading underlines"
+  },
+  {
+    "objectID": "css.html#what-does-it-look-like-when-it-works",
+    "href": "css.html#what-does-it-look-like-when-it-works",
+    "title": "Styling a Quarto Website with CSS and SCSS",
+    "section": "What does it look like when it works?",
+    "text": "What does it look like when it works?\nThis box uses a custom class from styles.scss. I applied it with a fenced div:\n::: highlight\n**Tip:** use classes for anything you reuse.\n:::\n\nTip: use classes for anything you reuse. Changing the color once in styles.scss updates every box on the site.\n\nThe heading above each section also gets the gold underline from one rule: h1.title, h2 { border-bottom: 3px solid $farm-gold; }."
+  },
+  {
+    "objectID": "css.html#how-do-i-style-just-one-page-or-one-element",
+    "href": "css.html#how-do-i-style-just-one-page-or-one-element",
+    "title": "Styling a Quarto Website with CSS and SCSS",
+    "section": "How do I style just one page or one element?",
+    "text": "How do I style just one page or one element?\n\nOne element: add a class or inline attributes, like [text]{style=\"color:#C48A3A;\"} or ::: {.highlight}.\nOne page: put css: (or a &lt;style&gt; block) in that page’s own YAML instead of the site’s _quarto.yml.\nLight and dark: give the theme two files, such as theme: {light: [cosmo, styles.scss], dark: [darkly, styles-dark.scss]}."
+  },
+  {
+    "objectID": "css.html#what-did-i-learn",
+    "href": "css.html#what-did-i-learn",
+    "title": "Styling a Quarto Website with CSS and SCSS",
+    "section": "What did I learn?",
+    "text": "What did I learn?\nSet colors and fonts once in scss:defaults, keep one-off tweaks in scss:rules, and use named classes so the content stays clean. After each change, re-render to see it."
+  },
+  {
+    "objectID": "listings.html",
+    "href": "listings.html",
+    "title": "Listings in Quarto",
+    "section": "",
+    "text": "A listing is a section that Quarto builds automatically from a folder of documents. Instead of writing links by hand, I point Quarto at a folder, and it creates a gallery or table with each document’s title, date, description, and categories. It re-builds every time I render, so a new post shows up on its own."
+  },
+  {
+    "objectID": "listings.html#what-is-a-listing",
+    "href": "listings.html#what-is-a-listing",
+    "title": "Listings in Quarto",
+    "section": "",
+    "text": "A listing is a section that Quarto builds automatically from a folder of documents. Instead of writing links by hand, I point Quarto at a folder, and it creates a gallery or table with each document’s title, date, description, and categories. It re-builds every time I render, so a new post shows up on its own."
+  },
+  {
+    "objectID": "listings.html#how-can-i-use-listings-in-a-portfolio",
+    "href": "listings.html#how-can-i-use-listings-in-a-portfolio",
+    "title": "Listings in Quarto",
+    "section": "How can I use listings in a portfolio?",
+    "text": "How can I use listings in a portfolio?\n\nA projects page that lists each case study as a card.\nA blog or progress log, newest first, with categories to filter.\nA publications or presentations page with a table view."
+  },
+  {
+    "objectID": "listings.html#how-do-i-set-one-up",
+    "href": "listings.html#how-do-i-set-one-up",
+    "title": "Listings in Quarto",
+    "section": "How do I set one up?",
+    "text": "How do I set one up?\nAdd a listing: block to a page’s YAML and put the documents in a folder:\nlisting:\n  contents: posts          # folder of .qmd files\n  type: grid               # or: default, table\n  sort: \"date desc\"        # newest first\n  categories: true         # show category filters\n  fields: [date, title, description, categories]\nEach post needs title, date, description, and categories in its own YAML."
+  },
+  {
+    "objectID": "listings.html#what-does-a-listing-look-like",
+    "href": "listings.html#what-does-a-listing-look-like",
+    "title": "Listings in Quarto",
+    "section": "What does a listing look like?",
+    "text": "What does a listing look like?\nThe cards below are generated from the posts/ folder. They show my CEP progress notes.\n\n\n   \n    \n    \n      Order By\n      Default\n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Title\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\nPlanning for data access\n\n\n\nCEP\n\nData\n\n\n\nWhat we learned about Clover and GA4, and the fallback plan.\n\n\n\nOct 23, 2026\n\n\n\n\n\n\n\n\n\n\nFrom project objectives to analytics objectives\n\n\n\nCEP\n\nMethods\n\n\n\nHow what the client wants becomes what we analyze.\n\n\n\nOct 6, 2026\n\n\n\n\n\n\n\n\n\n\nWhy the Farm Store needs one connected online system\n\n\n\nCEP\n\nFarm Store\n\n\n\nFour problems at the store, and why we treat them as one connected system.\n\n\n\nSep 29, 2026\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/one-system.html",
+    "href": "posts/one-system.html",
+    "title": "Why the Farm Store needs one connected online system",
+    "section": "",
+    "text": "The CPP Farm Store has four gaps that look separate but connect: customers finding the store (search), seeing what is in stock (the online store versus Clover), whether the assortment matches what sells, and whether customers come back (loyalty). Our group treats them as one system, with one analytics objective for each."
+  },
+  {
+    "objectID": "posts/po-to-ao.html",
+    "href": "posts/po-to-ao.html",
+    "title": "From project objectives to analytics objectives",
+    "section": "",
+    "text": "A project objective (PO) says what the client wants for the business. An analytics objective (AO) says what we will analyze to help. For example, “replace punch cards” (PO4) becomes “what predicts customers’ intention to use a digital loyalty program” (AO4)."
+  },
+  {
+    "objectID": "posts/data-access.html",
+    "href": "posts/data-access.html",
+    "title": "Planning for data access",
+    "section": "",
+    "text": "Clover access is still being decided. The store’s Clover administrator may be able to pull exports for any date range if direct access is not possible, and there is no GA4 property yet, so web analytics will only cover the period after setup. Public tools like Lighthouse and Google Keyword Planner can start now."
+  },
+  {
+    "objectID": "deliverable.html",
+    "href": "deliverable.html",
+    "title": "M10 Hands-on Practice: Sharing Outputs with the Audience",
+    "section": "",
+    "text": "My published website"
+  },
+  {
+    "objectID": "deliverable.html#where-can-i-see-my-website",
+    "href": "deliverable.html#where-can-i-see-my-website",
+    "title": "M10 Hands-on Practice: Sharing Outputs with the Audience",
+    "section": "",
+    "text": "My published website"
+  },
+  {
+    "objectID": "deliverable.html#where-is-the-code",
+    "href": "deliverable.html#where-is-the-code",
+    "title": "M10 Hands-on Practice: Sharing Outputs with the Audience",
+    "section": "Where is the code?",
+    "text": "Where is the code?\nMy GitHub repository"
+  }
+]

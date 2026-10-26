@@ -1,0 +1,42 @@
+---
+title: "Dani Meza"
+subtitle: "Digital Marketing Analytics | E-commerce | SEO"
+about:
+  template: trestles
+  image: images/profile.jpg
+  image-width: 14em
+  image-shape: round
+  links:
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/YOUR-LINKEDIN
+    - icon: github
+      text: GitHub
+      href: https://github.com/YOUR-GITHUB-USERNAME
+---
+
+## Who am I, and what am I working toward?
+
+I'm a digital marketing specialist finishing my M.S. in Digital Marketing Analytics at Cal Poly Pomona. I like turning website, sales, and customer data into decisions a small team can act on.
+
+::: highlight
+**Career goal:** a Digital Marketing Manager or E-commerce Marketing Specialist role in retail and e-commerce, where I can connect search, site, and sales data to growth.
+:::
+
+## What can I do?
+
+| Area | What I work with |
+|:---------------|:--------------------------------------------|
+| Digital marketing | Social media, email marketing, content creation |
+| Web and search | SEO, website management |
+| Media | Podcast production, video editing |
+| Analytics | R and Quarto, Google Analytics, Clover and Qualtrics data (CEP) |
+
+## Where did I study?
+
+- **M.S., Digital Marketing Analytics**, Cal Poly Pomona (in progress)
+- **B.S., Business Administration (Marketing)**, UC Riverside
+
+## What am I working on now?
+
+My Culminating Experience Project (CEP) is with the **CPP Farm Store at Kellogg Ranch**. I'm responsible for analyzing the Clover-Online storefront. See the [CEP dashboard](dashboard.qmd) for a preview of how that analysis will look.

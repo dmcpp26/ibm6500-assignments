@@ -1,0 +1,8 @@
+---
+title: "Planning for data access"
+date: "2026-10-23"
+description: "What we learned about Clover and GA4, and the fallback plan."
+categories: [CEP, Data]
+---
+
+Clover access is still being decided. The store's Clover administrator may be able to pull exports for any date range if direct access is not possible, and there is no GA4 property yet, so web analytics will only cover the period after setup. Public tools like Lighthouse and Google Keyword Planner can start now.

@@ -1,0 +1,85 @@
+---
+title: "Styling a Quarto Website with CSS and SCSS"
+---
+
+## Why would I style my website beyond a built-in theme?
+
+Quarto ships with Bootswatch themes (like `cosmo`, which this site starts from), but a theme looks like everyone else's site. CSS and SCSS let me add a consistent brand: colors, fonts, spacing, and reusable components. This whole site uses the green and gold from our CEP presentation.
+
+## What is the difference between CSS and SCSS?
+
+::: {.panel-tabset}
+
+### CSS
+
+Plain CSS is a list of rules. It is loaded with `css:` in the YAML and applied on top of the theme.
+
+```{.yaml}
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+```
+
+```{.css}
+.highlight {
+  background: #FAF6EE;
+  border-left: 5px solid #C48A3A;
+}
+```
+
+### SCSS
+
+SCSS (Sass) adds variables, nesting, and the ability to change the theme's own settings. It is loaded inside `theme:` and has two sections.
+
+```{.yaml}
+format:
+  html:
+    theme: [cosmo, styles.scss]
+```
+
+```{.scss}
+/*-- scss:defaults --*/
+$farm-green: #1F3A2E;
+$primary: $farm-green;      // changes the navbar, buttons, and links
+
+/*-- scss:rules --*/
+.highlight {
+  border-left: 5px solid #C48A3A;
+}
+```
+
+:::
+
+## When do I use `scss:defaults` and when do I use `scss:rules`?
+
+| Section | What it does | Example from this site |
+|:-----------------|:--------------------------------|:---------------------|
+| `scss:defaults` | Sets Bootstrap variables before the theme is built, so changes flow through the whole site | `$primary`, `$link-color`, `$font-family-sans-serif` |
+| `scss:rules` | Adds or overrides specific styles after the theme is built | `.highlight`, navbar hover color, heading underlines |
+
+## What does it look like when it works?
+
+This box uses a custom class from `styles.scss`. I applied it with a fenced div:
+
+```{.markdown}
+::: highlight
+**Tip:** use classes for anything you reuse.
+:::
+```
+
+::: highlight
+**Tip:** use classes for anything you reuse. Changing the color once in `styles.scss` updates every box on the site.
+:::
+
+The heading above each section also gets the gold underline from one rule: `h1.title, h2 { border-bottom: 3px solid $farm-gold; }`.
+
+## How do I style just one page or one element?
+
+- **One element:** add a class or inline attributes, like `[text]{style="color:#C48A3A;"}` or `::: {.highlight}`.
+- **One page:** put `css:` (or a `<style>` block) in that page's own YAML instead of the site's `_quarto.yml`.
+- **Light and dark:** give the theme two files, such as `theme: {light: [cosmo, styles.scss], dark: [darkly, styles-dark.scss]}`.
+
+## What did I learn?
+
+Set colors and fonts once in `scss:defaults`, keep one-off tweaks in `scss:rules`, and use named classes so the content stays clean. After each change, re-render to see it.

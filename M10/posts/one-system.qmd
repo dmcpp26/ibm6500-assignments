@@ -1,0 +1,8 @@
+---
+title: "Why the Farm Store needs one connected online system"
+date: "2026-09-29"
+description: "Four problems at the store, and why we treat them as one connected system."
+categories: [CEP, Farm Store]
+---
+
+The CPP Farm Store has four gaps that look separate but connect: customers finding the store (search), seeing what is in stock (the online store versus Clover), whether the assortment matches what sells, and whether customers come back (loyalty). Our group treats them as one system, with one analytics objective for each.

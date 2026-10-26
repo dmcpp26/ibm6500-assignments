@@ -1,0 +1,29 @@
+---
+title: "CEP Dashboard"
+subtitle: "A portal to the Farm Store dashboard"
+---
+
+## What is this dashboard?
+
+This page links to a [Quarto dashboard](cep-dashboard.qmd) built for my Culminating Experience Project (CEP) with the CPP Farm Store at Kellogg Ranch. It shows how I plan to track online storefront performance (AO1): conversion, online revenue share, and which products have mismatches between the point of sale (Clover) and the online store.
+
+::: highlight
+**Illustrative data only.** The Farm Store's real Clover and GA4 data are not available yet, so this dashboard uses simulated weekly numbers. The layout and logic are what will carry over once the real exports arrive.
+:::
+
+[Open the full dashboard](cep-dashboard.html){.btn .btn-primary target="_blank"}
+
+## What will I see in it?
+
+1. **Headline numbers:** online revenue, average conversion rate, and the number of mismatched items.
+2. **Trends:** weekly conversion rate and online revenue share.
+3. **Products:** which categories carry the most mismatches.
+4. **Details:** a searchable table of the underlying weekly data.
+
+## Can I preview it here?
+
+<iframe src="cep-dashboard.html" width="100%" height="1000" style="border:1px solid #ddd; border-radius:6px;" title="CEP dashboard preview"></iframe>
+
+## How was it built?
+
+The dashboard is a single QMD file with `format: dashboard`. Layout comes from headings (rows and columns), value boxes use `{.valuebox}`, and each chart is an R code chunk. See the [CSS/SCSS](css.qmd) and [Listings](listings.qmd) pages for the other pieces of this site.
