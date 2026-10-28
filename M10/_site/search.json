@@ -320,5 +320,12 @@
     "title": "Portfolio Website Project Proposal",
     "section": "What are the deliverables?",
     "text": "What are the deliverables?\n\nThis QMD file (portfolio-proposal.qmd)\nThe HTML file rendered from it (portfolio-proposal.html)"
+  },
+  {
+    "objectID": "M10-Portfolio Web Proposal/portfolio-proposal.html#what-am-i-proposingto-build",
+    "href": "M10-Portfolio Web Proposal/portfolio-proposal.html#what-am-i-proposingto-build",
+    "title": "Portfolio Website Project Proposal",
+    "section": "",
+    "text": "I will build a Quarto portfolio website for job applications in e-commerce and digital marketing analytics, hosted on Netlify and updated through GitHub. The site is aimed at hiring managers for roles such as Marketing Analyst, E-commerce Marketing Specialist, and Digital Marketing Manager. I chose the Marketing Data and Analytics track because it connects my marketing background, my M.S. coursework, and my Culminating Experience Project (CEP).\n\n\n\n\n\n\n\n\nPage\nWhat it shows\nMain audience\n\n\n\n\nHome\nIntroduction and personal statement\nRecruiters and hiring managers\n\n\nDigital Marketing Projects\n2 to 3 projects on content, strategy, and brand\nMarketing managers\n\n\nMarketing Analytics Projects\n3 blog-style projects (list below)\nAnalytics and e-commerce leads\n\n\nResume\nCV built with Markdown and the vitae package\nRecruiters\n\n\n\nThe GA4 traffic report and the Revealjs presentation are projects inside the Marketing Analytics tab, not separate tabs, as the instructions require."
   }
 ]

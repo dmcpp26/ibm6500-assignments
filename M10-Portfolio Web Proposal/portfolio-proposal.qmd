@@ -12,7 +12,7 @@ format:
     embed-resources: true
 ---
 
-## What am I proposing to build?
+## What am I proposingto build?
 
 I will build a Quarto portfolio website for job applications in e-commerce and digital marketing analytics, hosted on Netlify and updated through GitHub. The site is aimed at hiring managers for roles such as Marketing Analyst, E-commerce Marketing Specialist, and Digital Marketing Manager. I chose the **Marketing Data and Analytics** track because it connects my marketing background, my M.S. coursework, and my Culminating Experience Project (CEP).
 
