@@ -1,0 +1,165 @@
+---
+title: "Portfolio Website Project Proposal"
+subtitle: "M10: Marketing Data and Analytics Track"
+author: "Danielle Meza"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: false
+    theme: cosmo
+    embed-resources: true
+---
+
+## What am I proposing to build?
+
+I will build a Quarto portfolio website for job applications in e-commerce and digital marketing analytics, hosted on Netlify and updated through GitHub. The site is aimed at hiring managers for roles such as Marketing Analyst, E-commerce Marketing Specialist, and Digital Marketing Manager. I chose the **Marketing Data and Analytics** track because it connects my marketing background, my M.S. coursework, and my Culminating Experience Project (CEP).
+
+| Page | What it shows | Main audience |
+|:------------------|:--------------------------------------|:------------------|
+| Home | Introduction and personal statement | Recruiters and hiring managers |
+| Digital Marketing Projects | 2 to 3 projects on content, strategy, and brand | Marketing managers |
+| Marketing Analytics Projects | 3 blog-style projects (list below) | Analytics and e-commerce leads |
+| Resume | CV built with Markdown and the `vitae` package | Recruiters |
+
+The GA4 traffic report and the Revealjs presentation are **projects inside the Marketing Analytics tab**, not separate tabs, as the instructions require.
+
+## What will the Home page say?
+
+**Project title:** Home: introduction and personal statement.
+
+**Data and source:** My own background: M.S. in Digital Marketing Analytics (Cal Poly Pomona), B.S. in Business Administration, Marketing (UC Riverside), and my current digital marketing work.
+
+**Managerial problem:** A hiring manager has about 30 seconds to decide whether a candidate can connect marketing work to measurable results.
+
+**Audience:** Recruiters and hiring managers in retail and e-commerce.
+
+**Objective:** In one screen, answer who I am, what role I want, and what I can do.
+
+**Expected impact:** A visitor can find my best project in one click, and my statement matches the roles I apply for.
+
+**Methods:** Quarto `about` page template with photo, a short statement, skills, and education, plus links to my best two projects.
+
+## What will the Digital Marketing Projects page include?
+
+This page holds 2 to 3 projects that show creative, strategic, and brand work. The three below are drafts to be replaced or confirmed with my real work (see "What still needs to be confirmed?").
+
+### Project DM1: Content and social media strategy
+
+| Item | Plan |
+|:-----------------|:-------------------------------------------------------|
+| Project title | Content calendar and brand voice for a small retail business |
+| Data and source | Past post performance exports (impressions, engagement, clicks) from the platform's own analytics |
+| Managerial problem | Posts are made without a clear theme, so it is unclear which content earns attention or visits |
+| Audience | Small business owner or marketing manager |
+| Objectives | Which content themes earn the most engagement? What posting plan follows from that? |
+| Expected impact | A 4-week content calendar tied to goals, and a short brand voice guide |
+| Methods | Descriptive analysis of engagement by theme and format; positioning statement; calendar built from the results |
+
+### Project DM2: Email marketing campaign
+
+| Item | Plan |
+|:-----------------|:-------------------------------------------------------|
+| Project title | Email campaign refresh and test plan |
+| Data and source | Email platform reports (sends, opens, clicks) |
+| Managerial problem | Emails go out regularly, but the team does not know which subject lines and offers drive clicks |
+| Audience | Marketing manager |
+| Objectives | Which subject-line styles and send times improve click rate? |
+| Expected impact | A tested template and a simple A/B testing routine |
+| Methods | Click and open rate comparison; two-proportion z-test for A/B results |
+
+### Project DM3: Website and SEO improvement
+
+| Item | Plan |
+|:-----------------|:-------------------------------------------------------|
+| Project title | SEO and usability audit of a small-business website |
+| Data and source | Lighthouse audit and Google Keyword Planner (public tools) |
+| Managerial problem | The site is hard to find in search and slow on mobile |
+| Audience | Business owner or web manager |
+| Objectives | What are the highest-impact fixes for search visibility and speed? |
+| Expected impact | A ranked fix list with expected effort and benefit |
+| Methods | Lighthouse scores, keyword volume and difficulty comparison, priority matrix |
+
+## What will the Marketing Analytics Projects page include?
+
+This is a blog-style page with three projects. Each follows the same structure as a typical analytics report: problem, data, method, results, and recommendations.
+
+### Project MA1: Revealjs presentation on online storefront performance (from my CEP)
+
+| Item | Plan |
+|:-----------------|:-------------------------------------------------------|
+| Project title | Do mismatches between the store's point of sale and its online catalog cost online sales? |
+| Data and source | My portion of the CEP (AO1). To protect the client, the public version will use **simulated weekly data** with the same structure as the real export (sessions, orders, conversion rate, mismatches by category), and the client will be described as "a campus retail store". No real client data or name will be posted on GitHub. |
+| Managerial problem | Online sales are low and the team cannot tell whether stock, price, or listing mismatches are part of the cause |
+| Audience | The store's general manager and a marketing director |
+| Objectives | RQ: Which mismatch types are associated with lower conversion rate and online revenue share? Hypothesis: more mismatches are associated with lower conversion. |
+| Expected impact | A short list of the mismatches worth fixing first, and a method the store could reuse on its own data |
+| Methods | Data wrangling in R (tidyverse), weekly regression of conversion rate on mismatch measures with controls for traffic and promotion weeks, item fixed effects, before/after comparison, charts with ggplot2, Revealjs presentation |
+
+### Project MA2: GA4 traffic analysis of this portfolio website
+
+| Item | Plan |
+|:-----------------|:-------------------------------------------------------|
+| Project title | Who visits my portfolio site, and what do they look at? |
+| Data and source | GA4 data from this website, linked to Google Search Console and exported to BigQuery |
+| Managerial problem | I need to know whether the site reaches the right visitors and which pages hold their attention, as a small test of a real marketing site |
+| Audience | Me as site owner, and hiring managers who see the report as a work sample |
+| Objectives | Which channels bring visitors? Which pages get engagement? Which search queries lead to the site? |
+| Expected impact | Data-based changes to site content and navigation |
+| Methods | GA4 setup, Search Console indexing and GA4 link, BigQuery export and SQL, Looker Studio dashboard, Quarto report with insights |
+
+*Limitation:* a new personal site will have small traffic, so I will report trends carefully and avoid strong claims.
+
+### Project MA3: Marketing analytics case study from coursework
+
+| Item | Plan |
+|:-----------------|:-------------------------------------------------------|
+| Project title | Customer segmentation and targeting case study (course case or public retail dataset) |
+| Data and source | A course case dataset or a public retail dataset |
+| Managerial problem | A retailer sends the same message to every customer and wants to focus on the most valuable ones |
+| Audience | Chief marketing officer |
+| Objectives | Which customer segments are most valuable and how should their offers differ? |
+| Expected impact | A segment-based targeting plan with expected value |
+| Methods | RFM analysis, clustering or segment comparison (ANOVA or Kruskal-Wallis), visualizations, recommendations |
+
+## What will the Resume page include?
+
+**Project title:** Resume page (CV).
+
+**Data and source:** My education, work experience, skills, and projects.
+
+**Managerial problem:** Recruiters often screen from a one-page CV and want it consistent with the site.
+
+**Audience:** Recruiters and hiring managers.
+
+**Objective:** Produce a clean CV that can be rendered to HTML and PDF from one source.
+
+**Expected impact:** A single source for both the web page and a downloadable PDF.
+
+**Methods:** Markdown with the `vitae` package, tailored to the digital marketing analytics roles I am applying for.
+
+## How will I confirm the work is on track?
+
+| Step | Task | Target |
+|:--------------------|:-------------------------------------------|:----------------|
+| 1 | Set up the site from the course template, push to GitHub, deploy on Netlify | Early Nov |
+| 2 | Add GA4 and Search Console, link them, start the BigQuery export (starts collecting data) | Early Nov |
+| 3 | Draft Home, Resume, and Digital Marketing pages | Mid Nov |
+| 4 | Build the Revealjs presentation (MA1) with simulated data | Mid to late Nov |
+| 5 | Write the GA4 report with the data collected so far (MA2) and the case study (MA3) | Late Nov to Dec |
+| 6 | Final check of links, confidentiality, and rendering | Before the deadline |
+
+*Dates are my plan, not course deadlines. I will adjust them to the course schedule.*
+
+## What still needs to be confirmed?
+
+- The three Digital Marketing projects (DM1 to DM3) are drafts. I will replace them with real work I can show publicly, and I will not post any client's confidential material.
+- The CEP version on the public site will use simulated data unless my client and instructor approve sharing real data.
+- The MA3 dataset (course case or public retail data) is not chosen yet.
+- GA4 only has data from the day I install it, so the report will cover a short period.
+
+## What are the deliverables?
+
+1. This QMD file (`portfolio-proposal.qmd`)
+2. The HTML file rendered from it (`portfolio-proposal.html`)
