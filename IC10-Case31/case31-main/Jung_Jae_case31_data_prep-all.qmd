@@ -1,0 +1,737 @@
+---
+title: "Data Preparation for Case 31"
+subtitle: "Complete Version"
+author: "Jae Jung"
+institute: "Cal Poly Pomona"
+date: "`r Sys.Date()`"
+format: 
+  html:
+    footer: Case 31 Project
+    transition: slide
+    transition-speed: default
+    toc: true
+    toc-depth: 4
+    slide-number: true
+    scrollable: true
+    smaller: true
+    code-fold: false
+    code-overflow: wrap
+    code-copy: true
+    number-sections: true
+    embed-resources: true
+    self-contained-math: true
+  pdf: default
+  docx: default
+editor: visual
+execute: 
+  message: false
+  echo: true
+  freeze: auto
+---
+
+# Libraries {background-color="aquamarine"}
+
+## Loading common packages
+
+```{r}
+#| message: false
+# install.packages("haven")
+library(tidyverse)
+library(haven) 
+library(labelled) 
+library(sjlabelled)
+library(janitor) 
+library(sjPlot)
+library(psych)
+set_theme(theme_minimal())
+```
+
+# Setting Up Data {background-color="aquamarine"}
+
+## Reading SPSS data {.smaller}
+
+```{r}
+#| output-location: fragment
+
+data <- read_sav("Case 31 Data_efcu_1.sav")
+data <- data |> 
+  clean_names()
+
+# generate data dictionary
+data |>
+  view_df()
+
+```
+
+# Data Preparation {background-color="aquamarine"}
+
+## Attitudes towards Employee Proficiency {.smaller}
+
+### q3
+
+```{r}
+data |> # ctr + shift + M
+  count(q3) |> 
+  mutate(percent = n/sum(n))
+```
+
+------------------------------------------------------------------------
+
+```{r}
+five_pt_likert <-  c("Strongly Disagree" = 1,
+                      "Disagree" = 2,
+                      "Uncertain" = 3,
+                      "Agree" = 4,
+                      "Strongly Agree" = 5)
+data_clean <- data |> 
+  set_value_labels(q3 = five_pt_likert) |> 
+  set_variable_labels(q3 = "Employees are Courteous")
+
+# confirmation
+data_clean |> 
+  select(q3) |> 
+  var_label() 
+
+data_clean |> 
+  select(q3) |> 
+  val_labels() |> 
+  unique()
+```
+
+------------------------------------------------------------------------
+
+### q4 {.smaller}
+
+```{r}
+data_clean <-  data_clean |> 
+  set_variable_labels(q4 = "Employees are helpful") |> 
+  set_value_labels(q4 = five_pt_likert) 
+
+data_clean |> 
+  select(q4) |>
+  var_label()
+
+data_clean |> 
+  select(q4) |> 
+  val_labels() |> 
+  unique()
+```
+
+------------------------------------------------------------------------
+
+### q5 and q6
+
+```{r}
+data_clean <- data_clean |> 
+  set_variable_labels(q5 = "Employees are professional") |> 
+  set_value_labels(q5 = five_pt_likert) |> 
+  set_variable_labels(q6 = "Employees are available") |> 
+  set_value_labels(q6 = five_pt_likert)
+
+data_clean |> 
+  select(q5, q6) |>
+  var_label()
+
+data_clean |> 
+  select(q5) |> 
+  val_labels() |> 
+  unique()
+
+data_clean |> 
+  select(q6) |> 
+  val_labels() |> 
+  unique()
+```
+
+------------------------------------------------------------------------
+
+### Reliability analysis
+
+```{r}
+#| output-location: fragment
+
+data_clean |> 
+  select(q3:q6) |> 
+  alpha() #.87: cutoff is .70
+```
+
+------------------------------------------------------------------------
+
+### Factor analysis
+
+::: panel-tabset
+#### Factor Analysis
+
+```{r}
+data_clean |> 
+  select(q3:q6) |> 
+  factanal(factors = 1, rotation = "none")
+```
+
+#### Diagram
+
+```{r}
+data_clean |> 
+  select(q3:q6) |> 
+  fa(nfactors = 1, rotate = "none") |> 
+  fa.diagram()
+
+```
+:::
+
+------------------------------------------------------------------------
+
+### PCA (Principle Component Analysis)
+
+```{r}
+data_clean |>
+  select(q3:q6) |> 
+  prcomp(scale. = TRUE) |> 
+  summary() # % of variance explained by the first factor
+```
+
+------------------------------------------------------------------------
+
+### Scree plot
+
+```{r}
+data_clean |> 
+  select(q3:q6) |> 
+  scree()
+```
+
+------------------------------------------------------------------------
+
+### Creating a composite scale
+
+```{r}
+#| output-location: fragment
+
+data_clean <- data_clean |> 
+  mutate(at_emp = rowMeans(across(q3:q6), na.rm = TRUE)) 
+
+# from psych: descriptive statistics
+describe(data_clean$at_emp)
+
+```
+
+## q7r: Savings Rate {.smaller}
+
+::::: columns
+::: {.column width="40%"}
+```{r}
+data_clean |> count(q7)
+```
+:::
+
+::: {.column width="60%"}
+```{r}
+#| output-location: fragment
+
+data_clean <- data_clean |> 
+  mutate(q7r = case_when(q7 == 1 ~ 5,
+                         q7 == 2 ~ 4,
+                         q7 == 3 ~ 3,
+                         q7 == 4 ~ 2,
+                         q7 == 5 ~ 1,
+                         TRUE    ~ NA)) |> 
+  set_variable_labels(q7r = "Savings rates") |> 
+  set_value_labels(q7r = c("Very Low" = 1,
+                           "Low" = 2,
+                           "Average" = 3,
+                           "High" = 4,
+                           "Very High" = 5))
+
+data_clean |> count(q7r)
+```
+:::
+:::::
+
+## q8r: Fund borrowing rates
+
+```{r}
+#| output-location: fragment
+
+data_clean |> count(q8)
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#| output-location: fragment
+
+data_clean <- data_clean |> 
+  mutate(q8r = case_when(q8 == 1 ~ 5,
+                         q8 == 2 ~ 4,
+                         q8 == 3 ~ 3,
+                         q8 == 4 ~ 2,
+                         q8 == 5 ~ 1,
+                         TRUE    ~ NA)) |> 
+  set_variable_labels(q8r = "Fund borrowing rates") |> 
+  set_value_labels(q8r = c("Very Low" = 1,
+                           "Low" = 2,
+                           "Average" = 3,
+                           "High" = 4,
+                           "Very High" = 5))
+
+data_clean |> count(q8r)
+```
+
+------------------------------------------------------------------------
+
+## q9r: Statement Frequency
+
+```{r}
+#| output-location: fragment
+
+data_clean |> count(q9)
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#| output-location: fragment
+
+data_clean |> 
+  select(q9) |> 
+  class()
+data_clean <- data_clean |> 
+  mutate(q9r = 6 - q9) |> 
+  set_variable_labels(q9r = "Statement Frequency") |> 
+  set_value_labels(q9r = c("Never" = 1,
+                           "Not Often Enough" = 2,
+                           "About Right" = 3,
+                           "Very Often" = 4,
+                           "Too Often" = 5))
+data_clean |> count(q9r)  
+```
+
+------------------------------------------------------------------------
+
+## q10r: Statement Accuracy
+
+```{r}
+#| output-location: fragment
+
+data_clean |> count(q10)
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#| output-location: fragment
+
+data_clean <- data_clean |> 
+  mutate(q10r = 5 - q10) |> 
+  set_variable_labels(q10r = "Statement Accuracy") |> 
+  set_value_labels(q10r = c("Poor" = 1,
+                           "Fair" = 2,
+                           "Good" = 3,
+                           "Excellent" = 4))
+data_clean |> count(q10r)  
+```
+
+## Awareness of Financial Services
+
+```{r}
+aware_scale_3 <- c("Unaware" = 1,
+                   "Aware but Have Not Used" = 2,
+                   "Aware and Have Used" = 3)
+```
+
+### q13r
+
+```{r}
+#| output-location: fragment
+
+data_clean |> count(q13)
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#| output-location: fragment
+
+data_clean <- data_clean |> 
+  mutate(q13r = 4 - q13) |> 
+  set_variable_labels(q13r = "Regular share account") |> 
+  set_value_labels(q13r = aware_scale_3)
+
+data_clean |> count(q13r)  
+```
+
+### Creating a function
+
+```{r}
+library(rlang)
+
+aware_recode <- function(tbl, var, var_label) {
+  
+  varr <- paste0(rlang::as_string(ensym(var)), "r")
+  
+  tbl <- tbl |> 
+  mutate(!!varr := 4 - as.numeric({{var}})) |> 
+  set_variable_labels(!!varr := var_label) |> 
+  set_value_labels(!!varr := aware_scale_3)
+  
+  return(tbl)
+ 
+}
+
+```
+
+### q14r
+
+```{r}
+#| output-location: fragment
+
+data_clean |> count(q14)
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#| output-location: fragment
+
+data_clean <- data_clean |> 
+  aware_recode(q14, "Special subaccounts")
+
+data_clean |> count(q14r)  
+
+```
+
+### q15r-q26
+
+#### functions that didn't work
+
+```{r}
+#| eval: false
+#| echo: false
+
+library(purrr)
+
+variables <- c("q15", "q16", "q17", "q18", "q19", "q20", "q21", "q22", "q23", "q24", "q25", "q26")
+
+variables <- c("q15", "q16", "q17")
+labels <- c("Christmas club account", "IRA", "Master credit card")
+
+data_clean_new <- map2(
+  variables, labels, ~ aware_recode(data_clean, .x, .y)
+  ) 
+```
+
+### q15r
+
+```{r}
+#| output-location: fragment
+
+data_clean |> count(q15)
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#| output-location: fragment
+
+data_clean <- data_clean |> 
+  aware_recode(q15, "Christmas club account")
+
+data_clean |> count(q15r)  
+```
+
+### q16r
+
+```{r}
+#| output-location: fragment
+
+data_clean |> count(q16)
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#| output-location: fragment
+
+data_clean <- data_clean |> 
+  aware_recode(q16, "IRA")
+  
+data_clean |> count(q16r)  
+```
+
+### q17r
+
+```{r}
+#| output-location: fragment
+
+data_clean |> count(q17)
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#| output-location: fragment
+
+data_clean <- data_clean |> 
+  aware_recode(q17, "Master credit card")
+  
+data_clean |> count(q17r)  
+```
+
+### q18r
+
+```{r}
+#| output-location: fragment
+
+data_clean |> count(q18)
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#| output-location: fragment
+
+data_clean <- data_clean |> 
+  aware_recode(q18, "Signature loans")
+
+data_clean |> count(q18r)  
+```
+
+### q19r
+
+```{r}
+#| output-location: fragment
+
+data_clean |> count(q19)
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#| output-location: fragment
+
+data_clean <- data_clean |> 
+  aware_recode(q19, "New car loans")
+
+data_clean |> count(q19r)  
+```
+
+### q20r
+
+```{r}
+#| output-location: fragment
+
+data_clean |> count(q20)
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#| output-location: fragment
+
+data_clean <- data_clean |> 
+  aware_recode(q20, "Late model car loans")
+
+data_clean |> count(q20r)  
+```
+
+### q21r
+
+```{r}
+#| output-location: fragment
+
+data_clean |> count(q21)
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#| output-location: fragment
+
+data_clean <- data_clean |> 
+  aware_recode(q21, "Older model car loans")
+
+data_clean |> count(q21r)  
+```
+
+### q22r
+
+```{r}
+data_clean |> count(q22)
+
+data_clean <- data_clean |> 
+  aware_recode(q22, "Household goods loans")
+
+data_clean |> count(q22r)  
+```
+
+### q23r
+
+```{r}
+data_clean |> count(q23)
+
+data_clean <- data_clean |> 
+  aware_recode(q23, "Recreational loans")
+
+data_clean |> count(q23r)  
+```
+
+### q24r
+
+```{r}
+data_clean |> count(q24)
+
+data_clean <- data_clean |> 
+  aware_recode(q24, "Share collateralized loan")
+
+data_clean |> count(q24r)  
+```
+
+### q25r
+
+```{r}
+data_clean |> count(q25)
+
+data_clean <- data_clean |> 
+  aware_recode(q25, "IRA loans")
+
+data_clean |> count(q25r)  
+```
+
+### q26r
+
+```{r}
+data_clean |> count(q26)
+
+data_clean <- data_clean |> 
+  aware_recode(q26, "Line of credit loans")
+
+data_clean |> count(q26r)  
+```
+
+## q30 - q34 {.smaller}
+
+```{r}
+
+data_clean <- data_clean |> 
+  set_value_labels(q30 = five_pt_likert,
+                   q31 = five_pt_likert,
+                   q32 = five_pt_likert,
+                   q33 = five_pt_likert,
+                   q34 = five_pt_likert) 
+```
+
+## q37r
+
+```{r}
+#| output-location: fragment
+
+data_clean |> count(q37)
+```
+
+------------------------------------------------------------------------
+
+```{r}
+#| output-location: fragment
+
+data_clean <- data_clean |> 
+  mutate(q37r = case_when(q37 == 1 ~ 5,
+                          q37 == 2 ~ 4,
+                          q37 == 3 ~ 3,
+                          q37 == 4 ~ 2,
+                          q37 == 5 ~ 1,
+                          q37 == 6 ~ NA)) |> 
+  set_value_labels(q37r = c("Very Poor" = 1,
+                            "Poor" = 2,
+                            "Average" = 3,
+                            "Good" = 4,
+                            "Excellent" = 5))
+
+data_clean |> count(q37r)
+```
+
+# Renaming Clean Data
+
+```{r}
+data_preped <- data_clean
+
+data_preped |> 
+  view_df()
+```
+
+# Exporting Prepped Data
+
+## SPSS data
+
+```{r}
+#| eval: false
+
+data_preped |> 
+  write_sav("Case 31 Data_efcu_Prepped.sav")
+
+```
+
+## Excel Data as Metadata
+
+```{r}
+#| eval: false
+
+library(writexl)
+
+data_preped |> 
+  write_xlsx("Case 31 Data_efcu_Prepped.xlsx")
+
+```
+
+# Appendix
+
+## alternative way using select(): in this case, we need to use anonymous function
+
+```{r}
+#| eval: false
+#| echo: true
+
+data_clean |>
+  (\(df) df |> 
+    mutate(row_mean = rowMeans(select(df, q3, q4, q5, q6), na.rm = TRUE))
+  )() |> 
+  select(row_mean)
+```
+
+## Alternative way to create a recode function for awareness
+
+```{r}
+#| eval: false
+#| 
+aware_recode <- function(tbl, var, var_label) {
+  
+  varr <- paste0(deparse(substitute(var)), "r")
+  
+  tbl <- tbl |> 
+  mutate(!!sym(varr) := 4 - {{var}}
+         ) |> 
+  set_variable_labels(!!sym(varr) := var_label) |> 
+  set_value_labels(!!sym(varr) := aware_scale_3)
+  
+  return(tbl)
+ 
+}
+
+```
+
+## Alternative way to another recode function for awareness
+
+```{r}
+#| eval: false
+aware_recode_alt <- function(tbl, var, var_label) {
+  
+  varr <- paste0(rlang::as_string(ensym(var)), "r")
+  
+  tbl <- tbl |> 
+  mutate(!!sym(varr) := 4 - as.numeric({{var}})) |> 
+  set_variable_labels(!!sym(varr) := var_label) |> 
+  set_value_labels(!!sym(varr) := aware_scale_3)
+  
+  return(tbl)
+ 
+}
+```
