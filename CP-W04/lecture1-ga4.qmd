@@ -195,5 +195,5 @@ ORDER BY event_date;
 
 # Links
 
-- GitHub Pages: \[add link\]
+- GitHub Pages: \[<https://dmcpp26.github.io/ibm6500-assignments/lecture1-ga4.html>\]
 - GitHub Repo: \[<https://github.com/dmcpp26/ibm6500-assignments>\]
