@@ -1,0 +1,117 @@
+---
+title: Class Notes for Week 07
+date: today
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    toc-expand: 1
+    toc-location: right-body
+    embed-resources: true
+    number-sections: true
+    code-link: true
+    code-fold: true
+    code-tools: true
+    code-overflow: wrap
+    theme: litera
+editor: visual
+execute:
+  freeze: auto
+---
+
+# Announcements
+
+- Guest Speaker Today! TRAVIS MILLER
+
+- Feedback from Falculty leads is still coming through - should be coming through on gradebook section of canvas
+
+- New Assginments have been opened up
+
+- Dr. Jung acknowledges work load - and he is working on leveling out the work load
+
+- Seek out feed back on survery from your faculty lead.
+
+- GA4 assignments are not going to be directly graded. they are Acting more a guidelines. We will be graded on out final presentation instead. But they are highly recommended guidelines.
+
+- CEP assignments are going rolling grades and removed from gradebook - presentations are really the weight of the grades
+
+- When feedback is ready - Dr. Jung will meet with each group to check in
+
+- Dr. Jung goes over Case 31 assignment
+
+  - We should not be charged by google - with the weight of this assignment. We wont make a dent in the free limit. Even is we forget to unsubscribe.
+
+### TRAVIS MILLER
+
+[[**Travis Miller**]{.underline}](https://www.linkedin.com/in/travismiller09/) is the **SVP (Senior Vice President) of Sales and Client Development at PureSpectrum**, a prominent market research technology and sample platform provider. 
+
+Key details regarding his role and background include:
+
+- **PureSpectrum Career:** He has been with PureSpectrum for over eight years. Before being promoted to Senior Vice President, he served as the company's Vice President of North American Sales for the West region.
+
+- **Industry Leadership:** He is highly active in the broader market research ecosystem, serving as the **President of the Insights Association West Chapter Board**.
+
+- **Professional Focus:** He has over 15 years of industry experience specializing in client success, sales leadership, and data quality within the market research sample space
+
+LINKEDIN - <https://www.linkedin.com/in/travismiller09/>
+
+1.  A Session with Travis Miller - sitting President for the west chapter
+2.  Insights Association
+    - National organization - Lobbying for the MR and insights community
+
+    - West chapter has 7 metro areas including Sand Deigo, Orang County, Los Angeles, Ventura..
+
+    - Membership is complimentary for full time University Students
+
+    - Community events jobs offers and hiring opportunities including internships, possibility to attend conferences.
+3.  Market Research and Insights Career Paths
+    - Market Research and Insights have a tremendous amount of career paths and opportunities. Impact on technology over the last 15 years in our industry has dramatically changes the type of careers available in our industry and will continue to change for the foreseeable future.
+
+      - Getting started can be challenging
+
+      - take courses that involve stats and econ
+
+      - Additionally, keep track of current events
+
+      - Find a problem that need answers, collect the data, provide answers
+
+    - Finding an internship, or opportunity to conduct market research
+
+      - Market research agencies are a great starting point
+
+        - find a Company that interests you
+
+        - Brands tend to look for more experience
+
+      - Vendors are an option, so compnaies that support market research but may not conduct the actual market reseacrch. Survey platforms, sample companies, interviewing locations
+
+        - Drawback - this is starting point you amke not get the analytical knowledge needed
+
+        - this does open a door to also to branch
+
+      - One you understand the basics, the options are limitless
+
+      - One area that i do not feel gets a lot of attention is the entrepreneurial spirit of the MR/insights
+4.  How technology is impacting the MR and insights Industry
+    2.  How we use technology to conduct data collection
+        - survey programming
+
+        - programmatic sampling
+
+        - Data analytics and report building
+    3.  Future tech we are seeing today start to happen
+        - Automated fieldwork
+
+        - Syntheic data and large datasets
+
+        - AI moderate Interviews
+5.  If I was in you shoes....
+    - JOIN YOUR LOCAL ASSOCIATION
+
+    - DO NOTE STOP SHAKING HANDS
+
+    - DO NOT STOP NETWORKING
+
+ADVICE: If you can find some where you can be in a office to work. Being in a office is the best way to learn. Don't be nervous to relocate.
+
+To join insights association: TBD - website is not clear.
