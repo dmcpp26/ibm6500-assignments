@@ -1,0 +1,304 @@
+---
+title: "Labelled Data and Two Rounds of Survey Cleaning in R"
+subtitle: "W10 Reflection: Labelled Data in R"
+author: "Danielle Meza"
+institute: "IBM 6500, Cal Poly Pomona"
+date: "`r Sys.Date()`"
+format:
+  revealjs:
+    theme: [serif, custom.scss]
+    width: 1600
+    height: 900
+    footer: "Labelled Data in R | Danielle Meza | IBM 6500"
+    logo: images/logo.png
+    transition: slide
+    transition-speed: default
+    incremental: false
+    toc: true
+    toc-depth: 1
+    slide-number: true
+    scrollable: true
+    smaller: true
+    code-fold: false
+    code-overflow: wrap
+    number-sections: false
+    number-depth: 5
+    embed-resources: true
+    css: styles.css
+bibliography: references.bib
+editor: visual
+execute:
+  echo: true
+  freeze: auto
+---
+
+# Part 1: Labelled Data and My CEP
+
+## What is labelled data, and why should I care? {.smaller}
+
+::: {.callout-note}
+## The prompt
+In Step 1, you learned how to read SPSS data into RStudio and conduct EDA and hypothesis testing. What is labelled data? Does your MSDM CEP involve labelled data? Explain why or why not.
+:::
+
+::: {.incremental}
+- **Labelled data** keeps *metadata* with the numbers: a **variable label** (the full question text) and **value labels** (what each code means, such as 1 = "Strongly disagree").
+- SPSS, SAS, and Stata files (`.sav`, `.sas7bdat`, `.dta`) store this metadata, and so does the **SPSS export from Qualtrics**.
+- A CSV or Excel export keeps only the numbers, so the labels are lost.
+- In R, `haven::read_sav()` brings the labels in as a `<dbl+lbl>` column.[@haven]
+:::
+
+::: {.notes}
+Say this in plain words: labelled data is a survey answer plus its dictionary. The workshop recommends reading the SPSS file instead of CSV for exactly this reason.
+:::
+
+## What does labelled data look like in R?
+
+```{r}
+#| label: labelled-demo
+library(haven)
+library(dplyr)
+library(tibble)
+
+# A small made-up survey, not real respondent data
+survey <- tibble(
+  id = 1:6,
+  germ_like = labelled(
+    c(7, 6, 2, 1, 5, 4),
+    labels = c("Strongly disagree" = 1, "Strongly agree" = 7),
+    label  = "It bothers me when people sneeze without covering"
+  ),
+  minutes = c(14, 8, 22, 35, 17, 12)
+)
+
+attr(survey$germ_like, "label")    # the variable label
+attr(survey$germ_like, "labels")   # the value labels
+```
+
+::: aside
+Made-up data, shown only to demonstrate how labels are stored and read.
+:::
+
+## Turning labels into something readable
+
+```{r}
+#| label: as-factor
+survey |>
+  mutate(germ_factor = as_factor(germ_like)) |>   # labels become factor levels
+  count(germ_factor)
+```
+
+. . .
+
+**Lesson:** codes without labels are easy to misread. `as_factor()` gives readable tables, but I keep the numeric version for averages.[^1]
+
+[^1]: Unlabelled values (such as 2 or 4 here) print as numbers. This is a clue that the dictionary has gaps.
+
+## Does my CEP involve labelled data? {.smaller}
+
+::: {.columns}
+::: {.column width="50%"}
+### My part (AO1): mostly no
+
+- My analysis uses **Clover** sales and inventory exports and **GA4** web events.
+- These arrive as **CSV or report exports**, so columns are plain numbers and text with no value labels.
+- The "labels" I need (SKU names, categories) are text columns I will check for consistency myself.
+:::
+
+::: {.column width="50%"}
+### The group survey (AO4): yes
+
+- Our loyalty-program survey is built in **Qualtrics**.
+- Qualtrics can export **SPSS**, which keeps question wording and answer labels.
+- So the survey data will be labelled, and the Step 1 to Step 3 workflow applies directly.
+:::
+:::
+
+::: {.fragment .fade-up}
+The CEP will use both kinds of data: **unlabelled** (Clover, GA4) and **labelled** (survey).
+:::
+
+## Which techniques help me reach my AO? {.smaller}
+
+::: {.callout-note}
+## The prompt
+What techniques are relevant for your MSDM CEP? Please elaborate on how these approaches might help you address your AO for CEP.
+:::
+
+| Technique from the workshop | How it helps my AO1 (Clover-online storefront) |
+|:----------------------------|:-----------------------------------------------|
+| **EDA** (counts, `describe`, percentages) | Check the size and shape of the Clover and GA4 exports before modeling |
+| **Data cleaning and recoding** (`dplyr`) | Fix SKU names, flag refunds, and standardize categories |
+| **Validation by cross-tab** | Confirm each recode is correct before using it |
+| **Joining datasets** | Link Clover and GA4 by product (SKU) and week |
+| **Hypothesis testing and regression** | Test whether mismatches go with lower conversion (H1) |
+| **Reproducible Quarto reports** | Re-run the same analysis when new exports arrive |
+
+::: {.notes}
+Be honest: the survey-specific tools (reverse coding, attention checks) belong to Cecilia's AO4, but our group shares the workflow.
+:::
+
+# Part 2: Initial Cleaning
+
+## What did the initial cleaning step do? {.smaller transition="zoom"}
+
+::: {.callout-note}
+## The prompt
+In Step 2, you saw the initial data cleaning process. Describe it and what lessons you got from it.
+:::
+
+**The data:** a post-pandemic mask-wearing survey collected in **Nov to Dec 2023**, programmed in **Qualtrics** and recruited through the **Prolific** panel.
+
+::: {.incremental}
+1. **Combine the sources.** Read the Qualtrics SPSS file (with labels) and the Prolific CSVs (two waves, same 19 columns), then join them on participant ID.
+2. **Screen who is eligible.** A short screening survey asked about hotels, Airbnb, coffee shops, salons and spas, and restaurants. Only 18 or older who had visited a coffee shop and stayed at least 15 minutes were invited to the main study. About **25%** qualified.
+3. **Check attention.** The main study repeated the coffee-shop question and added **attention-check** questions. Some people changed their answer and were removed.
+4. **Filter for payment status.** Keep Prolific records with an **approved** status. Accept "timed out" cases when responses were usable.
+5. **Check duplicates.** There were 799 unique IDs for 800 people. One ID appeared twice but belonged to two clearly different people (West Coast and East Coast), so both stayed. **[check numbers]**
+:::
+
+## Lessons from the initial cleaning {.smaller}
+
+::: {.incremental}
+- **Screen early.** Eligibility and attention checks filter out people who should not be in the analysis.
+- **Dropping people has a cost.** Respondents removed after payment mean money spent without usable data.
+- **Look before deleting.** The duplicate ID looked like an error, but inspecting the answers showed two real people.
+- **Metadata saves time.** Reading the SPSS file kept variable and value labels, which I would lose with CSV.
+- **Participation can be high.** About 95% of invited people took part, but quality still needed checking.
+:::
+
+::: {.notes}
+Keep this under two minutes. The key idea is that initial cleaning is about WHO is in the sample.
+:::
+
+# Part 3: Further Cleaning
+
+## What happens in the next phase of cleaning? {.smaller transition="fade"}
+
+::: {.callout-note}
+## The prompt
+In Step 3, you saw the next phase of data cleaning. Describe it and what the key takeaways are.
+:::
+
+The second phase focuses on the **variables I will analyze**, not just who is in the file.
+
+::: {.incremental}
+1. **Find the variables** in the questionnaire and list them in one place.
+2. **Check each variable** with counts and percentages (a small custom function repeats this for every item).
+3. **Reverse-code** reverse-worded items so that *high means high* on every item in a scale.
+4. **Recode wrong numbers.** Deleting and re-adding items in Qualtrics left gaps, such as values 11 and 12 on a 1 to 7 scale.
+5. **Fix labels** when numbers and labels disagree.
+6. **Verify every recode** by cross-tabulating old and new values.
+7. **Exclude low-quality responses** by attention-check failures and survey duration.
+:::
+
+## Reverse coding and recoding in R {.smaller}
+
+```{r}
+#| label: reverse-code
+# On a 1-7 scale, reverse = 8 - x  (7 becomes 1, 6 becomes 2, and so on)
+survey2 <- survey |>
+  mutate(germ_like_r = 8 - as.numeric(germ_like))
+
+# Verify: each old value should map to exactly one new value
+survey2 |> count(germ_like, germ_like_r)
+```
+
+```{r}
+#| label: case-match
+# Recode odd values to the intended scale with case_match()
+tibble(x = c(7, 6, 5, 2, 4)) |>
+  mutate(x_new = case_match(x, 7 ~ 1, 6 ~ 2, 5 ~ 3, .default = x))
+```
+
+::: {.fragment}
+**Key habit:** after every recode, group by the old variable, count the new one, and look for a clean **one-to-one match**. More than one row per old value means a problem.
+:::
+
+## Excluding low-quality responses {.smaller}
+
+```{r}
+#| label: duration-filter
+# Keep respondents between 10 and 30 minutes (made-up durations)
+survey |>
+  mutate(bad_time = minutes < 10 | minutes > 30) |>
+  filter(!bad_time) |>
+  nrow()
+```
+
+::: {.incremental}
+- Count how many **attention checks** each person failed: **648** never failed, **112** failed once, **31** failed twice, and about **9** failed three or more times. **[check]**
+- Combine with **duration**: under 10 minutes or over 30 minutes is a warning sign.
+- Remove only people who fail repeatedly and also look unreliable, and avoid being **too picky**.
+- Final sample: **736** respondents (from about 800). **[check]**
+:::
+
+::: aside
+One failed check is common and fine. The goal is to remove clearly inattentive responses without throwing away good data.
+:::
+
+## Key takeaways from the further cleaning
+
+::: {.columns}
+::: {.column width="50%"}
+::: {.fragment .fade-right}
+**Technique**
+
+- Recode and reverse-code, then verify
+- Use `dplyr` verbs and small helper functions
+- Check variables one at a time
+:::
+:::
+::: {.column width="50%"}
+::: {.fragment .fade-left}
+**Mindset**
+
+- Cleaning depends on your analysis question
+- Be careful with AI-written code. It can suggest functions that do not exist, so test everything
+- Document decisions in Quarto so they can be repeated
+:::
+:::
+:::
+
+# Part 4: Comparing the Two Approaches
+
+## How do the two approaches differ, and what does it mean for the data? {.smaller}
+
+::: {.callout-note}
+## The prompt
+What are the big differences between the two approaches and the impact on the final sample size and response quality?
+:::
+
+| | **Initial cleaning (Step 2)** | **Further cleaning (Step 3)** |
+|:--|:--|:--|
+| **Main question** | Who belongs in the sample? | Are the answers usable and correct? |
+| **Focus** | Respondents and records | Variables and values |
+| **Typical actions** | Eligibility, consent, attention checks, payment status, duplicates, joining sources | Reverse coding, recoding, label fixes, duration and failure-based exclusion |
+| **Effect on sample size** | Large cut at screening (about 25% eligible), leaving about 800 | Smaller cut (about 800 to 736) |
+| **Effect on quality** | Removes ineligible or inattentive people | Makes the *measures* valid so averages and scales mean what we intend |
+
+## What this means for sample size and quality {.smaller}
+
+::: {.incremental}
+- **Sample size:** the second round removed roughly **64 respondents (about 8%)**. A smaller sample is a fair price for cleaner data.
+- **Response quality:** without reverse coding and recoding, a scale average mixes high agreement with low agreement, so results could be wrong even with a large sample.
+- **Order matters:** screen people first, then prepare variables, then analyze.
+- **For my CEP:** the same logic applies to the survey (AO4), and my Clover and GA4 data need the "further cleaning" mindset.
+:::
+
+::: {.notes}
+End with the one-sentence takeaway: initial cleaning decides who counts, further cleaning decides what their answers mean.
+:::
+
+## My reflection {.smaller}
+
+[Dani: edit this slide with your own words, for example:]
+
+- What I found most useful: **[Dani: edit]**
+- What was confusing at first: **[Dani: edit]**
+- How I will use it in my CEP: **[Dani: edit]**
+
+## References
+
+::: {#refs}
+:::
