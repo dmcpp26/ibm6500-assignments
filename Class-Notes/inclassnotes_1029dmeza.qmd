@@ -40,6 +40,11 @@ execute:
 - Dr. Jung goes over Case 31 assignment
 
   - We should not be charged by google - with the weight of this assignment. We wont make a dent in the free limit. Even is we forget to unsubscribe.
+  - Download Case 31 template from Dr. Jung GIT REPO
+  - **Make sure you make you answers in placeholders stand out.**
+  - TIP: Create a data dictionary using the "view_df"
+
+---------
 
 ### TRAVIS MILLER
 
