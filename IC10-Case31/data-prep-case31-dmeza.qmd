@@ -77,7 +77,7 @@ set_theme(theme_minimal())
 
 ```{r}
 #| label: import
-data_raw <- read_sav("/Users/daniellemeza/Documents/GitHub/ibm6500-assignments/IC10-Case31/Case 31 Data_efcu_1.sav")
+data_raw <- read_sav("Case 31 Data_efcu_1.sav")
 ```
 
 Inspect the object in more than one way.
@@ -559,7 +559,7 @@ Submit:
 
 ## Appendix: Links
 
-- **GitHub Pages:** [View my published report](https://dmcpp26.github.io/ibm6500-assignments/IC10-Case31/IC10-Case31-Data-Prep_DMEZA.html)
+- **GitHub Pages:** [View my published report](https://dmcpp26.github.io/ibm6500-assignments/IC10-Case31/data-prep-case31-dmeza.html)
 - **GitHub Repo:** [dmcpp26/ibm6500-assignments](https://github.com/dmcpp26/ibm6500-assignments)
 
 *Template and case materials by Jae Jung, licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).*
