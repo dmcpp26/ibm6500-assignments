@@ -94,11 +94,32 @@ If your course materials provide `view_df()` (from the sjPlot package), you can 
 ### Questions to answer
 
 1.  How many rows and columns are in the imported data?
-    - Rows: 128 / Columns: 34
+
+    > **Rows: 128 / Columns: 34**
+
 2.  What are the variable names?
+
+    > **`q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`, `q11`, `q12`, `q13`, `q14`, `q15`, `q16`, `q17`, `q18`, `q19`, `q20`, `q21`, `q22`, `q23`, `q24`, `q25`, `q26`, `q27`, `q30`, `q31`, `q32`, `q33`, `q34`, `q37`, `OverallEmployeePerformace`, `q38`, `employeeperformance`.**
+
 3.  Which variables look like questionnaire items, and which look like precomputed variables?
+
+    > **The 32 variables starting with `q` are the raw survey items. `OverallEmployeePerformace` and `employeeperformance` are precomputed summaries. They have no variable label, and `employeeperformance` equals the mean of q3 to q6.**
+
 4.  What is the difference between a *variable label* and a *value label*?
+
+    > **A variable label describes what a variable measures, such as q3 being “Employees are Courteous”. A value label explains what each stored number means, such as 1 = Strongly Disagree.**
+
 5.  Which variables contain missing values?
+
+    >  **variable n_missing**
+    >
+    > **\<chr\> \<int\>**
+    >
+    > **1 q7 10**
+    >
+    > **2 q8 21**
+    >
+    > **3 q37 7**
 
 *Your answer:*
 
@@ -140,9 +161,34 @@ Alternatively, you can use `view_df()` in the Console to browse the labels inter
 ### Questions to answer
 
 1.  Which variables have clear, useful labels?
+
+    > **q3, q4, q5, q6, q7, q8, q9, q10, q11, q12**
+
 2.  Which labels should be revised for readability in your report?
+
+    > **q8 and q9** both say “statement frequency”. But q8 asks about the rates the Credit Union charges members to borrow, and only q9 is about statements. Relabel q8 as “Rates charged on member loans”.
+    >
+    > **q7** (“savings rates”) is vague. “Rates paid on share (savings) accounts” is clearer.
+    >
+    > **q30** (“CU rates lower”) should say these are loan rates compared with other institutions.
+    >
+    > **q38** (“headquarter”) should say “Lives in headquarters area”.
+    >
+    > Capitalization is inconsistent (“Employees are Courteous” vs. “employees are helpful”). `OverallEmployeePerformace` is misspelled and has no label.
+
 3.  Which variables are nominal, ordinal, or approximately interval for this assignment? Explain at least three, using the questionnaire.
+
+    > **Approximately interval:** q3 to q6 and q30 to q34 (Strongly Disagree to Strongly Agree). They are attitude statements with ordered, roughly equal steps, and your scales deck lists attitudes and opinions as interval.
+    >
+    > **Ordinal:** q7 and q8 (Very High to Very Low), q10 (Excellent to Poor), and q37 (Excellent to Very Poor). The order is clear, but the distance between “Good” and “Fair” is unknown. q9 is also ordinal, but its best answer (“About Right”) is in the middle.
+    >
+    > **Nominal:** q11, q12, q27, and q38 (Yes/No), and q13 to q26 (aware and used / aware but not used / unaware). These are categories with no ranking, so only counts and percentages make sense.
+
 4.  Which value labels are essential for interpreting the data, and which are predictable from the response scale?
+
+    > **Essential:** the nominal items and the special codes. Yes/No, the awareness categories, “No Opinion”, and q9’s labels (Too Often through Never) only mean something with their labels.
+    >
+    > **Predictable from the scale:** the 1-to-5 agreement items, where the file only labels 1 (Strongly Disagree) and 5 (Strongly Agree). A reader can infer 2 to 4 (Disagree, Uncertain, Agree) from the questionnaire.
 
 *Your answer:*
 
@@ -168,7 +214,13 @@ The exhibit does not list question numbers. Matching it to the questionnaire: q3
 
 Compare this table with the value labels you printed in Section 2. Which codes in the file have no label?
 
-*Your answer:*
+> **Code 3 (“Unaware”) has no label on q13 to q25.**
+>
+> **Code 3 (“No answer”) has no label on q12.**
+>
+> **The exhibit also defines 3 for q11, q27, and q38, but nobody used it there.**
+>
+> **The agreement items (q3 to q6 and q30 to q34) only have labels at 1 and 5. Codes 2, 3, and 4 (Disagree, Uncertain, Agree) are unlabeled.**
 
 ### 3.2 Add, edit, and remove labels
 
@@ -233,6 +285,8 @@ Notice that q8's variable label in the file ("statement frequency") duplicates q
 
 *Your answer:*
 
+> **\[1\] "Mean of q3 to q6 (precomputed)"**
+
 ## 4. Create an analysis copy
 
 - Questionnaire variables have names that start with `q` followed by a number.
@@ -248,7 +302,7 @@ names(data)
 
 Explain why using an already computed index could be a problem when the purpose of this assignment is to evaluate and construct measures.
 
-*Your answer:*
+> **An already computed index hides how it was built. The file doesn’t say which items went into it, whether any were reverse-coded, or how missing values were handled. So I can’t check whether it’s reliable or whether the items belong together. If I used it, I’d be trusting someone else’s decisions without being able to test them.**
 
 ### Data-quality checks
 
@@ -270,7 +324,13 @@ data |>
 
 Compare these values with the questionnaire. Does any variable contain a value that the questionnaire does not define?
 
-*Your answer:*
+> **No. Every value that appears in the data is one the questionnaire defines, so nothing is out of range.**
+>
+> - **The 3s on q12 and q13 to q25** are defined by Exhibit 31.2 (“No answer” for q12, “Unaware” for q13 to q25). The file just doesn’t label them, which I fixed in the labelled copy.
+>
+> - **No 6s remain** on q7, q8, and q37. The “No Opinion” responses were already `NA` after import, which matches the missing counts of 10, 21, and 7.
+>
+> - **Some scales aren’t fully used**, which is not an error. q9 only has 3 and 4, q3 and q5 never go below 3, and q7 never has a 1 (nobody said “Very high”).
 
 ## 5. Recode special responses and reverse-code items
 
@@ -353,9 +413,12 @@ Two sets of items are deliberately **not** reversed. Read the questionnaire and 
 ### Questions to answer
 
 1.  Why is a reversal inappropriate for q9? How could you code q9 to answer "was the frequency about right?" instead?
+
+    > **A reversal is inappropriate because the best answer, “About Right”, is in the middle of the scale (Too Often → Very Often → About Right → Not Often Enough → Never). The scale doesn’t run from unfavorable to favorable, so flipping it wouldn’t make higher mean better. To answer “was the frequency about right?”, create a yes/no flag instead: `q9_about_right = if_else(q9 == 3, 1, 0)`. In your data, 99 respondents (77%) said “About Right” and 29 (23%) said “Not Often Enough”. Nobody gave any other answer.**
+
 2.  Why should q13 to q26 not be reversed or averaged into one score? What would be a more appropriate way to summarize them?
 
-*Your answer:*
+    > **These are categories (aware and used / aware but not used / unaware), not a rating from bad to good. A formula like `3 - x` has no meaning, and an average of 1s, 2s, and 3s would just be a number with no interpretation. A better summary is the percentage of respondents in each category for each product. You could also count how many products each respondent is aware of or has used, which gives a meaningful score.**
 
 ### Verify the recoding
 
@@ -447,14 +510,24 @@ operations_fa$communality
 For each candidate measure:
 
 1.  What is the reliability estimate (`raw_alpha`)?
+
+    >  **0.5392198**
+
 2.  Do the item-total statistics (`r.drop`) suggest every item contributes? Does any item correlate weakly or negatively with the rest? If so, check its wording to see whether it needs reversing.
+
+    > **No, not every item contributes well. `r.drop` is weak for all five (about .32, .29, .48, .22, .22), though none is negative. All five are worded favorably, so reversing wouldn’t fix it.**
+
 3.  Do the factor loadings support one common factor?
+
+    > **Not really. Only q32 loads strongly (about .79), and the others are about .30 to .40.**
+
 4.  Is a one-factor interpretation reasonable given the item wording?
+
+    > **No. The items measure different things: loan rates (q30), confidentiality (q31), speed of loan processing (q32), whether services meet members’ needs (q33), and how simple the loan applications are (q34).**
+
 5.  Do you recommend creating an index? Justify with both statistical evidence and substantive meaning.
 
-*Your answer:*
-
-Do not use a single cutoff as an automatic decision rule. Consider reliability, loadings, item wording, response scales, missing data, and the purpose of the analysis together.
+    > **I don’t recommend an index. The statistics and the item meanings point the same way, so keep q30 to q34 as separate items.**
 
 ## 7. Create indexes only when justified
 
@@ -467,7 +540,6 @@ Edit this chunk to keep only the indexes you decided to create.
 data <- data |>
   mutate(
     employee_proficiency_index = rowMeans(pick(q3:q6), na.rm = TRUE),
-    operational_effectiveness_index = rowMeans(pick(q30:q34), na.rm = TRUE),
     across(ends_with("_index"), \(x) if_else(is.nan(x), NA_real_, x))
   )
 ```
@@ -499,7 +571,28 @@ Write a concise narrative that covers:
 
 Include tables or output that help a reader verify your decisions. Do not paste every output into the report.
 
-*Your narrative:*
+> **Import.** I read the SPSS file with `haven::read_sav()`, which kept the variable and value labels. The data have 128 respondents and 34 variables. I kept `data_raw` unchanged as a reference copy and did all cleaning on copies.
+>
+> **What the dictionary showed.** The agreement items (q3 to q6, q30 to q34) only have labels at 1 and 5, and code 3 (“Unaware” for q13 to q25, “No answer” for q12) has no label. q8 and q9 share the same variable label (“statement frequency”), even though q8 asks about loan rates. I treated the agreement items as approximately interval, the rating scales (q7, q8, q10, q37) as ordinal, and the yes/no and awareness items (q11 to q27, q38) as nominal. q9 is ordinal, but its best answer is in the middle.
+>
+> **Labels added or corrected.** In a labelled copy I added the missing value labels (“Unaware” on q13 to q26, “No answer” on q11, q12, q27, and q38), set full value labels for q37, and labelled the two precomputed variables. I also identified that q8 should be relabelled as the rates charged on member loans, since the file’s label duplicates q9’s.
+>
+> **Variables kept or excluded.** I kept only the questionnaire items (q3 to q38) in the analysis copy. I excluded `OverallEmployeePerformace` and `employeeperformance` because this assignment is about building and testing the measures myself, and the precomputed versions don’t show how they were built.
+>
+> **Missing values.** Only q7 (10 missing, 8%), q8 (21, 16%), and q37 (7, 5%) have missing data. These are the “No opinion” responses, which were already `NA` after import. I still recoded 6 to `NA` so the result doesn’t depend on how the file is read. Indexes use `na.rm = TRUE`.
+>
+> **Reverse coding.** I reverse-coded q7, q8, and q37 (`6 - x`) and q10 (`5 - x`), so that larger values mean higher or better. I checked each with a cross-tabulation of original against reversed values. I did not reverse q9, since its best answer (“About Right”) is in the middle, or the nominal items (q11 to q27 and q38), where a reversal has no meaning.
+>
+> **Reliability and factor analysis.**
+>
+> | Measure | Items | raw_alpha | One-factor loadings | Decision |
+> |----|----|----|----|----|
+> | Employee proficiency | q3–q6 | .87 | .72, .92, .79, .73 | Create index |
+> | Operational effectiveness | q30–q34 | .54 | .40, .38, .79, .30, .35 | Do not create index |
+>
+> **Indexes.** I created `employee_proficiency_index` as the mean of q3 to q6, because reliability is good, all four items load strongly, and they share one meaning (employee service quality). I did not create an operational effectiveness index. Alpha is low, only q32 loads strongly, and the items cover different topics (loan rates, confidentiality, speed, meeting needs, application ease), so I will analyze them separately.
+>
+> **Limitations.** The sample is small (128), and the agreement items are concentrated in the “agree” range (for example, q3 and q5 never go below 3). 16% of q8 is missing, which could bias results if “No opinion” is not random. I also treated ordinal and agreement items as interval for the alpha and factor analysis, which is common but debatable.
 
 ## 9. Save your work to a new SPSS file
 
@@ -555,7 +648,6 @@ Submit:
 1.  the QMD source file;
 2.  the rendered HTML file, if your course requires it; and
 3.  the public GitHub Pages URL in the Appendix below.
-
 
 ## Appendix: Links
 

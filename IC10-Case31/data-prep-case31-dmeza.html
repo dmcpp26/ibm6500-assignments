@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Danielle Meza">
-<meta name="dcterms.date" content="2026-10-30">
+<meta name="dcterms.date" content="2026-10-31">
 
 <title>IC10-2-1 Data Preparation with Case 31 - JUNG TEMPLATE</title>
 <style>
@@ -2389,7 +2389,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 30, 2026</p>
+      <p class="date">October 31, 2026</p>
     </div>
   </div>
   
@@ -2451,7 +2451,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="import-and-inspect-the-spss-data">1. Import and inspect the SPSS data</h2>
 <p><code>read_sav()</code> reads the SPSS file and keeps the variable labels and value labels as metadata. By default (<code>user_na = FALSE</code>), values that SPSS flags as user-defined missing are converted to ordinary <code>NA</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data_raw <span class="ot">&lt;-</span> <span class="fu">read_sav</span>(<span class="st">&quot;/Users/daniellemeza/Documents/GitHub/ibm6500-assignments/IC10-Case31/Case 31 Data_efcu_1.sav&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data_raw <span class="ot">&lt;-</span> <span class="fu">read_sav</span>(<span class="st">&quot;Case 31 Data_efcu_1.sav&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Inspect the object in more than one way.</p>
 <div class="cell">
@@ -2523,14 +2523,30 @@ $ employeeperformance       &lt;dbl&gt; 4.00, 4.00, 4.00, 3.75, 4.00, 4.00, 5.00
 <section id="questions-to-answer" class="level3">
 <h3 class="anchored" data-anchor-id="questions-to-answer">Questions to answer</h3>
 <ol type="1">
-<li>How many rows and columns are in the imported data?
-<ul>
-<li>Rows: 128 / Columns: 34</li>
-</ul></li>
-<li>What are the variable names?</li>
-<li>Which variables look like questionnaire items, and which look like precomputed variables?</li>
-<li>What is the difference between a <em>variable label</em> and a <em>value label</em>?</li>
-<li>Which variables contain missing values?</li>
+<li><p>How many rows and columns are in the imported data?</p>
+<blockquote class="blockquote">
+<p><strong>Rows: 128 / Columns: 34</strong></p>
+</blockquote></li>
+<li><p>What are the variable names?</p>
+<blockquote class="blockquote">
+<p><strong><code>q3</code>, <code>q4</code>, <code>q5</code>, <code>q6</code>, <code>q7</code>, <code>q8</code>, <code>q9</code>, <code>q10</code>, <code>q11</code>, <code>q12</code>, <code>q13</code>, <code>q14</code>, <code>q15</code>, <code>q16</code>, <code>q17</code>, <code>q18</code>, <code>q19</code>, <code>q20</code>, <code>q21</code>, <code>q22</code>, <code>q23</code>, <code>q24</code>, <code>q25</code>, <code>q26</code>, <code>q27</code>, <code>q30</code>, <code>q31</code>, <code>q32</code>, <code>q33</code>, <code>q34</code>, <code>q37</code>, <code>OverallEmployeePerformace</code>, <code>q38</code>, <code>employeeperformance</code>.</strong></p>
+</blockquote></li>
+<li><p>Which variables look like questionnaire items, and which look like precomputed variables?</p>
+<blockquote class="blockquote">
+<p><strong>The 32 variables starting with <code>q</code> are the raw survey items. <code>OverallEmployeePerformace</code> and <code>employeeperformance</code> are precomputed summaries. They have no variable label, and <code>employeeperformance</code> equals the mean of q3 to q6.</strong></p>
+</blockquote></li>
+<li><p>What is the difference between a <em>variable label</em> and a <em>value label</em>?</p>
+<blockquote class="blockquote">
+<p><strong>A variable label describes what a variable measures, such as q3 being “Employees are Courteous”. A value label explains what each stored number means, such as 1 = Strongly Disagree.</strong></p>
+</blockquote></li>
+<li><p>Which variables contain missing values?</p>
+<blockquote class="blockquote">
+<p><strong>variable n_missing</strong></p>
+<p><strong>&lt;chr&gt; &lt;int&gt;</strong></p>
+<p><strong>1 q7 10</strong></p>
+<p><strong>2 q8 21</strong></p>
+<p><strong>3 q37 7</strong></p>
+</blockquote></li>
 </ol>
 <p><em>Your answer:</em></p>
 <p>Use code to support your answers. The table below counts missing values for every variable and shows only the variables that have any.</p>
@@ -2590,10 +2606,29 @@ $ employeeperformance       &lt;dbl&gt; 4.00, 4.00, 4.00, 3.75, 4.00, 4.00, 5.00
 <section id="questions-to-answer-1" class="level3">
 <h3 class="anchored" data-anchor-id="questions-to-answer-1">Questions to answer</h3>
 <ol type="1">
-<li>Which variables have clear, useful labels?</li>
-<li>Which labels should be revised for readability in your report?</li>
-<li>Which variables are nominal, ordinal, or approximately interval for this assignment? Explain at least three, using the questionnaire.</li>
-<li>Which value labels are essential for interpreting the data, and which are predictable from the response scale?</li>
+<li><p>Which variables have clear, useful labels?</p>
+<blockquote class="blockquote">
+<p><strong>q3, q4, q5, q6, q7, q8, q9, q10, q11, q12</strong></p>
+</blockquote></li>
+<li><p>Which labels should be revised for readability in your report?</p>
+<blockquote class="blockquote">
+<p><strong>q8 and q9</strong> both say “statement frequency”. But q8 asks about the rates the Credit Union charges members to borrow, and only q9 is about statements. Relabel q8 as “Rates charged on member loans”.</p>
+<p><strong>q7</strong> (“savings rates”) is vague. “Rates paid on share (savings) accounts” is clearer.</p>
+<p><strong>q30</strong> (“CU rates lower”) should say these are loan rates compared with other institutions.</p>
+<p><strong>q38</strong> (“headquarter”) should say “Lives in headquarters area”.</p>
+<p>Capitalization is inconsistent (“Employees are Courteous” vs. “employees are helpful”). <code>OverallEmployeePerformace</code> is misspelled and has no label.</p>
+</blockquote></li>
+<li><p>Which variables are nominal, ordinal, or approximately interval for this assignment? Explain at least three, using the questionnaire.</p>
+<blockquote class="blockquote">
+<p><strong>Approximately interval:</strong> q3 to q6 and q30 to q34 (Strongly Disagree to Strongly Agree). They are attitude statements with ordered, roughly equal steps, and your scales deck lists attitudes and opinions as interval.</p>
+<p><strong>Ordinal:</strong> q7 and q8 (Very High to Very Low), q10 (Excellent to Poor), and q37 (Excellent to Very Poor). The order is clear, but the distance between “Good” and “Fair” is unknown. q9 is also ordinal, but its best answer (“About Right”) is in the middle.</p>
+<p><strong>Nominal:</strong> q11, q12, q27, and q38 (Yes/No), and q13 to q26 (aware and used / aware but not used / unaware). These are categories with no ranking, so only counts and percentages make sense.</p>
+</blockquote></li>
+<li><p>Which value labels are essential for interpreting the data, and which are predictable from the response scale?</p>
+<blockquote class="blockquote">
+<p><strong>Essential:</strong> the nominal items and the special codes. Yes/No, the awareness categories, “No Opinion”, and q9’s labels (Too Often through Never) only mean something with their labels.</p>
+<p><strong>Predictable from the scale:</strong> the 1-to-5 agreement items, where the file only labels 1 (Strongly Disagree) and 5 (Strongly Agree). A reader can infer 2 to 4 (Disagree, Uncertain, Agree) from the questionnaire.</p>
+</blockquote></li>
 </ol>
 <p><em>Your answer:</em></p>
 <p>Keep <code>data_raw</code> unchanged as a reference copy. Do all cleaning on a copy.</p>
@@ -2648,7 +2683,12 @@ $ employeeperformance       &lt;dbl&gt; 4.00, 4.00, 4.00, 3.75, 4.00, 4.00, 5.00
 </table>
 <p>The exhibit does not list question numbers. Matching it to the questionnaire: q3 to q6 and q30 to q34 are the agreement items; q7 and q8 use very high to very low; q9 is the frequency item; q10 is excellent to poor; q37 is excellent to very poor; q11, q12, q27, and q38 are yes/no; and q13 to q26 are awareness/use items.</p>
 <p>Compare this table with the value labels you printed in Section 2. Which codes in the file have no label?</p>
-<p><em>Your answer:</em></p>
+<blockquote class="blockquote">
+<p><strong>Code 3 (“Unaware”) has no label on q13 to q25.</strong></p>
+<p><strong>Code 3 (“No answer”) has no label on q12.</strong></p>
+<p><strong>The exhibit also defines 3 for q11, q27, and q38, but nobody used it there.</strong></p>
+<p><strong>The agreement items (q3 to q6 and q30 to q34) only have labels at 1 and 5. Codes 2, 3, and 4 (Disagree, Uncertain, Agree) are unlabeled.</strong></p>
+</blockquote>
 </section>
 <section id="add-edit-and-remove-labels" class="level3">
 <h3 class="anchored" data-anchor-id="add-edit-and-remove-labels">3.2 Add, edit, and remove labels</h3>
@@ -2763,6 +2803,9 @@ $ employeeperformance       &lt;dbl&gt; 4.00, 4.00, 4.00, 3.75, 4.00, 4.00, 5.00
 </div>
 <p>Notice that q8’s variable label in the file (“statement frequency”) duplicates q9’s label, but q8 uses the very high to very low scale. Check the questionnaire for what q8 asks. How would you relabel it with <code>set_variable_labels()</code>?</p>
 <p><em>Your answer:</em></p>
+<blockquote class="blockquote">
+<p><strong>[1] “Mean of q3 to q6 (precomputed)”</strong></p>
+</blockquote>
 </section>
 </section>
 <section id="create-an-analysis-copy" class="level2">
@@ -2783,7 +2826,9 @@ $ employeeperformance       &lt;dbl&gt; 4.00, 4.00, 4.00, 3.75, 4.00, 4.00, 5.00
 </div>
 </div>
 <p>Explain why using an already computed index could be a problem when the purpose of this assignment is to evaluate and construct measures.</p>
-<p><em>Your answer:</em></p>
+<blockquote class="blockquote">
+<p><strong>An already computed index hides how it was built. The file doesn’t say which items went into it, whether any were reverse-coded, or how missing values were handled. So I can’t check whether it’s reliable or whether the items belong together. If I used it, I’d be trusting someone else’s decisions without being able to test them.</strong></p>
+</blockquote>
 <section id="data-quality-checks" class="level3">
 <h3 class="anchored" data-anchor-id="data-quality-checks">Data-quality checks</h3>
 <p>Check the range of each variable against the questionnaire coding. This table lists the distinct values, the count of missing values, and the percent missing for each variable.</p>
@@ -2816,7 +2861,14 @@ $ employeeperformance       &lt;dbl&gt; 4.00, 4.00, 4.00, 3.75, 4.00, 4.00, 5.00
 </div>
 </div>
 <p>Compare these values with the questionnaire. Does any variable contain a value that the questionnaire does not define?</p>
-<p><em>Your answer:</em></p>
+<blockquote class="blockquote">
+<p><strong>No. Every value that appears in the data is one the questionnaire defines, so nothing is out of range.</strong></p>
+<ul>
+<li><p><strong>The 3s on q12 and q13 to q25</strong> are defined by Exhibit 31.2 (“No answer” for q12, “Unaware” for q13 to q25). The file just doesn’t label them, which I fixed in the labelled copy.</p></li>
+<li><p><strong>No 6s remain</strong> on q7, q8, and q37. The “No Opinion” responses were already <code>NA</code> after import, which matches the missing counts of 10, 21, and 7.</p></li>
+<li><p><strong>Some scales aren’t fully used</strong>, which is not an error. q9 only has 3 and 4, q3 and q5 never go below 3, and q7 never has a 1 (nobody said “Very high”).</p></li>
+</ul>
+</blockquote>
 </section>
 </section>
 <section id="recode-special-responses-and-reverse-code-items" class="level2">
@@ -2895,10 +2947,15 @@ $ employeeperformance       &lt;dbl&gt; 4.00, 4.00, 4.00, 3.75, 4.00, 4.00, 5.00
 <section id="questions-to-answer-2" class="level3">
 <h3 class="anchored" data-anchor-id="questions-to-answer-2">Questions to answer</h3>
 <ol type="1">
-<li>Why is a reversal inappropriate for q9? How could you code q9 to answer “was the frequency about right?” instead?</li>
-<li>Why should q13 to q26 not be reversed or averaged into one score? What would be a more appropriate way to summarize them?</li>
+<li><p>Why is a reversal inappropriate for q9? How could you code q9 to answer “was the frequency about right?” instead?</p>
+<blockquote class="blockquote">
+<p><strong>A reversal is inappropriate because the best answer, “About Right”, is in the middle of the scale (Too Often → Very Often → About Right → Not Often Enough → Never). The scale doesn’t run from unfavorable to favorable, so flipping it wouldn’t make higher mean better. To answer “was the frequency about right?”, create a yes/no flag instead: <code>q9_about_right = if_else(q9 == 3, 1, 0)</code>. In your data, 99 respondents (77%) said “About Right” and 29 (23%) said “Not Often Enough”. Nobody gave any other answer.</strong></p>
+</blockquote></li>
+<li><p>Why should q13 to q26 not be reversed or averaged into one score? What would be a more appropriate way to summarize them?</p>
+<blockquote class="blockquote">
+<p><strong>These are categories (aware and used / aware but not used / unaware), not a rating from bad to good. A formula like <code>3 - x</code> has no meaning, and an average of 1s, 2s, and 3s would just be a number with no interpretation. A better summary is the percentage of respondents in each category for each product. You could also count how many products each respondent is aware of or has used, which gives a meaningful score.</strong></p>
+</blockquote></li>
 </ol>
-<p><em>Your answer:</em></p>
 </section>
 <section id="verify-the-recoding" class="level3">
 <h3 class="anchored" data-anchor-id="verify-the-recoding">Verify the recoding</h3>
@@ -3103,14 +3160,27 @@ Proportion Var 0.227</code></pre>
 <h3 class="anchored" data-anchor-id="questions-to-answer-3">Questions to answer</h3>
 <p>For each candidate measure:</p>
 <ol type="1">
-<li>What is the reliability estimate (<code>raw_alpha</code>)?</li>
-<li>Do the item-total statistics (<code>r.drop</code>) suggest every item contributes? Does any item correlate weakly or negatively with the rest? If so, check its wording to see whether it needs reversing.</li>
-<li>Do the factor loadings support one common factor?</li>
-<li>Is a one-factor interpretation reasonable given the item wording?</li>
-<li>Do you recommend creating an index? Justify with both statistical evidence and substantive meaning.</li>
+<li><p>What is the reliability estimate (<code>raw_alpha</code>)?</p>
+<blockquote class="blockquote">
+<p><strong>0.5392198</strong></p>
+</blockquote></li>
+<li><p>Do the item-total statistics (<code>r.drop</code>) suggest every item contributes? Does any item correlate weakly or negatively with the rest? If so, check its wording to see whether it needs reversing.</p>
+<blockquote class="blockquote">
+<p><strong>No, not every item contributes well. <code>r.drop</code> is weak for all five (about .32, .29, .48, .22, .22), though none is negative. All five are worded favorably, so reversing wouldn’t fix it.</strong></p>
+</blockquote></li>
+<li><p>Do the factor loadings support one common factor?</p>
+<blockquote class="blockquote">
+<p><strong>Not really. Only q32 loads strongly (about .79), and the others are about .30 to .40.</strong></p>
+</blockquote></li>
+<li><p>Is a one-factor interpretation reasonable given the item wording?</p>
+<blockquote class="blockquote">
+<p><strong>No. The items measure different things: loan rates (q30), confidentiality (q31), speed of loan processing (q32), whether services meet members’ needs (q33), and how simple the loan applications are (q34).</strong></p>
+</blockquote></li>
+<li><p>Do you recommend creating an index? Justify with both statistical evidence and substantive meaning.</p>
+<blockquote class="blockquote">
+<p><strong>I don’t recommend an index. The statistics and the item meanings point the same way, so keep q30 to q34 as separate items.</strong></p>
+</blockquote></li>
 </ol>
-<p><em>Your answer:</em></p>
-<p>Do not use a single cutoff as an automatic decision rule. Consider reliability, loadings, item wording, response scales, missing data, and the purpose of the analysis together.</p>
 </section>
 </section>
 <section id="create-indexes-only-when-justified" class="level2">
@@ -3121,9 +3191,8 @@ Proportion Var 0.227</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
 <span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">employee_proficiency_index =</span> <span class="fu">rowMeans</span>(<span class="fu">pick</span>(q3<span class="sc">:</span>q6), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">operational_effectiveness_index =</span> <span class="fu">rowMeans</span>(<span class="fu">pick</span>(q30<span class="sc">:</span>q34), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">ends_with</span>(<span class="st">&quot;_index&quot;</span>), \(x) <span class="fu">if_else</span>(<span class="fu">is.nan</span>(x), <span class="cn">NA_real_</span>, x))</span>
-<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">ends_with</span>(<span class="st">&quot;_index&quot;</span>), \(x) <span class="fu">if_else</span>(<span class="fu">is.nan</span>(x), <span class="cn">NA_real_</span>, x))</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>If you decide an index is not warranted, delete its line and explain why the items should stay separate and how you would analyze them individually.</p>
 <p>Check the new variables.</p>
@@ -3132,13 +3201,13 @@ Proportion Var 0.227</code></pre>
 <span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">ends_with</span>(<span class="st">&quot;_index&quot;</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> employee_proficiency_index operational_effectiveness_index
- Min.   :2.750              Min.   :2.600                  
- 1st Qu.:4.000              1st Qu.:3.200                  
- Median :4.000              Median :3.600                  
- Mean   :4.205              Mean   :3.556                  
- 3rd Qu.:4.750              3rd Qu.:4.000                  
- Max.   :5.000              Max.   :4.800                  </code></pre>
+<pre><code> employee_proficiency_index
+ Min.   :2.750             
+ 1st Qu.:4.000             
+ Median :4.000             
+ Mean   :4.205             
+ 3rd Qu.:4.750             
+ Max.   :5.000             </code></pre>
 </div>
 </div>
 </section>
@@ -3157,7 +3226,51 @@ Proportion Var 0.227</code></pre>
 <li>any limitations or unresolved data-quality concerns.</li>
 </ul>
 <p>Include tables or output that help a reader verify your decisions. Do not paste every output into the report.</p>
-<p><em>Your narrative:</em></p>
+<blockquote class="blockquote">
+<p><strong>Import.</strong> I read the SPSS file with <code>haven::read_sav()</code>, which kept the variable and value labels. The data have 128 respondents and 34 variables. I kept <code>data_raw</code> unchanged as a reference copy and did all cleaning on copies.</p>
+<p><strong>What the dictionary showed.</strong> The agreement items (q3 to q6, q30 to q34) only have labels at 1 and 5, and code 3 (“Unaware” for q13 to q25, “No answer” for q12) has no label. q8 and q9 share the same variable label (“statement frequency”), even though q8 asks about loan rates. I treated the agreement items as approximately interval, the rating scales (q7, q8, q10, q37) as ordinal, and the yes/no and awareness items (q11 to q27, q38) as nominal. q9 is ordinal, but its best answer is in the middle.</p>
+<p><strong>Labels added or corrected.</strong> In a labelled copy I added the missing value labels (“Unaware” on q13 to q26, “No answer” on q11, q12, q27, and q38), set full value labels for q37, and labelled the two precomputed variables. I also identified that q8 should be relabelled as the rates charged on member loans, since the file’s label duplicates q9’s.</p>
+<p><strong>Variables kept or excluded.</strong> I kept only the questionnaire items (q3 to q38) in the analysis copy. I excluded <code>OverallEmployeePerformace</code> and <code>employeeperformance</code> because this assignment is about building and testing the measures myself, and the precomputed versions don’t show how they were built.</p>
+<p><strong>Missing values.</strong> Only q7 (10 missing, 8%), q8 (21, 16%), and q37 (7, 5%) have missing data. These are the “No opinion” responses, which were already <code>NA</code> after import. I still recoded 6 to <code>NA</code> so the result doesn’t depend on how the file is read. Indexes use <code>na.rm = TRUE</code>.</p>
+<p><strong>Reverse coding.</strong> I reverse-coded q7, q8, and q37 (<code>6 - x</code>) and q10 (<code>5 - x</code>), so that larger values mean higher or better. I checked each with a cross-tabulation of original against reversed values. I did not reverse q9, since its best answer (“About Right”) is in the middle, or the nominal items (q11 to q27 and q38), where a reversal has no meaning.</p>
+<p><strong>Reliability and factor analysis.</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Measure</th>
+<th>Items</th>
+<th>raw_alpha</th>
+<th>One-factor loadings</th>
+<th>Decision</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Employee proficiency</td>
+<td>q3–q6</td>
+<td>.87</td>
+<td>.72, .92, .79, .73</td>
+<td>Create index</td>
+</tr>
+<tr class="even">
+<td>Operational effectiveness</td>
+<td>q30–q34</td>
+<td>.54</td>
+<td>.40, .38, .79, .30, .35</td>
+<td>Do not create index</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Indexes.</strong> I created <code>employee_proficiency_index</code> as the mean of q3 to q6, because reliability is good, all four items load strongly, and they share one meaning (employee service quality). I did not create an operational effectiveness index. Alpha is low, only q32 loads strongly, and the items cover different topics (loan rates, confidentiality, speed, meeting needs, application ease), so I will analyze them separately.</p>
+<p><strong>Limitations.</strong> The sample is small (128), and the agreement items are concentrated in the “agree” range (for example, q3 and q5 never go below 3). 16% of q8 is missing, which could bias results if “No opinion” is not random. I also treated ordinal and agreement items as interval for the alpha and factor analysis, which is common but debatable.</p>
+</blockquote>
 </section>
 <section id="save-your-work-to-a-new-spss-file" class="level2">
 <h2 class="anchored" data-anchor-id="save-your-work-to-a-new-spss-file">9. Save your work to a new SPSS file</h2>
@@ -3207,7 +3320,7 @@ Proportion Var 0.227</code></pre>
 <section id="appendix-links" class="level2">
 <h2 class="anchored" data-anchor-id="appendix-links">Appendix: Links</h2>
 <ul>
-<li><strong>GitHub Pages:</strong> <a href="https://dmcpp26.github.io/ibm6500-assignments/IC10-Case31/IC10-Case31-Data-Prep_DMEZA.html">View my published report</a></li>
+<li><strong>GitHub Pages:</strong> <a href="https://dmcpp26.github.io/ibm6500-assignments/IC10-Case31/data-prep-case31-dmeza.html">View my published report</a></li>
 <li><strong>GitHub Repo:</strong> <a href="https://github.com/dmcpp26/ibm6500-assignments">dmcpp26/ibm6500-assignments</a></li>
 </ul>
 <p><em>Template and case materials by Jae Jung, licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</em></p>
@@ -3747,7 +3860,7 @@ Proportion Var 0.227</code></pre>
 <span id="cb62-79"><a href="#cb62-79" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb62-82"><a href="#cb62-82" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb62-83"><a href="#cb62-83" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: import</span></span>
-<span id="cb62-84"><a href="#cb62-84" aria-hidden="true" tabindex="-1"></a>data_raw <span class="ot">&lt;-</span> <span class="fu">read_sav</span>(<span class="st">&quot;/Users/daniellemeza/Documents/GitHub/ibm6500-assignments/IC10-Case31/Case 31 Data_efcu_1.sav&quot;</span>)</span>
+<span id="cb62-84"><a href="#cb62-84" aria-hidden="true" tabindex="-1"></a>data_raw <span class="ot">&lt;-</span> <span class="fu">read_sav</span>(<span class="st">&quot;Case 31 Data_efcu_1.sav&quot;</span>)</span>
 <span id="cb62-85"><a href="#cb62-85" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb62-86"><a href="#cb62-86" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb62-87"><a href="#cb62-87" aria-hidden="true" tabindex="-1"></a>Inspect the object in more than one way.</span>
@@ -3764,475 +3877,567 @@ Proportion Var 0.227</code></pre>
 <span id="cb62-100"><a href="#cb62-100" aria-hidden="true" tabindex="-1"></a><span class="fu">### Questions to answer</span></span>
 <span id="cb62-101"><a href="#cb62-101" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb62-102"><a href="#cb62-102" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>How many rows and columns are in the imported data?</span>
-<span id="cb62-103"><a href="#cb62-103" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>Rows: 128 / Columns: 34</span>
-<span id="cb62-104"><a href="#cb62-104" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>What are the variable names?</span>
-<span id="cb62-105"><a href="#cb62-105" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Which variables look like questionnaire items, and which look like precomputed variables?</span>
-<span id="cb62-106"><a href="#cb62-106" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>What is the difference between a *variable label* and a *value label*?</span>
-<span id="cb62-107"><a href="#cb62-107" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>Which variables contain missing values?</span>
-<span id="cb62-108"><a href="#cb62-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-109"><a href="#cb62-109" aria-hidden="true" tabindex="-1"></a>*Your answer:*</span>
-<span id="cb62-110"><a href="#cb62-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-111"><a href="#cb62-111" aria-hidden="true" tabindex="-1"></a>Use code to support your answers. The table below counts missing values for every variable and shows only the variables that have any.</span>
-<span id="cb62-112"><a href="#cb62-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-115"><a href="#cb62-115" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb62-116"><a href="#cb62-116" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: missing-raw</span></span>
-<span id="cb62-117"><a href="#cb62-117" aria-hidden="true" tabindex="-1"></a>data_raw <span class="sc">|&gt;</span></span>
-<span id="cb62-118"><a href="#cb62-118" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), \(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x)))) <span class="sc">|&gt;</span></span>
-<span id="cb62-119"><a href="#cb62-119" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">&quot;variable&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;n_missing&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb62-120"><a href="#cb62-120" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n_missing <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb62-121"><a href="#cb62-121" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb62-122"><a href="#cb62-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-123"><a href="#cb62-123" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2. Create a data dictionary</span></span>
-<span id="cb62-124"><a href="#cb62-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-125"><a href="#cb62-125" aria-hidden="true" tabindex="-1"></a>SPSS files store metadata that is not visible in the data frame itself. <span class="in">`haven`</span> keeps it as attributes. The chunk below builds a compact dictionary with each variable&#39;s label, class, number of distinct values, and value labels.</span>
-<span id="cb62-126"><a href="#cb62-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-129"><a href="#cb62-129" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb62-130"><a href="#cb62-130" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: dictionary</span></span>
-<span id="cb62-131"><a href="#cb62-131" aria-hidden="true" tabindex="-1"></a>data_dictionary <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb62-132"><a href="#cb62-132" aria-hidden="true" tabindex="-1"></a>  <span class="at">variable =</span> <span class="fu">names</span>(data_raw),</span>
-<span id="cb62-133"><a href="#cb62-133" aria-hidden="true" tabindex="-1"></a>  <span class="at">variable_label =</span> <span class="fu">map_chr</span>(data_raw, \(x) <span class="fu">attr</span>(x, <span class="st">&quot;label&quot;</span>) <span class="sc">%||%</span> <span class="st">&quot;&quot;</span>),</span>
-<span id="cb62-134"><a href="#cb62-134" aria-hidden="true" tabindex="-1"></a>  <span class="at">class =</span> <span class="fu">map_chr</span>(data_raw, \(x) <span class="fu">class</span>(x)[<span class="dv">1</span>]),</span>
-<span id="cb62-135"><a href="#cb62-135" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_distinct =</span> <span class="fu">map_int</span>(data_raw, n_distinct),</span>
-<span id="cb62-136"><a href="#cb62-136" aria-hidden="true" tabindex="-1"></a>  <span class="at">value_labels =</span> <span class="fu">map_chr</span>(</span>
-<span id="cb62-137"><a href="#cb62-137" aria-hidden="true" tabindex="-1"></a>    data_raw,</span>
-<span id="cb62-138"><a href="#cb62-138" aria-hidden="true" tabindex="-1"></a>    \(x) {</span>
-<span id="cb62-139"><a href="#cb62-139" aria-hidden="true" tabindex="-1"></a>      labs <span class="ot">&lt;-</span> <span class="fu">attr</span>(x, <span class="st">&quot;labels&quot;</span>)</span>
-<span id="cb62-140"><a href="#cb62-140" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">is.null</span>(labs)) <span class="st">&quot;&quot;</span> <span class="cf">else</span> <span class="fu">str_c</span>(labs, <span class="st">&quot;=&quot;</span>, <span class="fu">names</span>(labs), <span class="at">collapse =</span> <span class="st">&quot;; &quot;</span>)</span>
-<span id="cb62-141"><a href="#cb62-141" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb62-142"><a href="#cb62-142" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb62-143"><a href="#cb62-143" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb62-144"><a href="#cb62-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-145"><a href="#cb62-145" aria-hidden="true" tabindex="-1"></a>data_dictionary</span>
-<span id="cb62-146"><a href="#cb62-146" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb62-103"><a href="#cb62-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-104"><a href="#cb62-104" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **Rows: 128 / Columns: 34**</span></span>
+<span id="cb62-105"><a href="#cb62-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-106"><a href="#cb62-106" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>What are the variable names?</span>
+<span id="cb62-107"><a href="#cb62-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-108"><a href="#cb62-108" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **`q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`, `q11`, `q12`, `q13`, `q14`, `q15`, `q16`, `q17`, `q18`, `q19`, `q20`, `q21`, `q22`, `q23`, `q24`, `q25`, `q26`, `q27`, `q30`, `q31`, `q32`, `q33`, `q34`, `q37`, `OverallEmployeePerformace`, `q38`, `employeeperformance`.**</span></span>
+<span id="cb62-109"><a href="#cb62-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-110"><a href="#cb62-110" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Which variables look like questionnaire items, and which look like precomputed variables?</span>
+<span id="cb62-111"><a href="#cb62-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-112"><a href="#cb62-112" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **The 32 variables starting with `q` are the raw survey items. `OverallEmployeePerformace` and `employeeperformance` are precomputed summaries. They have no variable label, and `employeeperformance` equals the mean of q3 to q6.**</span></span>
+<span id="cb62-113"><a href="#cb62-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-114"><a href="#cb62-114" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>What is the difference between a *variable label* and a *value label*?</span>
+<span id="cb62-115"><a href="#cb62-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-116"><a href="#cb62-116" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **A variable label describes what a variable measures, such as q3 being “Employees are Courteous”. A value label explains what each stored number means, such as 1 = Strongly Disagree.**</span></span>
+<span id="cb62-117"><a href="#cb62-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-118"><a href="#cb62-118" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>Which variables contain missing values?</span>
+<span id="cb62-119"><a href="#cb62-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-120"><a href="#cb62-120" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt;  **variable n_missing**</span></span>
+<span id="cb62-121"><a href="#cb62-121" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt;</span></span>
+<span id="cb62-122"><a href="#cb62-122" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **\&lt;chr\&gt; \&lt;int\&gt;**</span></span>
+<span id="cb62-123"><a href="#cb62-123" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt;</span></span>
+<span id="cb62-124"><a href="#cb62-124" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **1 q7 10**</span></span>
+<span id="cb62-125"><a href="#cb62-125" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt;</span></span>
+<span id="cb62-126"><a href="#cb62-126" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **2 q8 21**</span></span>
+<span id="cb62-127"><a href="#cb62-127" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt;</span></span>
+<span id="cb62-128"><a href="#cb62-128" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **3 q37 7**</span></span>
+<span id="cb62-129"><a href="#cb62-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-130"><a href="#cb62-130" aria-hidden="true" tabindex="-1"></a>*Your answer:*</span>
+<span id="cb62-131"><a href="#cb62-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-132"><a href="#cb62-132" aria-hidden="true" tabindex="-1"></a>Use code to support your answers. The table below counts missing values for every variable and shows only the variables that have any.</span>
+<span id="cb62-133"><a href="#cb62-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-136"><a href="#cb62-136" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb62-137"><a href="#cb62-137" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: missing-raw</span></span>
+<span id="cb62-138"><a href="#cb62-138" aria-hidden="true" tabindex="-1"></a>data_raw <span class="sc">|&gt;</span></span>
+<span id="cb62-139"><a href="#cb62-139" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), \(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x)))) <span class="sc">|&gt;</span></span>
+<span id="cb62-140"><a href="#cb62-140" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">&quot;variable&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;n_missing&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb62-141"><a href="#cb62-141" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n_missing <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb62-142"><a href="#cb62-142" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb62-143"><a href="#cb62-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-144"><a href="#cb62-144" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2. Create a data dictionary</span></span>
+<span id="cb62-145"><a href="#cb62-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-146"><a href="#cb62-146" aria-hidden="true" tabindex="-1"></a>SPSS files store metadata that is not visible in the data frame itself. <span class="in">`haven`</span> keeps it as attributes. The chunk below builds a compact dictionary with each variable&#39;s label, class, number of distinct values, and value labels.</span>
 <span id="cb62-147"><a href="#cb62-147" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-148"><a href="#cb62-148" aria-hidden="true" tabindex="-1"></a>Alternatively, you can use <span class="in">`view_df()`</span> in the Console to browse the labels interactively.</span>
-<span id="cb62-149"><a href="#cb62-149" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-150"><a href="#cb62-150" aria-hidden="true" tabindex="-1"></a><span class="fu">### Questions to answer</span></span>
-<span id="cb62-151"><a href="#cb62-151" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-152"><a href="#cb62-152" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Which variables have clear, useful labels?</span>
-<span id="cb62-153"><a href="#cb62-153" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Which labels should be revised for readability in your report?</span>
-<span id="cb62-154"><a href="#cb62-154" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Which variables are nominal, ordinal, or approximately interval for this assignment? Explain at least three, using the questionnaire.</span>
-<span id="cb62-155"><a href="#cb62-155" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>Which value labels are essential for interpreting the data, and which are predictable from the response scale?</span>
-<span id="cb62-156"><a href="#cb62-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-157"><a href="#cb62-157" aria-hidden="true" tabindex="-1"></a>*Your answer:*</span>
-<span id="cb62-158"><a href="#cb62-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-159"><a href="#cb62-159" aria-hidden="true" tabindex="-1"></a>Keep <span class="in">`data_raw`</span> unchanged as a reference copy. Do all cleaning on a copy.</span>
-<span id="cb62-160"><a href="#cb62-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-161"><a href="#cb62-161" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3. Improve the metadata with the case coding instructions</span></span>
-<span id="cb62-162"><a href="#cb62-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-163"><a href="#cb62-163" aria-hidden="true" tabindex="-1"></a>Labels are documentation that travels with the data. Stripping them (for example with <span class="in">`as.numeric()`</span>) throws that documentation away, so we keep the labels and repair them where they are incomplete.</span>
-<span id="cb62-164"><a href="#cb62-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-165"><a href="#cb62-165" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3.1 Coding instructions (Case Exhibit 31.2)</span></span>
-<span id="cb62-166"><a href="#cb62-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-167"><a href="#cb62-167" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Response scale <span class="pp">|</span> Coding <span class="pp">|</span></span>
-<span id="cb62-168"><a href="#cb62-168" aria-hidden="true" tabindex="-1"></a><span class="pp">|------------------------------------|------------------------------------|</span></span>
-<span id="cb62-169"><a href="#cb62-169" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Strongly disagree to strongly agree <span class="pp">|</span> Strongly disagree = 1; strongly agree = 5 <span class="pp">|</span></span>
-<span id="cb62-170"><a href="#cb62-170" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Very high to very low <span class="pp">|</span> Very high = 1; very low = 5; no opinion = 6 <span class="pp">|</span></span>
-<span id="cb62-171"><a href="#cb62-171" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Too often to never <span class="pp">|</span> Too often = 1; never = 5 <span class="pp">|</span></span>
-<span id="cb62-172"><a href="#cb62-172" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Excellent to poor <span class="pp">|</span> Excellent = 1; poor = 4 <span class="pp">|</span></span>
-<span id="cb62-173"><a href="#cb62-173" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Excellent to very poor <span class="pp">|</span> Excellent = 1; very poor = 5; no answer = 6 <span class="pp">|</span></span>
-<span id="cb62-174"><a href="#cb62-174" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Yes/no <span class="pp">|</span> Yes = 1; no = 2; no answer = 3 <span class="pp">|</span></span>
-<span id="cb62-175"><a href="#cb62-175" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Awareness/use <span class="pp">|</span> Aware and have used = 1; aware but have not used = 2; unaware = 3 <span class="pp">|</span></span>
+<span id="cb62-150"><a href="#cb62-150" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb62-151"><a href="#cb62-151" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: dictionary</span></span>
+<span id="cb62-152"><a href="#cb62-152" aria-hidden="true" tabindex="-1"></a>data_dictionary <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb62-153"><a href="#cb62-153" aria-hidden="true" tabindex="-1"></a>  <span class="at">variable =</span> <span class="fu">names</span>(data_raw),</span>
+<span id="cb62-154"><a href="#cb62-154" aria-hidden="true" tabindex="-1"></a>  <span class="at">variable_label =</span> <span class="fu">map_chr</span>(data_raw, \(x) <span class="fu">attr</span>(x, <span class="st">&quot;label&quot;</span>) <span class="sc">%||%</span> <span class="st">&quot;&quot;</span>),</span>
+<span id="cb62-155"><a href="#cb62-155" aria-hidden="true" tabindex="-1"></a>  <span class="at">class =</span> <span class="fu">map_chr</span>(data_raw, \(x) <span class="fu">class</span>(x)[<span class="dv">1</span>]),</span>
+<span id="cb62-156"><a href="#cb62-156" aria-hidden="true" tabindex="-1"></a>  <span class="at">n_distinct =</span> <span class="fu">map_int</span>(data_raw, n_distinct),</span>
+<span id="cb62-157"><a href="#cb62-157" aria-hidden="true" tabindex="-1"></a>  <span class="at">value_labels =</span> <span class="fu">map_chr</span>(</span>
+<span id="cb62-158"><a href="#cb62-158" aria-hidden="true" tabindex="-1"></a>    data_raw,</span>
+<span id="cb62-159"><a href="#cb62-159" aria-hidden="true" tabindex="-1"></a>    \(x) {</span>
+<span id="cb62-160"><a href="#cb62-160" aria-hidden="true" tabindex="-1"></a>      labs <span class="ot">&lt;-</span> <span class="fu">attr</span>(x, <span class="st">&quot;labels&quot;</span>)</span>
+<span id="cb62-161"><a href="#cb62-161" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">is.null</span>(labs)) <span class="st">&quot;&quot;</span> <span class="cf">else</span> <span class="fu">str_c</span>(labs, <span class="st">&quot;=&quot;</span>, <span class="fu">names</span>(labs), <span class="at">collapse =</span> <span class="st">&quot;; &quot;</span>)</span>
+<span id="cb62-162"><a href="#cb62-162" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb62-163"><a href="#cb62-163" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb62-164"><a href="#cb62-164" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb62-165"><a href="#cb62-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-166"><a href="#cb62-166" aria-hidden="true" tabindex="-1"></a>data_dictionary</span>
+<span id="cb62-167"><a href="#cb62-167" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb62-168"><a href="#cb62-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-169"><a href="#cb62-169" aria-hidden="true" tabindex="-1"></a>Alternatively, you can use <span class="in">`view_df()`</span> in the Console to browse the labels interactively.</span>
+<span id="cb62-170"><a href="#cb62-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-171"><a href="#cb62-171" aria-hidden="true" tabindex="-1"></a><span class="fu">### Questions to answer</span></span>
+<span id="cb62-172"><a href="#cb62-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-173"><a href="#cb62-173" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Which variables have clear, useful labels?</span>
+<span id="cb62-174"><a href="#cb62-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-175"><a href="#cb62-175" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **q3, q4, q5, q6, q7, q8, q9, q10, q11, q12**</span></span>
 <span id="cb62-176"><a href="#cb62-176" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-177"><a href="#cb62-177" aria-hidden="true" tabindex="-1"></a>The exhibit does not list question numbers. Matching it to the questionnaire: q3 to q6 and q30 to q34 are the agreement items; q7 and q8 use very high to very low; q9 is the frequency item; q10 is excellent to poor; q37 is excellent to very poor; q11, q12, q27, and q38 are yes/no; and q13 to q26 are awareness/use items.</span>
+<span id="cb62-177"><a href="#cb62-177" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Which labels should be revised for readability in your report?</span>
 <span id="cb62-178"><a href="#cb62-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-179"><a href="#cb62-179" aria-hidden="true" tabindex="-1"></a>Compare this table with the value labels you printed in Section 2. Which codes in the file have no label?</span>
-<span id="cb62-180"><a href="#cb62-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-181"><a href="#cb62-181" aria-hidden="true" tabindex="-1"></a>*Your answer:*</span>
-<span id="cb62-182"><a href="#cb62-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-183"><a href="#cb62-183" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3.2 Add, edit, and remove labels</span></span>
-<span id="cb62-184"><a href="#cb62-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-185"><a href="#cb62-185" aria-hidden="true" tabindex="-1"></a>The <span class="in">`labelled`</span> package works well with the tidyverse. The main functions are:</span>
-<span id="cb62-186"><a href="#cb62-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-187"><a href="#cb62-187" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Task <span class="pp">|</span> Function <span class="pp">|</span></span>
-<span id="cb62-188"><a href="#cb62-188" aria-hidden="true" tabindex="-1"></a><span class="pp">|-----------------------------------|-------------------------------------|</span></span>
-<span id="cb62-189"><a href="#cb62-189" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Read a variable label <span class="pp">|</span> <span class="in">`var_label(x)`</span> <span class="pp">|</span></span>
-<span id="cb62-190"><a href="#cb62-190" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Set variable labels <span class="pp">|</span> <span class="in">`set_variable_labels(data, q1 = &quot;Label&quot;)`</span> <span class="pp">|</span></span>
-<span id="cb62-191"><a href="#cb62-191" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Remove a variable label <span class="pp">|</span> <span class="in">`remove_var_label(x)`</span> <span class="pp">|</span></span>
-<span id="cb62-192"><a href="#cb62-192" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Read value labels <span class="pp">|</span> <span class="in">`val_labels(x)`</span> <span class="pp">|</span></span>
-<span id="cb62-193"><a href="#cb62-193" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Replace all value labels <span class="pp">|</span> <span class="in">`set_value_labels(data, q1 = c(&quot;No&quot; = 0, &quot;Yes&quot; = 1))`</span> <span class="pp">|</span></span>
-<span id="cb62-194"><a href="#cb62-194" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Add to existing value labels <span class="pp">|</span> <span class="in">`add_value_labels(x, &quot;Unaware&quot; = 3)`</span> <span class="pp">|</span></span>
-<span id="cb62-195"><a href="#cb62-195" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Remove value labels <span class="pp">|</span> <span class="in">`remove_val_labels(x)`</span> or <span class="in">`remove_value_labels(data, q1 = 1)`</span> <span class="pp">|</span></span>
-<span id="cb62-196"><a href="#cb62-196" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Convert to a plain number <span class="pp">|</span> <span class="in">`as.numeric(x)`</span> <span class="pp">|</span></span>
-<span id="cb62-197"><a href="#cb62-197" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Convert to a factor for display <span class="pp">|</span> <span class="in">`haven::as_factor(x)`</span> <span class="pp">|</span></span>
+<span id="cb62-179"><a href="#cb62-179" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **q8 and q9** both say “statement frequency”. But q8 asks about the rates the Credit Union charges members to borrow, and only q9 is about statements. Relabel q8 as “Rates charged on member loans”.</span></span>
+<span id="cb62-180"><a href="#cb62-180" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt;</span></span>
+<span id="cb62-181"><a href="#cb62-181" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **q7** (“savings rates”) is vague. “Rates paid on share (savings) accounts” is clearer.</span></span>
+<span id="cb62-182"><a href="#cb62-182" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt;</span></span>
+<span id="cb62-183"><a href="#cb62-183" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **q30** (“CU rates lower”) should say these are loan rates compared with other institutions.</span></span>
+<span id="cb62-184"><a href="#cb62-184" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt;</span></span>
+<span id="cb62-185"><a href="#cb62-185" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **q38** (“headquarter”) should say “Lives in headquarters area”.</span></span>
+<span id="cb62-186"><a href="#cb62-186" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt;</span></span>
+<span id="cb62-187"><a href="#cb62-187" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; Capitalization is inconsistent (“Employees are Courteous” vs. “employees are helpful”). </span><span class="in">`OverallEmployeePerformace`</span><span class="at"> is misspelled and has no label.</span></span>
+<span id="cb62-188"><a href="#cb62-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-189"><a href="#cb62-189" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Which variables are nominal, ordinal, or approximately interval for this assignment? Explain at least three, using the questionnaire.</span>
+<span id="cb62-190"><a href="#cb62-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-191"><a href="#cb62-191" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **Approximately interval:** q3 to q6 and q30 to q34 (Strongly Disagree to Strongly Agree). They are attitude statements with ordered, roughly equal steps, and your scales deck lists attitudes and opinions as interval.</span></span>
+<span id="cb62-192"><a href="#cb62-192" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt;</span></span>
+<span id="cb62-193"><a href="#cb62-193" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **Ordinal:** q7 and q8 (Very High to Very Low), q10 (Excellent to Poor), and q37 (Excellent to Very Poor). The order is clear, but the distance between “Good” and “Fair” is unknown. q9 is also ordinal, but its best answer (“About Right”) is in the middle.</span></span>
+<span id="cb62-194"><a href="#cb62-194" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt;</span></span>
+<span id="cb62-195"><a href="#cb62-195" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **Nominal:** q11, q12, q27, and q38 (Yes/No), and q13 to q26 (aware and used / aware but not used / unaware). These are categories with no ranking, so only counts and percentages make sense.</span></span>
+<span id="cb62-196"><a href="#cb62-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-197"><a href="#cb62-197" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>Which value labels are essential for interpreting the data, and which are predictable from the response scale?</span>
 <span id="cb62-198"><a href="#cb62-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-199"><a href="#cb62-199" aria-hidden="true" tabindex="-1"></a>A quick demonstration on a single variable (nothing is saved):</span>
-<span id="cb62-200"><a href="#cb62-200" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-203"><a href="#cb62-203" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb62-204"><a href="#cb62-204" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: label-demo</span></span>
-<span id="cb62-205"><a href="#cb62-205" aria-hidden="true" tabindex="-1"></a><span class="fu">var_label</span>(data_raw<span class="sc">$</span>q7)</span>
-<span id="cb62-206"><a href="#cb62-206" aria-hidden="true" tabindex="-1"></a><span class="fu">val_labels</span>(data_raw<span class="sc">$</span>q7)</span>
-<span id="cb62-207"><a href="#cb62-207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-208"><a href="#cb62-208" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a label to one code, then strip all value labels</span></span>
-<span id="cb62-209"><a href="#cb62-209" aria-hidden="true" tabindex="-1"></a>data_raw<span class="sc">$</span>q7 <span class="sc">|&gt;</span> <span class="fu">add_value_labels</span>(<span class="st">&quot;Refused&quot;</span> <span class="ot">=</span> <span class="dv">7</span>) <span class="sc">|&gt;</span> <span class="fu">val_labels</span>()</span>
-<span id="cb62-210"><a href="#cb62-210" aria-hidden="true" tabindex="-1"></a>data_raw<span class="sc">$</span>q7 <span class="sc">|&gt;</span> <span class="fu">remove_val_labels</span>() <span class="sc">|&gt;</span> <span class="fu">val_labels</span>()</span>
-<span id="cb62-211"><a href="#cb62-211" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb62-199"><a href="#cb62-199" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **Essential:** the nominal items and the special codes. Yes/No, the awareness categories, “No Opinion”, and q9’s labels (Too Often through Never) only mean something with their labels.</span></span>
+<span id="cb62-200"><a href="#cb62-200" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt;</span></span>
+<span id="cb62-201"><a href="#cb62-201" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **Predictable from the scale:** the 1-to-5 agreement items, where the file only labels 1 (Strongly Disagree) and 5 (Strongly Agree). A reader can infer 2 to 4 (Disagree, Uncertain, Agree) from the questionnaire.</span></span>
+<span id="cb62-202"><a href="#cb62-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-203"><a href="#cb62-203" aria-hidden="true" tabindex="-1"></a>*Your answer:*</span>
+<span id="cb62-204"><a href="#cb62-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-205"><a href="#cb62-205" aria-hidden="true" tabindex="-1"></a>Keep <span class="in">`data_raw`</span> unchanged as a reference copy. Do all cleaning on a copy.</span>
+<span id="cb62-206"><a href="#cb62-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-207"><a href="#cb62-207" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3. Improve the metadata with the case coding instructions</span></span>
+<span id="cb62-208"><a href="#cb62-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-209"><a href="#cb62-209" aria-hidden="true" tabindex="-1"></a>Labels are documentation that travels with the data. Stripping them (for example with <span class="in">`as.numeric()`</span>) throws that documentation away, so we keep the labels and repair them where they are incomplete.</span>
+<span id="cb62-210"><a href="#cb62-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-211"><a href="#cb62-211" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3.1 Coding instructions (Case Exhibit 31.2)</span></span>
 <span id="cb62-212"><a href="#cb62-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-213"><a href="#cb62-213" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3.3 Create a labelled copy</span></span>
-<span id="cb62-214"><a href="#cb62-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-215"><a href="#cb62-215" aria-hidden="true" tabindex="-1"></a>The chunk below fixes the problems found by comparing the file with Exhibit 31.2. It adds the missing &quot;unaware&quot; and &quot;no answer&quot; codes and labels the two precomputed variables. We checked that <span class="in">`employeeperformance`</span> equals the mean of q3 to q6.</span>
-<span id="cb62-216"><a href="#cb62-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-219"><a href="#cb62-219" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb62-220"><a href="#cb62-220" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: add-labels</span></span>
-<span id="cb62-221"><a href="#cb62-221" aria-hidden="true" tabindex="-1"></a>data_labelled <span class="ot">&lt;-</span> data_raw <span class="sc">|&gt;</span></span>
-<span id="cb62-222"><a href="#cb62-222" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb62-223"><a href="#cb62-223" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(q13<span class="sc">:</span>q26, \(x) <span class="fu">add_value_labels</span>(x, <span class="st">&quot;Unaware&quot;</span> <span class="ot">=</span> <span class="dv">3</span>)),</span>
-<span id="cb62-224"><a href="#cb62-224" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(q11, q12, q27, q38), \(x) <span class="fu">add_value_labels</span>(x, <span class="st">&quot;No answer&quot;</span> <span class="ot">=</span> <span class="dv">3</span>)),</span>
-<span id="cb62-225"><a href="#cb62-225" aria-hidden="true" tabindex="-1"></a>    <span class="at">q37 =</span> <span class="fu">set_value_labels</span>(</span>
-<span id="cb62-226"><a href="#cb62-226" aria-hidden="true" tabindex="-1"></a>      q37,</span>
-<span id="cb62-227"><a href="#cb62-227" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(</span>
-<span id="cb62-228"><a href="#cb62-228" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Excellent&quot;</span> <span class="ot">=</span> <span class="dv">1</span>,</span>
-<span id="cb62-229"><a href="#cb62-229" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Good&quot;</span> <span class="ot">=</span> <span class="dv">2</span>,</span>
-<span id="cb62-230"><a href="#cb62-230" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Average&quot;</span> <span class="ot">=</span> <span class="dv">3</span>,</span>
-<span id="cb62-231"><a href="#cb62-231" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Poor&quot;</span> <span class="ot">=</span> <span class="dv">4</span>,</span>
-<span id="cb62-232"><a href="#cb62-232" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Very Poor&quot;</span> <span class="ot">=</span> <span class="dv">5</span>,</span>
-<span id="cb62-233"><a href="#cb62-233" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;No answer&quot;</span> <span class="ot">=</span> <span class="dv">6</span></span>
-<span id="cb62-234"><a href="#cb62-234" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb62-235"><a href="#cb62-235" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb62-236"><a href="#cb62-236" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb62-237"><a href="#cb62-237" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_variable_labels</span>(</span>
-<span id="cb62-238"><a href="#cb62-238" aria-hidden="true" tabindex="-1"></a>    <span class="at">OverallEmployeePerformace =</span> <span class="st">&quot;Overall employee performance (precomputed)&quot;</span>,</span>
-<span id="cb62-239"><a href="#cb62-239" aria-hidden="true" tabindex="-1"></a>    <span class="at">employeeperformance =</span> <span class="st">&quot;Mean of q3 to q6 (precomputed)&quot;</span></span>
-<span id="cb62-240"><a href="#cb62-240" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb62-241"><a href="#cb62-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-242"><a href="#cb62-242" aria-hidden="true" tabindex="-1"></a><span class="fu">val_labels</span>(data_labelled<span class="sc">$</span>q13)</span>
-<span id="cb62-243"><a href="#cb62-243" aria-hidden="true" tabindex="-1"></a><span class="fu">var_label</span>(data_labelled<span class="sc">$</span>employeeperformance)</span>
-<span id="cb62-244"><a href="#cb62-244" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb62-245"><a href="#cb62-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-246"><a href="#cb62-246" aria-hidden="true" tabindex="-1"></a>Notice that q8&#39;s variable label in the file (&quot;statement frequency&quot;) duplicates q9&#39;s label, but q8 uses the very high to very low scale. Check the questionnaire for what q8 asks. How would you relabel it with <span class="in">`set_variable_labels()`</span>?</span>
-<span id="cb62-247"><a href="#cb62-247" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-248"><a href="#cb62-248" aria-hidden="true" tabindex="-1"></a>*Your answer:*</span>
-<span id="cb62-249"><a href="#cb62-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-250"><a href="#cb62-250" aria-hidden="true" tabindex="-1"></a><span class="fu">## 4. Create an analysis copy</span></span>
-<span id="cb62-251"><a href="#cb62-251" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-252"><a href="#cb62-252" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Questionnaire variables have names that start with <span class="in">`q`</span> followed by a number.</span>
-<span id="cb62-253"><a href="#cb62-253" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The file also contains <span class="in">`OverallEmployeePerformace`</span> and <span class="in">`employeeperformance`</span>, which look like precomputed summaries. Create an analysis copy that keeps the questionnaire variables only. The labels are kept.</span>
-<span id="cb62-254"><a href="#cb62-254" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-257"><a href="#cb62-257" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb62-258"><a href="#cb62-258" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: analysis-copy</span></span>
-<span id="cb62-259"><a href="#cb62-259" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data_labelled <span class="sc">|&gt;</span></span>
-<span id="cb62-260"><a href="#cb62-260" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">matches</span>(<span class="st">&quot;^q</span><span class="sc">\\</span><span class="st">d+$&quot;</span>))</span>
-<span id="cb62-261"><a href="#cb62-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-262"><a href="#cb62-262" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(data)</span>
+<span id="cb62-213"><a href="#cb62-213" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Response scale <span class="pp">|</span> Coding <span class="pp">|</span></span>
+<span id="cb62-214"><a href="#cb62-214" aria-hidden="true" tabindex="-1"></a><span class="pp">|------------------------------------|------------------------------------|</span></span>
+<span id="cb62-215"><a href="#cb62-215" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Strongly disagree to strongly agree <span class="pp">|</span> Strongly disagree = 1; strongly agree = 5 <span class="pp">|</span></span>
+<span id="cb62-216"><a href="#cb62-216" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Very high to very low <span class="pp">|</span> Very high = 1; very low = 5; no opinion = 6 <span class="pp">|</span></span>
+<span id="cb62-217"><a href="#cb62-217" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Too often to never <span class="pp">|</span> Too often = 1; never = 5 <span class="pp">|</span></span>
+<span id="cb62-218"><a href="#cb62-218" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Excellent to poor <span class="pp">|</span> Excellent = 1; poor = 4 <span class="pp">|</span></span>
+<span id="cb62-219"><a href="#cb62-219" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Excellent to very poor <span class="pp">|</span> Excellent = 1; very poor = 5; no answer = 6 <span class="pp">|</span></span>
+<span id="cb62-220"><a href="#cb62-220" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Yes/no <span class="pp">|</span> Yes = 1; no = 2; no answer = 3 <span class="pp">|</span></span>
+<span id="cb62-221"><a href="#cb62-221" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Awareness/use <span class="pp">|</span> Aware and have used = 1; aware but have not used = 2; unaware = 3 <span class="pp">|</span></span>
+<span id="cb62-222"><a href="#cb62-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-223"><a href="#cb62-223" aria-hidden="true" tabindex="-1"></a>The exhibit does not list question numbers. Matching it to the questionnaire: q3 to q6 and q30 to q34 are the agreement items; q7 and q8 use very high to very low; q9 is the frequency item; q10 is excellent to poor; q37 is excellent to very poor; q11, q12, q27, and q38 are yes/no; and q13 to q26 are awareness/use items.</span>
+<span id="cb62-224"><a href="#cb62-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-225"><a href="#cb62-225" aria-hidden="true" tabindex="-1"></a>Compare this table with the value labels you printed in Section 2. Which codes in the file have no label?</span>
+<span id="cb62-226"><a href="#cb62-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-227"><a href="#cb62-227" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Code 3 (“Unaware”) has no label on q13 to q25.**</span></span>
+<span id="cb62-228"><a href="#cb62-228" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb62-229"><a href="#cb62-229" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Code 3 (“No answer”) has no label on q12.**</span></span>
+<span id="cb62-230"><a href="#cb62-230" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb62-231"><a href="#cb62-231" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **The exhibit also defines 3 for q11, q27, and q38, but nobody used it there.**</span></span>
+<span id="cb62-232"><a href="#cb62-232" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb62-233"><a href="#cb62-233" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **The agreement items (q3 to q6 and q30 to q34) only have labels at 1 and 5. Codes 2, 3, and 4 (Disagree, Uncertain, Agree) are unlabeled.**</span></span>
+<span id="cb62-234"><a href="#cb62-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-235"><a href="#cb62-235" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3.2 Add, edit, and remove labels</span></span>
+<span id="cb62-236"><a href="#cb62-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-237"><a href="#cb62-237" aria-hidden="true" tabindex="-1"></a>The <span class="in">`labelled`</span> package works well with the tidyverse. The main functions are:</span>
+<span id="cb62-238"><a href="#cb62-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-239"><a href="#cb62-239" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Task <span class="pp">|</span> Function <span class="pp">|</span></span>
+<span id="cb62-240"><a href="#cb62-240" aria-hidden="true" tabindex="-1"></a><span class="pp">|-----------------------------------|-------------------------------------|</span></span>
+<span id="cb62-241"><a href="#cb62-241" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Read a variable label <span class="pp">|</span> <span class="in">`var_label(x)`</span> <span class="pp">|</span></span>
+<span id="cb62-242"><a href="#cb62-242" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Set variable labels <span class="pp">|</span> <span class="in">`set_variable_labels(data, q1 = &quot;Label&quot;)`</span> <span class="pp">|</span></span>
+<span id="cb62-243"><a href="#cb62-243" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Remove a variable label <span class="pp">|</span> <span class="in">`remove_var_label(x)`</span> <span class="pp">|</span></span>
+<span id="cb62-244"><a href="#cb62-244" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Read value labels <span class="pp">|</span> <span class="in">`val_labels(x)`</span> <span class="pp">|</span></span>
+<span id="cb62-245"><a href="#cb62-245" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Replace all value labels <span class="pp">|</span> <span class="in">`set_value_labels(data, q1 = c(&quot;No&quot; = 0, &quot;Yes&quot; = 1))`</span> <span class="pp">|</span></span>
+<span id="cb62-246"><a href="#cb62-246" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Add to existing value labels <span class="pp">|</span> <span class="in">`add_value_labels(x, &quot;Unaware&quot; = 3)`</span> <span class="pp">|</span></span>
+<span id="cb62-247"><a href="#cb62-247" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Remove value labels <span class="pp">|</span> <span class="in">`remove_val_labels(x)`</span> or <span class="in">`remove_value_labels(data, q1 = 1)`</span> <span class="pp">|</span></span>
+<span id="cb62-248"><a href="#cb62-248" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Convert to a plain number <span class="pp">|</span> <span class="in">`as.numeric(x)`</span> <span class="pp">|</span></span>
+<span id="cb62-249"><a href="#cb62-249" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Convert to a factor for display <span class="pp">|</span> <span class="in">`haven::as_factor(x)`</span> <span class="pp">|</span></span>
+<span id="cb62-250"><a href="#cb62-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-251"><a href="#cb62-251" aria-hidden="true" tabindex="-1"></a>A quick demonstration on a single variable (nothing is saved):</span>
+<span id="cb62-252"><a href="#cb62-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-255"><a href="#cb62-255" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb62-256"><a href="#cb62-256" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: label-demo</span></span>
+<span id="cb62-257"><a href="#cb62-257" aria-hidden="true" tabindex="-1"></a><span class="fu">var_label</span>(data_raw<span class="sc">$</span>q7)</span>
+<span id="cb62-258"><a href="#cb62-258" aria-hidden="true" tabindex="-1"></a><span class="fu">val_labels</span>(data_raw<span class="sc">$</span>q7)</span>
+<span id="cb62-259"><a href="#cb62-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-260"><a href="#cb62-260" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a label to one code, then strip all value labels</span></span>
+<span id="cb62-261"><a href="#cb62-261" aria-hidden="true" tabindex="-1"></a>data_raw<span class="sc">$</span>q7 <span class="sc">|&gt;</span> <span class="fu">add_value_labels</span>(<span class="st">&quot;Refused&quot;</span> <span class="ot">=</span> <span class="dv">7</span>) <span class="sc">|&gt;</span> <span class="fu">val_labels</span>()</span>
+<span id="cb62-262"><a href="#cb62-262" aria-hidden="true" tabindex="-1"></a>data_raw<span class="sc">$</span>q7 <span class="sc">|&gt;</span> <span class="fu">remove_val_labels</span>() <span class="sc">|&gt;</span> <span class="fu">val_labels</span>()</span>
 <span id="cb62-263"><a href="#cb62-263" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb62-264"><a href="#cb62-264" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-265"><a href="#cb62-265" aria-hidden="true" tabindex="-1"></a>Explain why using an already computed index could be a problem when the purpose of this assignment is to evaluate and construct measures.</span>
+<span id="cb62-265"><a href="#cb62-265" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3.3 Create a labelled copy</span></span>
 <span id="cb62-266"><a href="#cb62-266" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-267"><a href="#cb62-267" aria-hidden="true" tabindex="-1"></a>*Your answer:*</span>
+<span id="cb62-267"><a href="#cb62-267" aria-hidden="true" tabindex="-1"></a>The chunk below fixes the problems found by comparing the file with Exhibit 31.2. It adds the missing &quot;unaware&quot; and &quot;no answer&quot; codes and labels the two precomputed variables. We checked that <span class="in">`employeeperformance`</span> equals the mean of q3 to q6.</span>
 <span id="cb62-268"><a href="#cb62-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-269"><a href="#cb62-269" aria-hidden="true" tabindex="-1"></a><span class="fu">### Data-quality checks</span></span>
-<span id="cb62-270"><a href="#cb62-270" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-271"><a href="#cb62-271" aria-hidden="true" tabindex="-1"></a>Check the range of each variable against the questionnaire coding. This table lists the distinct values, the count of missing values, and the percent missing for each variable.</span>
-<span id="cb62-272"><a href="#cb62-272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-275"><a href="#cb62-275" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb62-276"><a href="#cb62-276" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: quality-checks</span></span>
-<span id="cb62-277"><a href="#cb62-277" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
-<span id="cb62-278"><a href="#cb62-278" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Plain numbers are needed to stack columns that have different labels</span></span>
-<span id="cb62-279"><a href="#cb62-279" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), as.numeric)) <span class="sc">|&gt;</span></span>
-<span id="cb62-280"><a href="#cb62-280" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">&quot;variable&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb62-281"><a href="#cb62-281" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb62-282"><a href="#cb62-282" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_observed =</span> <span class="fu">str_c</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(value)), <span class="at">collapse =</span> <span class="st">&quot;, &quot;</span>),</span>
-<span id="cb62-283"><a href="#cb62-283" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_missing =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(value)),</span>
-<span id="cb62-284"><a href="#cb62-284" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_missing =</span> <span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">is.na</span>(value)) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>),</span>
-<span id="cb62-285"><a href="#cb62-285" aria-hidden="true" tabindex="-1"></a>    <span class="at">.by =</span> variable</span>
-<span id="cb62-286"><a href="#cb62-286" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb62-287"><a href="#cb62-287" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb62-288"><a href="#cb62-288" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-289"><a href="#cb62-289" aria-hidden="true" tabindex="-1"></a>Compare these values with the questionnaire. Does any variable contain a value that the questionnaire does not define?</span>
-<span id="cb62-290"><a href="#cb62-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-291"><a href="#cb62-291" aria-hidden="true" tabindex="-1"></a>*Your answer:*</span>
-<span id="cb62-292"><a href="#cb62-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-293"><a href="#cb62-293" aria-hidden="true" tabindex="-1"></a><span class="fu">## 5. Recode special responses and reverse-code items</span></span>
-<span id="cb62-294"><a href="#cb62-294" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-295"><a href="#cb62-295" aria-hidden="true" tabindex="-1"></a>Reverse coding is needed when a larger number represents a less favorable response than a smaller number. After reverse coding, larger values should mean the same thing across all items that will be combined.</span>
-<span id="cb62-296"><a href="#cb62-296" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-297"><a href="#cb62-297" aria-hidden="true" tabindex="-1"></a><span class="fu">### 5.1 &quot;No Opinion&quot; and &quot;No answer&quot; responses</span></span>
-<span id="cb62-298"><a href="#cb62-298" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-299"><a href="#cb62-299" aria-hidden="true" tabindex="-1"></a>According to Exhibit 31.2, q7 and q8 use 6 for &quot;No Opinion&quot;, and q37 uses 6 for &quot;No answer&quot;. Neither is a rating, so both must be treated as missing. First check whether any 6s remain in the data.</span>
-<span id="cb62-300"><a href="#cb62-300" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-303"><a href="#cb62-303" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb62-304"><a href="#cb62-304" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: check-no-opinion</span></span>
-<span id="cb62-305"><a href="#cb62-305" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
-<span id="cb62-306"><a href="#cb62-306" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">c</span>(q7, q8, q37), \(x) <span class="fu">sum</span>(x <span class="sc">==</span> <span class="dv">6</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)))</span>
-<span id="cb62-307"><a href="#cb62-307" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb62-271"><a href="#cb62-271" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb62-272"><a href="#cb62-272" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: add-labels</span></span>
+<span id="cb62-273"><a href="#cb62-273" aria-hidden="true" tabindex="-1"></a>data_labelled <span class="ot">&lt;-</span> data_raw <span class="sc">|&gt;</span></span>
+<span id="cb62-274"><a href="#cb62-274" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb62-275"><a href="#cb62-275" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(q13<span class="sc">:</span>q26, \(x) <span class="fu">add_value_labels</span>(x, <span class="st">&quot;Unaware&quot;</span> <span class="ot">=</span> <span class="dv">3</span>)),</span>
+<span id="cb62-276"><a href="#cb62-276" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">c</span>(q11, q12, q27, q38), \(x) <span class="fu">add_value_labels</span>(x, <span class="st">&quot;No answer&quot;</span> <span class="ot">=</span> <span class="dv">3</span>)),</span>
+<span id="cb62-277"><a href="#cb62-277" aria-hidden="true" tabindex="-1"></a>    <span class="at">q37 =</span> <span class="fu">set_value_labels</span>(</span>
+<span id="cb62-278"><a href="#cb62-278" aria-hidden="true" tabindex="-1"></a>      q37,</span>
+<span id="cb62-279"><a href="#cb62-279" aria-hidden="true" tabindex="-1"></a>      <span class="fu">c</span>(</span>
+<span id="cb62-280"><a href="#cb62-280" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Excellent&quot;</span> <span class="ot">=</span> <span class="dv">1</span>,</span>
+<span id="cb62-281"><a href="#cb62-281" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Good&quot;</span> <span class="ot">=</span> <span class="dv">2</span>,</span>
+<span id="cb62-282"><a href="#cb62-282" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Average&quot;</span> <span class="ot">=</span> <span class="dv">3</span>,</span>
+<span id="cb62-283"><a href="#cb62-283" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Poor&quot;</span> <span class="ot">=</span> <span class="dv">4</span>,</span>
+<span id="cb62-284"><a href="#cb62-284" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;Very Poor&quot;</span> <span class="ot">=</span> <span class="dv">5</span>,</span>
+<span id="cb62-285"><a href="#cb62-285" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;No answer&quot;</span> <span class="ot">=</span> <span class="dv">6</span></span>
+<span id="cb62-286"><a href="#cb62-286" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb62-287"><a href="#cb62-287" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb62-288"><a href="#cb62-288" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb62-289"><a href="#cb62-289" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_variable_labels</span>(</span>
+<span id="cb62-290"><a href="#cb62-290" aria-hidden="true" tabindex="-1"></a>    <span class="at">OverallEmployeePerformace =</span> <span class="st">&quot;Overall employee performance (precomputed)&quot;</span>,</span>
+<span id="cb62-291"><a href="#cb62-291" aria-hidden="true" tabindex="-1"></a>    <span class="at">employeeperformance =</span> <span class="st">&quot;Mean of q3 to q6 (precomputed)&quot;</span></span>
+<span id="cb62-292"><a href="#cb62-292" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb62-293"><a href="#cb62-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-294"><a href="#cb62-294" aria-hidden="true" tabindex="-1"></a><span class="fu">val_labels</span>(data_labelled<span class="sc">$</span>q13)</span>
+<span id="cb62-295"><a href="#cb62-295" aria-hidden="true" tabindex="-1"></a><span class="fu">var_label</span>(data_labelled<span class="sc">$</span>employeeperformance)</span>
+<span id="cb62-296"><a href="#cb62-296" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb62-297"><a href="#cb62-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-298"><a href="#cb62-298" aria-hidden="true" tabindex="-1"></a>Notice that q8&#39;s variable label in the file (&quot;statement frequency&quot;) duplicates q9&#39;s label, but q8 uses the very high to very low scale. Check the questionnaire for what q8 asks. How would you relabel it with <span class="in">`set_variable_labels()`</span>?</span>
+<span id="cb62-299"><a href="#cb62-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-300"><a href="#cb62-300" aria-hidden="true" tabindex="-1"></a>*Your answer:*</span>
+<span id="cb62-301"><a href="#cb62-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-302"><a href="#cb62-302" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **\[1\] &quot;Mean of q3 to q6 (precomputed)&quot;**</span></span>
+<span id="cb62-303"><a href="#cb62-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-304"><a href="#cb62-304" aria-hidden="true" tabindex="-1"></a><span class="fu">## 4. Create an analysis copy</span></span>
+<span id="cb62-305"><a href="#cb62-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-306"><a href="#cb62-306" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Questionnaire variables have names that start with <span class="in">`q`</span> followed by a number.</span>
+<span id="cb62-307"><a href="#cb62-307" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The file also contains <span class="in">`OverallEmployeePerformace`</span> and <span class="in">`employeeperformance`</span>, which look like precomputed summaries. Create an analysis copy that keeps the questionnaire variables only. The labels are kept.</span>
 <span id="cb62-308"><a href="#cb62-308" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-309"><a href="#cb62-309" aria-hidden="true" tabindex="-1"></a>If the count is 0, the 6s were already converted to <span class="in">`NA`</span> when the file was imported (compare the missing counts in Section 1). The recode below is still good practice because it guarantees the result no matter how the file is read.</span>
-<span id="cb62-310"><a href="#cb62-310" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-313"><a href="#cb62-313" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb62-314"><a href="#cb62-314" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: recode-no-opinion</span></span>
-<span id="cb62-315"><a href="#cb62-315" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
-<span id="cb62-316"><a href="#cb62-316" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(q7, q8, q37), \(x) <span class="fu">na_if</span>(x, <span class="dv">6</span>)))</span>
+<span id="cb62-311"><a href="#cb62-311" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb62-312"><a href="#cb62-312" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: analysis-copy</span></span>
+<span id="cb62-313"><a href="#cb62-313" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data_labelled <span class="sc">|&gt;</span></span>
+<span id="cb62-314"><a href="#cb62-314" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">matches</span>(<span class="st">&quot;^q</span><span class="sc">\\</span><span class="st">d+$&quot;</span>))</span>
+<span id="cb62-315"><a href="#cb62-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-316"><a href="#cb62-316" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(data)</span>
 <span id="cb62-317"><a href="#cb62-317" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb62-318"><a href="#cb62-318" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-319"><a href="#cb62-319" aria-hidden="true" tabindex="-1"></a><span class="fu">### 5.2 Reverse coding</span></span>
+<span id="cb62-319"><a href="#cb62-319" aria-hidden="true" tabindex="-1"></a>Explain why using an already computed index could be a problem when the purpose of this assignment is to evaluate and construct measures.</span>
 <span id="cb62-320"><a href="#cb62-320" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-321"><a href="#cb62-321" aria-hidden="true" tabindex="-1"></a>For a scale that runs from a minimum to a maximum, the formula is:</span>
+<span id="cb62-321"><a href="#cb62-321" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **An already computed index hides how it was built. The file doesn’t say which items went into it, whether any were reverse-coded, or how missing values were handled. So I can’t check whether it’s reliable or whether the items belong together. If I used it, I’d be trusting someone else’s decisions without being able to test them.**</span></span>
 <span id="cb62-322"><a href="#cb62-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-323"><a href="#cb62-323" aria-hidden="true" tabindex="-1"></a>$$\text{reversed} = \text{minimum} + \text{maximum} - \text{original}$$</span>
+<span id="cb62-323"><a href="#cb62-323" aria-hidden="true" tabindex="-1"></a><span class="fu">### Data-quality checks</span></span>
 <span id="cb62-324"><a href="#cb62-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-325"><a href="#cb62-325" aria-hidden="true" tabindex="-1"></a>For a scale starting at 1, this equals <span class="in">`maximum + 1 - original`</span>. From Exhibit 31.2, q7, q8, and q37 run 1 to 5, and q10 runs 1 to 4.</span>
+<span id="cb62-325"><a href="#cb62-325" aria-hidden="true" tabindex="-1"></a>Check the range of each variable against the questionnaire coding. This table lists the distinct values, the count of missing values, and the percent missing for each variable.</span>
 <span id="cb62-326"><a href="#cb62-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-327"><a href="#cb62-327" aria-hidden="true" tabindex="-1"></a>Arithmetic on a labelled variable returns a plain number, so the old labels are not carried over. That is the right behavior, because the old labels would now be wrong (for example, 1 used to mean &quot;Very High&quot;). We then attach new variable labels and value labels that describe the reversed direction.</span>
-<span id="cb62-328"><a href="#cb62-328" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-331"><a href="#cb62-331" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb62-332"><a href="#cb62-332" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: reverse-code</span></span>
-<span id="cb62-333"><a href="#cb62-333" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
-<span id="cb62-334"><a href="#cb62-334" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb62-335"><a href="#cb62-335" aria-hidden="true" tabindex="-1"></a>    <span class="at">q7r =</span> <span class="dv">6</span> <span class="sc">-</span> q7,</span>
-<span id="cb62-336"><a href="#cb62-336" aria-hidden="true" tabindex="-1"></a>    <span class="at">q8r =</span> <span class="dv">6</span> <span class="sc">-</span> q8,</span>
-<span id="cb62-337"><a href="#cb62-337" aria-hidden="true" tabindex="-1"></a>    <span class="at">q10r =</span> <span class="dv">5</span> <span class="sc">-</span> q10,</span>
-<span id="cb62-338"><a href="#cb62-338" aria-hidden="true" tabindex="-1"></a>    <span class="at">q37r =</span> <span class="dv">6</span> <span class="sc">-</span> q37</span>
-<span id="cb62-339"><a href="#cb62-339" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb62-340"><a href="#cb62-340" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_variable_labels</span>(</span>
-<span id="cb62-341"><a href="#cb62-341" aria-hidden="true" tabindex="-1"></a>    <span class="at">q7r =</span> <span class="st">&quot;Savings rates (reversed: higher = higher rates)&quot;</span>,</span>
-<span id="cb62-342"><a href="#cb62-342" aria-hidden="true" tabindex="-1"></a>    <span class="at">q8r =</span> <span class="st">&quot;Rates, q8 (reversed: higher = higher rates)&quot;</span>,</span>
-<span id="cb62-343"><a href="#cb62-343" aria-hidden="true" tabindex="-1"></a>    <span class="at">q10r =</span> <span class="st">&quot;Statement accuracy (reversed: higher = better)&quot;</span>,</span>
-<span id="cb62-344"><a href="#cb62-344" aria-hidden="true" tabindex="-1"></a>    <span class="at">q37r =</span> <span class="st">&quot;Overall rating (reversed: higher = better)&quot;</span></span>
-<span id="cb62-345"><a href="#cb62-345" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb62-346"><a href="#cb62-346" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_value_labels</span>(</span>
-<span id="cb62-347"><a href="#cb62-347" aria-hidden="true" tabindex="-1"></a>    <span class="at">q7r =</span> <span class="fu">c</span>(</span>
-<span id="cb62-348"><a href="#cb62-348" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Very Low&quot;</span> <span class="ot">=</span> <span class="dv">1</span>,</span>
-<span id="cb62-349"><a href="#cb62-349" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Low&quot;</span> <span class="ot">=</span> <span class="dv">2</span>,</span>
-<span id="cb62-350"><a href="#cb62-350" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Average&quot;</span> <span class="ot">=</span> <span class="dv">3</span>,</span>
-<span id="cb62-351"><a href="#cb62-351" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;High&quot;</span> <span class="ot">=</span> <span class="dv">4</span>,</span>
-<span id="cb62-352"><a href="#cb62-352" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Very High&quot;</span> <span class="ot">=</span> <span class="dv">5</span></span>
-<span id="cb62-353"><a href="#cb62-353" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb62-354"><a href="#cb62-354" aria-hidden="true" tabindex="-1"></a>    <span class="at">q8r =</span> <span class="fu">c</span>(</span>
-<span id="cb62-355"><a href="#cb62-355" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Very Low&quot;</span> <span class="ot">=</span> <span class="dv">1</span>,</span>
-<span id="cb62-356"><a href="#cb62-356" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Low&quot;</span> <span class="ot">=</span> <span class="dv">2</span>,</span>
-<span id="cb62-357"><a href="#cb62-357" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Average&quot;</span> <span class="ot">=</span> <span class="dv">3</span>,</span>
-<span id="cb62-358"><a href="#cb62-358" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;High&quot;</span> <span class="ot">=</span> <span class="dv">4</span>,</span>
-<span id="cb62-359"><a href="#cb62-359" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Very High&quot;</span> <span class="ot">=</span> <span class="dv">5</span></span>
-<span id="cb62-360"><a href="#cb62-360" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb62-361"><a href="#cb62-361" aria-hidden="true" tabindex="-1"></a>    <span class="at">q10r =</span> <span class="fu">c</span>(<span class="st">&quot;Poor&quot;</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">&quot;Fair&quot;</span> <span class="ot">=</span> <span class="dv">2</span>, <span class="st">&quot;Good&quot;</span> <span class="ot">=</span> <span class="dv">3</span>, <span class="st">&quot;Excellent&quot;</span> <span class="ot">=</span> <span class="dv">4</span>),</span>
-<span id="cb62-362"><a href="#cb62-362" aria-hidden="true" tabindex="-1"></a>    <span class="at">q37r =</span> <span class="fu">c</span>(</span>
-<span id="cb62-363"><a href="#cb62-363" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Very Poor&quot;</span> <span class="ot">=</span> <span class="dv">1</span>,</span>
-<span id="cb62-364"><a href="#cb62-364" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Poor&quot;</span> <span class="ot">=</span> <span class="dv">2</span>,</span>
-<span id="cb62-365"><a href="#cb62-365" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Average&quot;</span> <span class="ot">=</span> <span class="dv">3</span>,</span>
-<span id="cb62-366"><a href="#cb62-366" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Good&quot;</span> <span class="ot">=</span> <span class="dv">4</span>,</span>
-<span id="cb62-367"><a href="#cb62-367" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Excellent&quot;</span> <span class="ot">=</span> <span class="dv">5</span></span>
-<span id="cb62-368"><a href="#cb62-368" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb62-369"><a href="#cb62-369" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb62-370"><a href="#cb62-370" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb62-371"><a href="#cb62-371" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-372"><a href="#cb62-372" aria-hidden="true" tabindex="-1"></a>Two sets of items are deliberately **not** reversed. Read the questionnaire and value labels, then answer the questions below.</span>
-<span id="cb62-373"><a href="#cb62-373" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-374"><a href="#cb62-374" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**q9** (frequency of statements): the labels run from &quot;Too Often&quot; through &quot;About Right&quot; to &quot;Never&quot;. The best response is in the *middle* of the scale, so the scale is not ordered from unfavorable to favorable and a simple reversal would not make the values comparable.</span>
-<span id="cb62-375"><a href="#cb62-375" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**q13 to q26** (awareness and use of products and services) have the categories &quot;Aware and have used&quot;, &quot;Aware but have not used&quot;, and &quot;Unaware&quot;. These are categories, not a rating from bad to good, so a formula such as <span class="in">`3 - x`</span> has no meaningful interpretation. (The yes/no items q11, q12, q27, and q38 are also categories.)</span>
-<span id="cb62-376"><a href="#cb62-376" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-377"><a href="#cb62-377" aria-hidden="true" tabindex="-1"></a><span class="fu">### Questions to answer</span></span>
+<span id="cb62-329"><a href="#cb62-329" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb62-330"><a href="#cb62-330" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: quality-checks</span></span>
+<span id="cb62-331"><a href="#cb62-331" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
+<span id="cb62-332"><a href="#cb62-332" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Plain numbers are needed to stack columns that have different labels</span></span>
+<span id="cb62-333"><a href="#cb62-333" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), as.numeric)) <span class="sc">|&gt;</span></span>
+<span id="cb62-334"><a href="#cb62-334" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="st">&quot;variable&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb62-335"><a href="#cb62-335" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb62-336"><a href="#cb62-336" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_observed =</span> <span class="fu">str_c</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(value)), <span class="at">collapse =</span> <span class="st">&quot;, &quot;</span>),</span>
+<span id="cb62-337"><a href="#cb62-337" aria-hidden="true" tabindex="-1"></a>    <span class="at">n_missing =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(value)),</span>
+<span id="cb62-338"><a href="#cb62-338" aria-hidden="true" tabindex="-1"></a>    <span class="at">pct_missing =</span> <span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">is.na</span>(value)) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>),</span>
+<span id="cb62-339"><a href="#cb62-339" aria-hidden="true" tabindex="-1"></a>    <span class="at">.by =</span> variable</span>
+<span id="cb62-340"><a href="#cb62-340" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb62-341"><a href="#cb62-341" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb62-342"><a href="#cb62-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-343"><a href="#cb62-343" aria-hidden="true" tabindex="-1"></a>Compare these values with the questionnaire. Does any variable contain a value that the questionnaire does not define?</span>
+<span id="cb62-344"><a href="#cb62-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-345"><a href="#cb62-345" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **No. Every value that appears in the data is one the questionnaire defines, so nothing is out of range.**</span></span>
+<span id="cb62-346"><a href="#cb62-346" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb62-347"><a href="#cb62-347" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; - **The 3s on q12 and q13 to q25** are defined by Exhibit 31.2 (“No answer” for q12, “Unaware” for q13 to q25). The file just doesn’t label them, which I fixed in the labelled copy.</span></span>
+<span id="cb62-348"><a href="#cb62-348" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb62-349"><a href="#cb62-349" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; - **No 6s remain** on q7, q8, and q37. The “No Opinion” responses were already </span><span class="in">`NA`</span><span class="at"> after import, which matches the missing counts of 10, 21, and 7.</span></span>
+<span id="cb62-350"><a href="#cb62-350" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb62-351"><a href="#cb62-351" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; - **Some scales aren’t fully used**, which is not an error. q9 only has 3 and 4, q3 and q5 never go below 3, and q7 never has a 1 (nobody said “Very high”).</span></span>
+<span id="cb62-352"><a href="#cb62-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-353"><a href="#cb62-353" aria-hidden="true" tabindex="-1"></a><span class="fu">## 5. Recode special responses and reverse-code items</span></span>
+<span id="cb62-354"><a href="#cb62-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-355"><a href="#cb62-355" aria-hidden="true" tabindex="-1"></a>Reverse coding is needed when a larger number represents a less favorable response than a smaller number. After reverse coding, larger values should mean the same thing across all items that will be combined.</span>
+<span id="cb62-356"><a href="#cb62-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-357"><a href="#cb62-357" aria-hidden="true" tabindex="-1"></a><span class="fu">### 5.1 &quot;No Opinion&quot; and &quot;No answer&quot; responses</span></span>
+<span id="cb62-358"><a href="#cb62-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-359"><a href="#cb62-359" aria-hidden="true" tabindex="-1"></a>According to Exhibit 31.2, q7 and q8 use 6 for &quot;No Opinion&quot;, and q37 uses 6 for &quot;No answer&quot;. Neither is a rating, so both must be treated as missing. First check whether any 6s remain in the data.</span>
+<span id="cb62-360"><a href="#cb62-360" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-363"><a href="#cb62-363" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb62-364"><a href="#cb62-364" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: check-no-opinion</span></span>
+<span id="cb62-365"><a href="#cb62-365" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
+<span id="cb62-366"><a href="#cb62-366" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">c</span>(q7, q8, q37), \(x) <span class="fu">sum</span>(x <span class="sc">==</span> <span class="dv">6</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)))</span>
+<span id="cb62-367"><a href="#cb62-367" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb62-368"><a href="#cb62-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-369"><a href="#cb62-369" aria-hidden="true" tabindex="-1"></a>If the count is 0, the 6s were already converted to <span class="in">`NA`</span> when the file was imported (compare the missing counts in Section 1). The recode below is still good practice because it guarantees the result no matter how the file is read.</span>
+<span id="cb62-370"><a href="#cb62-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-373"><a href="#cb62-373" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb62-374"><a href="#cb62-374" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: recode-no-opinion</span></span>
+<span id="cb62-375"><a href="#cb62-375" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb62-376"><a href="#cb62-376" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(q7, q8, q37), \(x) <span class="fu">na_if</span>(x, <span class="dv">6</span>)))</span>
+<span id="cb62-377"><a href="#cb62-377" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb62-378"><a href="#cb62-378" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-379"><a href="#cb62-379" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Why is a reversal inappropriate for q9? How could you code q9 to answer &quot;was the frequency about right?&quot; instead?</span>
-<span id="cb62-380"><a href="#cb62-380" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Why should q13 to q26 not be reversed or averaged into one score? What would be a more appropriate way to summarize them?</span>
-<span id="cb62-381"><a href="#cb62-381" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-382"><a href="#cb62-382" aria-hidden="true" tabindex="-1"></a>*Your answer:*</span>
-<span id="cb62-383"><a href="#cb62-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-384"><a href="#cb62-384" aria-hidden="true" tabindex="-1"></a><span class="fu">### Verify the recoding</span></span>
-<span id="cb62-385"><a href="#cb62-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-386"><a href="#cb62-386" aria-hidden="true" tabindex="-1"></a>Never assume a recode worked. Compare the original and reversed values with a cross-tabulation.</span>
-<span id="cb62-387"><a href="#cb62-387" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-390"><a href="#cb62-390" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb62-391"><a href="#cb62-391" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: verify-recode</span></span>
-<span id="cb62-392"><a href="#cb62-392" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> <span class="fu">count</span>(q7, q7r)</span>
-<span id="cb62-393"><a href="#cb62-393" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> <span class="fu">count</span>(q8, q8r)</span>
-<span id="cb62-394"><a href="#cb62-394" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> <span class="fu">count</span>(q10, q10r)</span>
-<span id="cb62-395"><a href="#cb62-395" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> <span class="fu">count</span>(q37, q37r)</span>
-<span id="cb62-396"><a href="#cb62-396" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb62-397"><a href="#cb62-397" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-398"><a href="#cb62-398" aria-hidden="true" tabindex="-1"></a>Check that:</span>
-<span id="cb62-399"><a href="#cb62-399" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-400"><a href="#cb62-400" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>&quot;No Opinion&quot; is missing for q7, q8, and q37;</span>
-<span id="cb62-401"><a href="#cb62-401" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>the lowest original value became the highest reversed value, and the highest became the lowest;</span>
-<span id="cb62-402"><a href="#cb62-402" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>missing values stayed missing; and</span>
-<span id="cb62-403"><a href="#cb62-403" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>larger reversed values now mean a more favorable response.</span>
-<span id="cb62-404"><a href="#cb62-404" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-405"><a href="#cb62-405" aria-hidden="true" tabindex="-1"></a><span class="fu">## 6. Evaluate candidate multi-item measures</span></span>
-<span id="cb62-406"><a href="#cb62-406" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-407"><a href="#cb62-407" aria-hidden="true" tabindex="-1"></a>Two groups of items may form multi-item measures:</span>
-<span id="cb62-408"><a href="#cb62-408" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-409"><a href="#cb62-409" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Employee proficiency: q3 through q6.</span>
-<span id="cb62-410"><a href="#cb62-410" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Operational effectiveness: q30 through q34.</span>
-<span id="cb62-411"><a href="#cb62-411" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-412"><a href="#cb62-412" aria-hidden="true" tabindex="-1"></a>Do not create an index just because items sit next to each other in the questionnaire. Use **reliability** (Cronbach&#39;s alpha) and a quick **one-factor analysis** as evidence. This is an initial check, not a substitute for the full exploratory factor analysis you will learn later.</span>
-<span id="cb62-413"><a href="#cb62-413" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-414"><a href="#cb62-414" aria-hidden="true" tabindex="-1"></a>Statistical functions such as <span class="in">`psych::alpha()`</span> expect plain numbers, so we remove the labels from the item sets only (the data keep their labels). <span class="in">`remove_val_labels()`</span> strips the value labels and <span class="in">`remove_var_label()`</span> strips the variable labels.</span>
-<span id="cb62-415"><a href="#cb62-415" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-416"><a href="#cb62-416" aria-hidden="true" tabindex="-1"></a><span class="fu">### 6.1 Employee proficiency</span></span>
-<span id="cb62-417"><a href="#cb62-417" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-420"><a href="#cb62-420" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb62-421"><a href="#cb62-421" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: employee-alpha</span></span>
-<span id="cb62-422"><a href="#cb62-422" aria-hidden="true" tabindex="-1"></a>employee_items <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
-<span id="cb62-423"><a href="#cb62-423" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(q3<span class="sc">:</span>q6) <span class="sc">|&gt;</span></span>
-<span id="cb62-424"><a href="#cb62-424" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_val_labels</span>() <span class="sc">|&gt;</span></span>
-<span id="cb62-425"><a href="#cb62-425" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_var_label</span>()</span>
-<span id="cb62-426"><a href="#cb62-426" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-427"><a href="#cb62-427" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span>
-<span id="cb62-428"><a href="#cb62-428" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-429"><a href="#cb62-429" aria-hidden="true" tabindex="-1"></a>employee_items <span class="sc">|&gt;</span> <span class="fu">alpha</span>()</span>
-<span id="cb62-430"><a href="#cb62-430" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-431"><a href="#cb62-431" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb62-432"><a href="#cb62-432" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-435"><a href="#cb62-435" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb62-436"><a href="#cb62-436" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: employee-fa</span></span>
-<span id="cb62-437"><a href="#cb62-437" aria-hidden="true" tabindex="-1"></a>employee_fa <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(</span>
-<span id="cb62-438"><a href="#cb62-438" aria-hidden="true" tabindex="-1"></a>  employee_items,</span>
-<span id="cb62-439"><a href="#cb62-439" aria-hidden="true" tabindex="-1"></a>  <span class="at">nfactors =</span> <span class="dv">1</span>,</span>
-<span id="cb62-440"><a href="#cb62-440" aria-hidden="true" tabindex="-1"></a>  <span class="at">rotate =</span> <span class="st">&quot;none&quot;</span>,</span>
-<span id="cb62-441"><a href="#cb62-441" aria-hidden="true" tabindex="-1"></a>  <span class="at">fm =</span> <span class="st">&quot;minres&quot;</span></span>
-<span id="cb62-442"><a href="#cb62-442" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb62-443"><a href="#cb62-443" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-444"><a href="#cb62-444" aria-hidden="true" tabindex="-1"></a>employee_fa<span class="sc">$</span>loadings</span>
-<span id="cb62-445"><a href="#cb62-445" aria-hidden="true" tabindex="-1"></a>employee_fa<span class="sc">$</span>communality</span>
-<span id="cb62-446"><a href="#cb62-446" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb62-447"><a href="#cb62-447" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-448"><a href="#cb62-448" aria-hidden="true" tabindex="-1"></a><span class="fu">### 6.2 Operational effectiveness</span></span>
-<span id="cb62-449"><a href="#cb62-449" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-452"><a href="#cb62-452" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb62-453"><a href="#cb62-453" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: operations-alpha</span></span>
-<span id="cb62-454"><a href="#cb62-454" aria-hidden="true" tabindex="-1"></a>operations_items <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
-<span id="cb62-455"><a href="#cb62-455" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(q30<span class="sc">:</span>q34) <span class="sc">|&gt;</span></span>
-<span id="cb62-456"><a href="#cb62-456" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_val_labels</span>() <span class="sc">|&gt;</span></span>
-<span id="cb62-457"><a href="#cb62-457" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_var_label</span>()</span>
-<span id="cb62-458"><a href="#cb62-458" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-459"><a href="#cb62-459" aria-hidden="true" tabindex="-1"></a>operations_alpha <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">alpha</span>(operations_items)</span>
-<span id="cb62-460"><a href="#cb62-460" aria-hidden="true" tabindex="-1"></a>operations_alpha<span class="sc">$</span>total</span>
-<span id="cb62-461"><a href="#cb62-461" aria-hidden="true" tabindex="-1"></a>operations_alpha<span class="sc">$</span>item.stats</span>
-<span id="cb62-462"><a href="#cb62-462" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb62-463"><a href="#cb62-463" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-466"><a href="#cb62-466" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb62-467"><a href="#cb62-467" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: operations-fa</span></span>
-<span id="cb62-468"><a href="#cb62-468" aria-hidden="true" tabindex="-1"></a>operations_fa <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(</span>
-<span id="cb62-469"><a href="#cb62-469" aria-hidden="true" tabindex="-1"></a>  operations_items,</span>
-<span id="cb62-470"><a href="#cb62-470" aria-hidden="true" tabindex="-1"></a>  <span class="at">nfactors =</span> <span class="dv">1</span>,</span>
-<span id="cb62-471"><a href="#cb62-471" aria-hidden="true" tabindex="-1"></a>  <span class="at">rotate =</span> <span class="st">&quot;none&quot;</span>,</span>
-<span id="cb62-472"><a href="#cb62-472" aria-hidden="true" tabindex="-1"></a>  <span class="at">fm =</span> <span class="st">&quot;minres&quot;</span></span>
-<span id="cb62-473"><a href="#cb62-473" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb62-379"><a href="#cb62-379" aria-hidden="true" tabindex="-1"></a><span class="fu">### 5.2 Reverse coding</span></span>
+<span id="cb62-380"><a href="#cb62-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-381"><a href="#cb62-381" aria-hidden="true" tabindex="-1"></a>For a scale that runs from a minimum to a maximum, the formula is:</span>
+<span id="cb62-382"><a href="#cb62-382" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-383"><a href="#cb62-383" aria-hidden="true" tabindex="-1"></a>$$\text{reversed} = \text{minimum} + \text{maximum} - \text{original}$$</span>
+<span id="cb62-384"><a href="#cb62-384" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-385"><a href="#cb62-385" aria-hidden="true" tabindex="-1"></a>For a scale starting at 1, this equals <span class="in">`maximum + 1 - original`</span>. From Exhibit 31.2, q7, q8, and q37 run 1 to 5, and q10 runs 1 to 4.</span>
+<span id="cb62-386"><a href="#cb62-386" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-387"><a href="#cb62-387" aria-hidden="true" tabindex="-1"></a>Arithmetic on a labelled variable returns a plain number, so the old labels are not carried over. That is the right behavior, because the old labels would now be wrong (for example, 1 used to mean &quot;Very High&quot;). We then attach new variable labels and value labels that describe the reversed direction.</span>
+<span id="cb62-388"><a href="#cb62-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-391"><a href="#cb62-391" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb62-392"><a href="#cb62-392" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: reverse-code</span></span>
+<span id="cb62-393"><a href="#cb62-393" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb62-394"><a href="#cb62-394" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb62-395"><a href="#cb62-395" aria-hidden="true" tabindex="-1"></a>    <span class="at">q7r =</span> <span class="dv">6</span> <span class="sc">-</span> q7,</span>
+<span id="cb62-396"><a href="#cb62-396" aria-hidden="true" tabindex="-1"></a>    <span class="at">q8r =</span> <span class="dv">6</span> <span class="sc">-</span> q8,</span>
+<span id="cb62-397"><a href="#cb62-397" aria-hidden="true" tabindex="-1"></a>    <span class="at">q10r =</span> <span class="dv">5</span> <span class="sc">-</span> q10,</span>
+<span id="cb62-398"><a href="#cb62-398" aria-hidden="true" tabindex="-1"></a>    <span class="at">q37r =</span> <span class="dv">6</span> <span class="sc">-</span> q37</span>
+<span id="cb62-399"><a href="#cb62-399" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb62-400"><a href="#cb62-400" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_variable_labels</span>(</span>
+<span id="cb62-401"><a href="#cb62-401" aria-hidden="true" tabindex="-1"></a>    <span class="at">q7r =</span> <span class="st">&quot;Savings rates (reversed: higher = higher rates)&quot;</span>,</span>
+<span id="cb62-402"><a href="#cb62-402" aria-hidden="true" tabindex="-1"></a>    <span class="at">q8r =</span> <span class="st">&quot;Rates, q8 (reversed: higher = higher rates)&quot;</span>,</span>
+<span id="cb62-403"><a href="#cb62-403" aria-hidden="true" tabindex="-1"></a>    <span class="at">q10r =</span> <span class="st">&quot;Statement accuracy (reversed: higher = better)&quot;</span>,</span>
+<span id="cb62-404"><a href="#cb62-404" aria-hidden="true" tabindex="-1"></a>    <span class="at">q37r =</span> <span class="st">&quot;Overall rating (reversed: higher = better)&quot;</span></span>
+<span id="cb62-405"><a href="#cb62-405" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb62-406"><a href="#cb62-406" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_value_labels</span>(</span>
+<span id="cb62-407"><a href="#cb62-407" aria-hidden="true" tabindex="-1"></a>    <span class="at">q7r =</span> <span class="fu">c</span>(</span>
+<span id="cb62-408"><a href="#cb62-408" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Very Low&quot;</span> <span class="ot">=</span> <span class="dv">1</span>,</span>
+<span id="cb62-409"><a href="#cb62-409" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Low&quot;</span> <span class="ot">=</span> <span class="dv">2</span>,</span>
+<span id="cb62-410"><a href="#cb62-410" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Average&quot;</span> <span class="ot">=</span> <span class="dv">3</span>,</span>
+<span id="cb62-411"><a href="#cb62-411" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;High&quot;</span> <span class="ot">=</span> <span class="dv">4</span>,</span>
+<span id="cb62-412"><a href="#cb62-412" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Very High&quot;</span> <span class="ot">=</span> <span class="dv">5</span></span>
+<span id="cb62-413"><a href="#cb62-413" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb62-414"><a href="#cb62-414" aria-hidden="true" tabindex="-1"></a>    <span class="at">q8r =</span> <span class="fu">c</span>(</span>
+<span id="cb62-415"><a href="#cb62-415" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Very Low&quot;</span> <span class="ot">=</span> <span class="dv">1</span>,</span>
+<span id="cb62-416"><a href="#cb62-416" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Low&quot;</span> <span class="ot">=</span> <span class="dv">2</span>,</span>
+<span id="cb62-417"><a href="#cb62-417" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Average&quot;</span> <span class="ot">=</span> <span class="dv">3</span>,</span>
+<span id="cb62-418"><a href="#cb62-418" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;High&quot;</span> <span class="ot">=</span> <span class="dv">4</span>,</span>
+<span id="cb62-419"><a href="#cb62-419" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Very High&quot;</span> <span class="ot">=</span> <span class="dv">5</span></span>
+<span id="cb62-420"><a href="#cb62-420" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb62-421"><a href="#cb62-421" aria-hidden="true" tabindex="-1"></a>    <span class="at">q10r =</span> <span class="fu">c</span>(<span class="st">&quot;Poor&quot;</span> <span class="ot">=</span> <span class="dv">1</span>, <span class="st">&quot;Fair&quot;</span> <span class="ot">=</span> <span class="dv">2</span>, <span class="st">&quot;Good&quot;</span> <span class="ot">=</span> <span class="dv">3</span>, <span class="st">&quot;Excellent&quot;</span> <span class="ot">=</span> <span class="dv">4</span>),</span>
+<span id="cb62-422"><a href="#cb62-422" aria-hidden="true" tabindex="-1"></a>    <span class="at">q37r =</span> <span class="fu">c</span>(</span>
+<span id="cb62-423"><a href="#cb62-423" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Very Poor&quot;</span> <span class="ot">=</span> <span class="dv">1</span>,</span>
+<span id="cb62-424"><a href="#cb62-424" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Poor&quot;</span> <span class="ot">=</span> <span class="dv">2</span>,</span>
+<span id="cb62-425"><a href="#cb62-425" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Average&quot;</span> <span class="ot">=</span> <span class="dv">3</span>,</span>
+<span id="cb62-426"><a href="#cb62-426" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Good&quot;</span> <span class="ot">=</span> <span class="dv">4</span>,</span>
+<span id="cb62-427"><a href="#cb62-427" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;Excellent&quot;</span> <span class="ot">=</span> <span class="dv">5</span></span>
+<span id="cb62-428"><a href="#cb62-428" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb62-429"><a href="#cb62-429" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb62-430"><a href="#cb62-430" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb62-431"><a href="#cb62-431" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-432"><a href="#cb62-432" aria-hidden="true" tabindex="-1"></a>Two sets of items are deliberately **not** reversed. Read the questionnaire and value labels, then answer the questions below.</span>
+<span id="cb62-433"><a href="#cb62-433" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-434"><a href="#cb62-434" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**q9** (frequency of statements): the labels run from &quot;Too Often&quot; through &quot;About Right&quot; to &quot;Never&quot;. The best response is in the *middle* of the scale, so the scale is not ordered from unfavorable to favorable and a simple reversal would not make the values comparable.</span>
+<span id="cb62-435"><a href="#cb62-435" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**q13 to q26** (awareness and use of products and services) have the categories &quot;Aware and have used&quot;, &quot;Aware but have not used&quot;, and &quot;Unaware&quot;. These are categories, not a rating from bad to good, so a formula such as <span class="in">`3 - x`</span> has no meaningful interpretation. (The yes/no items q11, q12, q27, and q38 are also categories.)</span>
+<span id="cb62-436"><a href="#cb62-436" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-437"><a href="#cb62-437" aria-hidden="true" tabindex="-1"></a><span class="fu">### Questions to answer</span></span>
+<span id="cb62-438"><a href="#cb62-438" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-439"><a href="#cb62-439" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Why is a reversal inappropriate for q9? How could you code q9 to answer &quot;was the frequency about right?&quot; instead?</span>
+<span id="cb62-440"><a href="#cb62-440" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-441"><a href="#cb62-441" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **A reversal is inappropriate because the best answer, “About Right”, is in the middle of the scale (Too Often → Very Often → About Right → Not Often Enough → Never). The scale doesn’t run from unfavorable to favorable, so flipping it wouldn’t make higher mean better. To answer “was the frequency about right?”, create a yes/no flag instead: `q9_about_right = if_else(q9 == 3, 1, 0)`. In your data, 99 respondents (77%) said “About Right” and 29 (23%) said “Not Often Enough”. Nobody gave any other answer.**</span></span>
+<span id="cb62-442"><a href="#cb62-442" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-443"><a href="#cb62-443" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Why should q13 to q26 not be reversed or averaged into one score? What would be a more appropriate way to summarize them?</span>
+<span id="cb62-444"><a href="#cb62-444" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-445"><a href="#cb62-445" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **These are categories (aware and used / aware but not used / unaware), not a rating from bad to good. A formula like `3 - x` has no meaning, and an average of 1s, 2s, and 3s would just be a number with no interpretation. A better summary is the percentage of respondents in each category for each product. You could also count how many products each respondent is aware of or has used, which gives a meaningful score.**</span></span>
+<span id="cb62-446"><a href="#cb62-446" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-447"><a href="#cb62-447" aria-hidden="true" tabindex="-1"></a><span class="fu">### Verify the recoding</span></span>
+<span id="cb62-448"><a href="#cb62-448" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-449"><a href="#cb62-449" aria-hidden="true" tabindex="-1"></a>Never assume a recode worked. Compare the original and reversed values with a cross-tabulation.</span>
+<span id="cb62-450"><a href="#cb62-450" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-453"><a href="#cb62-453" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb62-454"><a href="#cb62-454" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: verify-recode</span></span>
+<span id="cb62-455"><a href="#cb62-455" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> <span class="fu">count</span>(q7, q7r)</span>
+<span id="cb62-456"><a href="#cb62-456" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> <span class="fu">count</span>(q8, q8r)</span>
+<span id="cb62-457"><a href="#cb62-457" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> <span class="fu">count</span>(q10, q10r)</span>
+<span id="cb62-458"><a href="#cb62-458" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> <span class="fu">count</span>(q37, q37r)</span>
+<span id="cb62-459"><a href="#cb62-459" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb62-460"><a href="#cb62-460" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-461"><a href="#cb62-461" aria-hidden="true" tabindex="-1"></a>Check that:</span>
+<span id="cb62-462"><a href="#cb62-462" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-463"><a href="#cb62-463" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>&quot;No Opinion&quot; is missing for q7, q8, and q37;</span>
+<span id="cb62-464"><a href="#cb62-464" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>the lowest original value became the highest reversed value, and the highest became the lowest;</span>
+<span id="cb62-465"><a href="#cb62-465" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>missing values stayed missing; and</span>
+<span id="cb62-466"><a href="#cb62-466" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>larger reversed values now mean a more favorable response.</span>
+<span id="cb62-467"><a href="#cb62-467" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-468"><a href="#cb62-468" aria-hidden="true" tabindex="-1"></a><span class="fu">## 6. Evaluate candidate multi-item measures</span></span>
+<span id="cb62-469"><a href="#cb62-469" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-470"><a href="#cb62-470" aria-hidden="true" tabindex="-1"></a>Two groups of items may form multi-item measures:</span>
+<span id="cb62-471"><a href="#cb62-471" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-472"><a href="#cb62-472" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Employee proficiency: q3 through q6.</span>
+<span id="cb62-473"><a href="#cb62-473" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Operational effectiveness: q30 through q34.</span>
 <span id="cb62-474"><a href="#cb62-474" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-475"><a href="#cb62-475" aria-hidden="true" tabindex="-1"></a>operations_fa<span class="sc">$</span>loadings</span>
-<span id="cb62-476"><a href="#cb62-476" aria-hidden="true" tabindex="-1"></a>operations_fa<span class="sc">$</span>communality</span>
-<span id="cb62-477"><a href="#cb62-477" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb62-475"><a href="#cb62-475" aria-hidden="true" tabindex="-1"></a>Do not create an index just because items sit next to each other in the questionnaire. Use **reliability** (Cronbach&#39;s alpha) and a quick **one-factor analysis** as evidence. This is an initial check, not a substitute for the full exploratory factor analysis you will learn later.</span>
+<span id="cb62-476"><a href="#cb62-476" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-477"><a href="#cb62-477" aria-hidden="true" tabindex="-1"></a>Statistical functions such as <span class="in">`psych::alpha()`</span> expect plain numbers, so we remove the labels from the item sets only (the data keep their labels). <span class="in">`remove_val_labels()`</span> strips the value labels and <span class="in">`remove_var_label()`</span> strips the variable labels.</span>
 <span id="cb62-478"><a href="#cb62-478" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-479"><a href="#cb62-479" aria-hidden="true" tabindex="-1"></a><span class="fu">### Questions to answer</span></span>
+<span id="cb62-479"><a href="#cb62-479" aria-hidden="true" tabindex="-1"></a><span class="fu">### 6.1 Employee proficiency</span></span>
 <span id="cb62-480"><a href="#cb62-480" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-481"><a href="#cb62-481" aria-hidden="true" tabindex="-1"></a>For each candidate measure:</span>
-<span id="cb62-482"><a href="#cb62-482" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-483"><a href="#cb62-483" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>What is the reliability estimate (<span class="in">`raw_alpha`</span>)?</span>
-<span id="cb62-484"><a href="#cb62-484" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Do the item-total statistics (<span class="in">`r.drop`</span>) suggest every item contributes? Does any item correlate weakly or negatively with the rest? If so, check its wording to see whether it needs reversing.</span>
-<span id="cb62-485"><a href="#cb62-485" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Do the factor loadings support one common factor?</span>
-<span id="cb62-486"><a href="#cb62-486" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>Is a one-factor interpretation reasonable given the item wording?</span>
-<span id="cb62-487"><a href="#cb62-487" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>Do you recommend creating an index? Justify with both statistical evidence and substantive meaning.</span>
-<span id="cb62-488"><a href="#cb62-488" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-489"><a href="#cb62-489" aria-hidden="true" tabindex="-1"></a>*Your answer:*</span>
-<span id="cb62-490"><a href="#cb62-490" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-491"><a href="#cb62-491" aria-hidden="true" tabindex="-1"></a>Do not use a single cutoff as an automatic decision rule. Consider reliability, loadings, item wording, response scales, missing data, and the purpose of the analysis together.</span>
-<span id="cb62-492"><a href="#cb62-492" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-493"><a href="#cb62-493" aria-hidden="true" tabindex="-1"></a><span class="fu">## 7. Create indexes only when justified</span></span>
-<span id="cb62-494"><a href="#cb62-494" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-495"><a href="#cb62-495" aria-hidden="true" tabindex="-1"></a>If your evaluation supports an index, compute each respondent&#39;s mean across the items. A mean stays on the original response scale, so it is easy to interpret. <span class="in">`rowMeans()`</span> returns <span class="in">`NaN`</span> for a respondent with no valid answers, so the code converts <span class="in">`NaN`</span> to <span class="in">`NA`</span>.</span>
-<span id="cb62-496"><a href="#cb62-496" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-497"><a href="#cb62-497" aria-hidden="true" tabindex="-1"></a>Edit this chunk to keep only the indexes you decided to create.</span>
-<span id="cb62-498"><a href="#cb62-498" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-501"><a href="#cb62-501" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb62-502"><a href="#cb62-502" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: create-indexes</span></span>
-<span id="cb62-503"><a href="#cb62-503" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
-<span id="cb62-504"><a href="#cb62-504" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb62-505"><a href="#cb62-505" aria-hidden="true" tabindex="-1"></a>    <span class="at">employee_proficiency_index =</span> <span class="fu">rowMeans</span>(<span class="fu">pick</span>(q3<span class="sc">:</span>q6), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb62-506"><a href="#cb62-506" aria-hidden="true" tabindex="-1"></a>    <span class="at">operational_effectiveness_index =</span> <span class="fu">rowMeans</span>(<span class="fu">pick</span>(q30<span class="sc">:</span>q34), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb62-507"><a href="#cb62-507" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">ends_with</span>(<span class="st">&quot;_index&quot;</span>), \(x) <span class="fu">if_else</span>(<span class="fu">is.nan</span>(x), <span class="cn">NA_real_</span>, x))</span>
-<span id="cb62-508"><a href="#cb62-508" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb62-483"><a href="#cb62-483" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb62-484"><a href="#cb62-484" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: employee-alpha</span></span>
+<span id="cb62-485"><a href="#cb62-485" aria-hidden="true" tabindex="-1"></a>employee_items <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb62-486"><a href="#cb62-486" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(q3<span class="sc">:</span>q6) <span class="sc">|&gt;</span></span>
+<span id="cb62-487"><a href="#cb62-487" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_val_labels</span>() <span class="sc">|&gt;</span></span>
+<span id="cb62-488"><a href="#cb62-488" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_var_label</span>()</span>
+<span id="cb62-489"><a href="#cb62-489" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-490"><a href="#cb62-490" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span>
+<span id="cb62-491"><a href="#cb62-491" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-492"><a href="#cb62-492" aria-hidden="true" tabindex="-1"></a>employee_items <span class="sc">|&gt;</span> <span class="fu">alpha</span>()</span>
+<span id="cb62-493"><a href="#cb62-493" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-494"><a href="#cb62-494" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb62-495"><a href="#cb62-495" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-498"><a href="#cb62-498" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb62-499"><a href="#cb62-499" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: employee-fa</span></span>
+<span id="cb62-500"><a href="#cb62-500" aria-hidden="true" tabindex="-1"></a>employee_fa <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(</span>
+<span id="cb62-501"><a href="#cb62-501" aria-hidden="true" tabindex="-1"></a>  employee_items,</span>
+<span id="cb62-502"><a href="#cb62-502" aria-hidden="true" tabindex="-1"></a>  <span class="at">nfactors =</span> <span class="dv">1</span>,</span>
+<span id="cb62-503"><a href="#cb62-503" aria-hidden="true" tabindex="-1"></a>  <span class="at">rotate =</span> <span class="st">&quot;none&quot;</span>,</span>
+<span id="cb62-504"><a href="#cb62-504" aria-hidden="true" tabindex="-1"></a>  <span class="at">fm =</span> <span class="st">&quot;minres&quot;</span></span>
+<span id="cb62-505"><a href="#cb62-505" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb62-506"><a href="#cb62-506" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-507"><a href="#cb62-507" aria-hidden="true" tabindex="-1"></a>employee_fa<span class="sc">$</span>loadings</span>
+<span id="cb62-508"><a href="#cb62-508" aria-hidden="true" tabindex="-1"></a>employee_fa<span class="sc">$</span>communality</span>
 <span id="cb62-509"><a href="#cb62-509" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb62-510"><a href="#cb62-510" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-511"><a href="#cb62-511" aria-hidden="true" tabindex="-1"></a>If you decide an index is not warranted, delete its line and explain why the items should stay separate and how you would analyze them individually.</span>
+<span id="cb62-511"><a href="#cb62-511" aria-hidden="true" tabindex="-1"></a><span class="fu">### 6.2 Operational effectiveness</span></span>
 <span id="cb62-512"><a href="#cb62-512" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-513"><a href="#cb62-513" aria-hidden="true" tabindex="-1"></a>Check the new variables.</span>
-<span id="cb62-514"><a href="#cb62-514" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-517"><a href="#cb62-517" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb62-518"><a href="#cb62-518" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: check-indexes</span></span>
-<span id="cb62-519"><a href="#cb62-519" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
-<span id="cb62-520"><a href="#cb62-520" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">ends_with</span>(<span class="st">&quot;_index&quot;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb62-521"><a href="#cb62-521" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span>
-<span id="cb62-522"><a href="#cb62-522" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb62-523"><a href="#cb62-523" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-524"><a href="#cb62-524" aria-hidden="true" tabindex="-1"></a><span class="fu">## 8. Report your data-preparation decisions</span></span>
-<span id="cb62-525"><a href="#cb62-525" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-526"><a href="#cb62-526" aria-hidden="true" tabindex="-1"></a>Write a concise narrative that covers:</span>
-<span id="cb62-527"><a href="#cb62-527" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-528"><a href="#cb62-528" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>how the SPSS data were imported;</span>
-<span id="cb62-529"><a href="#cb62-529" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>what the data dictionary showed about labels, values, and measurement levels;</span>
-<span id="cb62-530"><a href="#cb62-530" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>which labels you added or corrected, and why;</span>
-<span id="cb62-531"><a href="#cb62-531" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>which variables you kept or excluded, and why;</span>
-<span id="cb62-532"><a href="#cb62-532" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>how &quot;No Opinion&quot; codes and other missing values were handled;</span>
-<span id="cb62-533"><a href="#cb62-533" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>which variables you reverse-coded, which you did not, and how you verified the transformations;</span>
-<span id="cb62-534"><a href="#cb62-534" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>what reliability and factor analysis suggested for each candidate measure;</span>
-<span id="cb62-535"><a href="#cb62-535" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>whether you created each index, and why; and</span>
-<span id="cb62-536"><a href="#cb62-536" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>any limitations or unresolved data-quality concerns.</span>
+<span id="cb62-515"><a href="#cb62-515" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb62-516"><a href="#cb62-516" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: operations-alpha</span></span>
+<span id="cb62-517"><a href="#cb62-517" aria-hidden="true" tabindex="-1"></a>operations_items <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb62-518"><a href="#cb62-518" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(q30<span class="sc">:</span>q34) <span class="sc">|&gt;</span></span>
+<span id="cb62-519"><a href="#cb62-519" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_val_labels</span>() <span class="sc">|&gt;</span></span>
+<span id="cb62-520"><a href="#cb62-520" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_var_label</span>()</span>
+<span id="cb62-521"><a href="#cb62-521" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-522"><a href="#cb62-522" aria-hidden="true" tabindex="-1"></a>operations_alpha <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">alpha</span>(operations_items)</span>
+<span id="cb62-523"><a href="#cb62-523" aria-hidden="true" tabindex="-1"></a>operations_alpha<span class="sc">$</span>total</span>
+<span id="cb62-524"><a href="#cb62-524" aria-hidden="true" tabindex="-1"></a>operations_alpha<span class="sc">$</span>item.stats</span>
+<span id="cb62-525"><a href="#cb62-525" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb62-526"><a href="#cb62-526" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-529"><a href="#cb62-529" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb62-530"><a href="#cb62-530" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: operations-fa</span></span>
+<span id="cb62-531"><a href="#cb62-531" aria-hidden="true" tabindex="-1"></a>operations_fa <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(</span>
+<span id="cb62-532"><a href="#cb62-532" aria-hidden="true" tabindex="-1"></a>  operations_items,</span>
+<span id="cb62-533"><a href="#cb62-533" aria-hidden="true" tabindex="-1"></a>  <span class="at">nfactors =</span> <span class="dv">1</span>,</span>
+<span id="cb62-534"><a href="#cb62-534" aria-hidden="true" tabindex="-1"></a>  <span class="at">rotate =</span> <span class="st">&quot;none&quot;</span>,</span>
+<span id="cb62-535"><a href="#cb62-535" aria-hidden="true" tabindex="-1"></a>  <span class="at">fm =</span> <span class="st">&quot;minres&quot;</span></span>
+<span id="cb62-536"><a href="#cb62-536" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb62-537"><a href="#cb62-537" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-538"><a href="#cb62-538" aria-hidden="true" tabindex="-1"></a>Include tables or output that help a reader verify your decisions. Do not paste every output into the report.</span>
-<span id="cb62-539"><a href="#cb62-539" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-540"><a href="#cb62-540" aria-hidden="true" tabindex="-1"></a>*Your narrative:*</span>
+<span id="cb62-538"><a href="#cb62-538" aria-hidden="true" tabindex="-1"></a>operations_fa<span class="sc">$</span>loadings</span>
+<span id="cb62-539"><a href="#cb62-539" aria-hidden="true" tabindex="-1"></a>operations_fa<span class="sc">$</span>communality</span>
+<span id="cb62-540"><a href="#cb62-540" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb62-541"><a href="#cb62-541" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-542"><a href="#cb62-542" aria-hidden="true" tabindex="-1"></a><span class="fu">## 9. Save your work to a new SPSS file</span></span>
+<span id="cb62-542"><a href="#cb62-542" aria-hidden="true" tabindex="-1"></a><span class="fu">### Questions to answer</span></span>
 <span id="cb62-543"><a href="#cb62-543" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-544"><a href="#cb62-544" aria-hidden="true" tabindex="-1"></a>**Instructions:**</span>
+<span id="cb62-544"><a href="#cb62-544" aria-hidden="true" tabindex="-1"></a>For each candidate measure:</span>
 <span id="cb62-545"><a href="#cb62-545" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-546"><a href="#cb62-546" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Save the cleaned data to a new SPSS file. The file name must include your initials and the word &quot;cleaned&quot;.</span>
+<span id="cb62-546"><a href="#cb62-546" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>What is the reliability estimate (<span class="in">`raw_alpha`</span>)?</span>
 <span id="cb62-547"><a href="#cb62-547" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-548"><a href="#cb62-548" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The new file must fix all the coding problems, including reverse coding, and improper use of missing values, variable labels, and value labels.</span>
+<span id="cb62-548"><a href="#cb62-548" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt;  **0.5392198**</span></span>
 <span id="cb62-549"><a href="#cb62-549" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-550"><a href="#cb62-550" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>It must also include any new indexes you created.</span>
+<span id="cb62-550"><a href="#cb62-550" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Do the item-total statistics (<span class="in">`r.drop`</span>) suggest every item contributes? Does any item correlate weakly or negatively with the rest? If so, check its wording to see whether it needs reversing.</span>
 <span id="cb62-551"><a href="#cb62-551" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-554"><a href="#cb62-554" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb62-555"><a href="#cb62-555" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: save-spss</span></span>
-<span id="cb62-556"><a href="#cb62-556" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-557"><a href="#cb62-557" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
-<span id="cb62-558"><a href="#cb62-558" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_sav</span>(<span class="st">&quot;Case 31 Data_efcu_1_DM_cleaned.sav&quot;</span>)</span>
-<span id="cb62-559"><a href="#cb62-559" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb62-560"><a href="#cb62-560" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-561"><a href="#cb62-561" aria-hidden="true" tabindex="-1"></a><span class="fu">## 10. Render and publish your report</span></span>
-<span id="cb62-562"><a href="#cb62-562" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-563"><a href="#cb62-563" aria-hidden="true" tabindex="-1"></a>Your final submission is a rendered HTML report published on GitHub Pages.</span>
-<span id="cb62-564"><a href="#cb62-564" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-565"><a href="#cb62-565" aria-hidden="true" tabindex="-1"></a><span class="fu">### Render locally</span></span>
-<span id="cb62-566"><a href="#cb62-566" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-567"><a href="#cb62-567" aria-hidden="true" tabindex="-1"></a>Save this file in your GitHub repository. In the Positron Terminal, confirm you are in the repository folder and run:</span>
-<span id="cb62-568"><a href="#cb62-568" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-569"><a href="#cb62-569" aria-hidden="true" tabindex="-1"></a><span class="in">``` bash</span></span>
-<span id="cb62-570"><a href="#cb62-570" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render IC-M08-Data-Preparation-Case-31-R.qmd</span>
-<span id="cb62-571"><a href="#cb62-571" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb62-572"><a href="#cb62-572" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-573"><a href="#cb62-573" aria-hidden="true" tabindex="-1"></a>Check that:</span>
-<span id="cb62-574"><a href="#cb62-574" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-575"><a href="#cb62-575" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>all code runs without errors;</span>
-<span id="cb62-576"><a href="#cb62-576" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>tables and output are readable;</span>
-<span id="cb62-577"><a href="#cb62-577" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>the headings and table of contents work;</span>
-<span id="cb62-578"><a href="#cb62-578" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>no local computer paths or private information appear; and</span>
-<span id="cb62-579"><a href="#cb62-579" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>the report makes sense without opening the R console.</span>
-<span id="cb62-580"><a href="#cb62-580" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-581"><a href="#cb62-581" aria-hidden="true" tabindex="-1"></a><span class="fu">### Publish on GitHub Pages</span></span>
+<span id="cb62-552"><a href="#cb62-552" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **No, not every item contributes well. `r.drop` is weak for all five (about .32, .29, .48, .22, .22), though none is negative. All five are worded favorably, so reversing wouldn’t fix it.**</span></span>
+<span id="cb62-553"><a href="#cb62-553" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-554"><a href="#cb62-554" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Do the factor loadings support one common factor?</span>
+<span id="cb62-555"><a href="#cb62-555" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-556"><a href="#cb62-556" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **Not really. Only q32 loads strongly (about .79), and the others are about .30 to .40.**</span></span>
+<span id="cb62-557"><a href="#cb62-557" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-558"><a href="#cb62-558" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>Is a one-factor interpretation reasonable given the item wording?</span>
+<span id="cb62-559"><a href="#cb62-559" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-560"><a href="#cb62-560" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **No. The items measure different things: loan rates (q30), confidentiality (q31), speed of loan processing (q32), whether services meet members’ needs (q33), and how simple the loan applications are (q34).**</span></span>
+<span id="cb62-561"><a href="#cb62-561" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-562"><a href="#cb62-562" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>Do you recommend creating an index? Justify with both statistical evidence and substantive meaning.</span>
+<span id="cb62-563"><a href="#cb62-563" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-564"><a href="#cb62-564" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **I don’t recommend an index. The statistics and the item meanings point the same way, so keep q30 to q34 as separate items.**</span></span>
+<span id="cb62-565"><a href="#cb62-565" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-566"><a href="#cb62-566" aria-hidden="true" tabindex="-1"></a><span class="fu">## 7. Create indexes only when justified</span></span>
+<span id="cb62-567"><a href="#cb62-567" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-568"><a href="#cb62-568" aria-hidden="true" tabindex="-1"></a>If your evaluation supports an index, compute each respondent&#39;s mean across the items. A mean stays on the original response scale, so it is easy to interpret. <span class="in">`rowMeans()`</span> returns <span class="in">`NaN`</span> for a respondent with no valid answers, so the code converts <span class="in">`NaN`</span> to <span class="in">`NA`</span>.</span>
+<span id="cb62-569"><a href="#cb62-569" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-570"><a href="#cb62-570" aria-hidden="true" tabindex="-1"></a>Edit this chunk to keep only the indexes you decided to create.</span>
+<span id="cb62-571"><a href="#cb62-571" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-574"><a href="#cb62-574" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb62-575"><a href="#cb62-575" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: create-indexes</span></span>
+<span id="cb62-576"><a href="#cb62-576" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb62-577"><a href="#cb62-577" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb62-578"><a href="#cb62-578" aria-hidden="true" tabindex="-1"></a>    <span class="at">employee_proficiency_index =</span> <span class="fu">rowMeans</span>(<span class="fu">pick</span>(q3<span class="sc">:</span>q6), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb62-579"><a href="#cb62-579" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">ends_with</span>(<span class="st">&quot;_index&quot;</span>), \(x) <span class="fu">if_else</span>(<span class="fu">is.nan</span>(x), <span class="cn">NA_real_</span>, x))</span>
+<span id="cb62-580"><a href="#cb62-580" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb62-581"><a href="#cb62-581" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb62-582"><a href="#cb62-582" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-583"><a href="#cb62-583" aria-hidden="true" tabindex="-1"></a>Commit and push your QMD file and supporting files. Then publish the rendered report using the method shown in class. With Quarto&#39;s publishing command:</span>
+<span id="cb62-583"><a href="#cb62-583" aria-hidden="true" tabindex="-1"></a>If you decide an index is not warranted, delete its line and explain why the items should stay separate and how you would analyze them individually.</span>
 <span id="cb62-584"><a href="#cb62-584" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-585"><a href="#cb62-585" aria-hidden="true" tabindex="-1"></a><span class="in">``` bash</span></span>
-<span id="cb62-586"><a href="#cb62-586" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> publish gh-pages IC-M08-Data-Preparation-Case-31-R.qmd</span>
-<span id="cb62-587"><a href="#cb62-587" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb62-588"><a href="#cb62-588" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-589"><a href="#cb62-589" aria-hidden="true" tabindex="-1"></a>If your repository uses a different GitHub Pages workflow, follow the course instructions. Confirm the public URL opens in a browser that is not signed in to GitHub.</span>
-<span id="cb62-590"><a href="#cb62-590" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-591"><a href="#cb62-591" aria-hidden="true" tabindex="-1"></a><span class="fu">## Submission requirements</span></span>
-<span id="cb62-592"><a href="#cb62-592" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-593"><a href="#cb62-593" aria-hidden="true" tabindex="-1"></a>Submit:</span>
-<span id="cb62-594"><a href="#cb62-594" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-595"><a href="#cb62-595" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>the QMD source file;</span>
-<span id="cb62-596"><a href="#cb62-596" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>the rendered HTML file, if your course requires it; and</span>
-<span id="cb62-597"><a href="#cb62-597" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>the public GitHub Pages URL in the Appendix below.</span>
-<span id="cb62-598"><a href="#cb62-598" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-585"><a href="#cb62-585" aria-hidden="true" tabindex="-1"></a>Check the new variables.</span>
+<span id="cb62-586"><a href="#cb62-586" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-589"><a href="#cb62-589" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb62-590"><a href="#cb62-590" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: check-indexes</span></span>
+<span id="cb62-591"><a href="#cb62-591" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
+<span id="cb62-592"><a href="#cb62-592" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">ends_with</span>(<span class="st">&quot;_index&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb62-593"><a href="#cb62-593" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span>
+<span id="cb62-594"><a href="#cb62-594" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb62-595"><a href="#cb62-595" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-596"><a href="#cb62-596" aria-hidden="true" tabindex="-1"></a><span class="fu">## 8. Report your data-preparation decisions</span></span>
+<span id="cb62-597"><a href="#cb62-597" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-598"><a href="#cb62-598" aria-hidden="true" tabindex="-1"></a>Write a concise narrative that covers:</span>
 <span id="cb62-599"><a href="#cb62-599" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-600"><a href="#cb62-600" aria-hidden="true" tabindex="-1"></a><span class="fu">## Appendix: Links</span></span>
-<span id="cb62-601"><a href="#cb62-601" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-602"><a href="#cb62-602" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**GitHub Pages:** <span class="co">[</span><span class="ot">View my published report</span><span class="co">](https://dmcpp26.github.io/ibm6500-assignments/IC10-Case31/IC10-Case31-Data-Prep_DMEZA.html)</span></span>
-<span id="cb62-603"><a href="#cb62-603" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**GitHub Repo:** <span class="co">[</span><span class="ot">dmcpp26/ibm6500-assignments</span><span class="co">](https://github.com/dmcpp26/ibm6500-assignments)</span></span>
-<span id="cb62-604"><a href="#cb62-604" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-605"><a href="#cb62-605" aria-hidden="true" tabindex="-1"></a>*Template and case materials by Jae Jung, licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).*</span>
+<span id="cb62-600"><a href="#cb62-600" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>how the SPSS data were imported;</span>
+<span id="cb62-601"><a href="#cb62-601" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>what the data dictionary showed about labels, values, and measurement levels;</span>
+<span id="cb62-602"><a href="#cb62-602" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>which labels you added or corrected, and why;</span>
+<span id="cb62-603"><a href="#cb62-603" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>which variables you kept or excluded, and why;</span>
+<span id="cb62-604"><a href="#cb62-604" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>how &quot;No Opinion&quot; codes and other missing values were handled;</span>
+<span id="cb62-605"><a href="#cb62-605" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>which variables you reverse-coded, which you did not, and how you verified the transformations;</span>
+<span id="cb62-606"><a href="#cb62-606" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>what reliability and factor analysis suggested for each candidate measure;</span>
+<span id="cb62-607"><a href="#cb62-607" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>whether you created each index, and why; and</span>
+<span id="cb62-608"><a href="#cb62-608" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>any limitations or unresolved data-quality concerns.</span>
+<span id="cb62-609"><a href="#cb62-609" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-610"><a href="#cb62-610" aria-hidden="true" tabindex="-1"></a>Include tables or output that help a reader verify your decisions. Do not paste every output into the report.</span>
+<span id="cb62-611"><a href="#cb62-611" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-612"><a href="#cb62-612" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Import.** I read the SPSS file with </span><span class="in">`haven::read_sav()`</span><span class="at">, which kept the variable and value labels. The data have 128 respondents and 34 variables. I kept </span><span class="in">`data_raw`</span><span class="at"> unchanged as a reference copy and did all cleaning on copies.</span></span>
+<span id="cb62-613"><a href="#cb62-613" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb62-614"><a href="#cb62-614" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **What the dictionary showed.** The agreement items (q3 to q6, q30 to q34) only have labels at 1 and 5, and code 3 (“Unaware” for q13 to q25, “No answer” for q12) has no label. q8 and q9 share the same variable label (“statement frequency”), even though q8 asks about loan rates. I treated the agreement items as approximately interval, the rating scales (q7, q8, q10, q37) as ordinal, and the yes/no and awareness items (q11 to q27, q38) as nominal. q9 is ordinal, but its best answer is in the middle.</span></span>
+<span id="cb62-615"><a href="#cb62-615" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb62-616"><a href="#cb62-616" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Labels added or corrected.** In a labelled copy I added the missing value labels (“Unaware” on q13 to q26, “No answer” on q11, q12, q27, and q38), set full value labels for q37, and labelled the two precomputed variables. I also identified that q8 should be relabelled as the rates charged on member loans, since the file’s label duplicates q9’s.</span></span>
+<span id="cb62-617"><a href="#cb62-617" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb62-618"><a href="#cb62-618" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Variables kept or excluded.** I kept only the questionnaire items (q3 to q38) in the analysis copy. I excluded </span><span class="in">`OverallEmployeePerformace`</span><span class="at"> and </span><span class="in">`employeeperformance`</span><span class="at"> because this assignment is about building and testing the measures myself, and the precomputed versions don’t show how they were built.</span></span>
+<span id="cb62-619"><a href="#cb62-619" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb62-620"><a href="#cb62-620" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Missing values.** Only q7 (10 missing, 8%), q8 (21, 16%), and q37 (7, 5%) have missing data. These are the “No opinion” responses, which were already </span><span class="in">`NA`</span><span class="at"> after import. I still recoded 6 to </span><span class="in">`NA`</span><span class="at"> so the result doesn’t depend on how the file is read. Indexes use </span><span class="in">`na.rm = TRUE`</span><span class="at">.</span></span>
+<span id="cb62-621"><a href="#cb62-621" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb62-622"><a href="#cb62-622" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Reverse coding.** I reverse-coded q7, q8, and q37 (</span><span class="in">`6 - x`</span><span class="at">) and q10 (</span><span class="in">`5 - x`</span><span class="at">), so that larger values mean higher or better. I checked each with a cross-tabulation of original against reversed values. I did not reverse q9, since its best answer (“About Right”) is in the middle, or the nominal items (q11 to q27 and q38), where a reversal has no meaning.</span></span>
+<span id="cb62-623"><a href="#cb62-623" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb62-624"><a href="#cb62-624" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Reliability and factor analysis.**</span></span>
+<span id="cb62-625"><a href="#cb62-625" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb62-626"><a href="#cb62-626" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; </span><span class="pp">|</span><span class="at"> Measure </span><span class="pp">|</span><span class="at"> Items </span><span class="pp">|</span><span class="at"> raw_alpha </span><span class="pp">|</span><span class="at"> One-factor loadings </span><span class="pp">|</span><span class="at"> Decision </span><span class="pp">|</span></span>
+<span id="cb62-627"><a href="#cb62-627" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; </span><span class="pp">|----|----|----|----|----|</span></span>
+<span id="cb62-628"><a href="#cb62-628" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; </span><span class="pp">|</span><span class="at"> Employee proficiency </span><span class="pp">|</span><span class="at"> q3–q6 </span><span class="pp">|</span><span class="at"> .87 </span><span class="pp">|</span><span class="at"> .72, .92, .79, .73 </span><span class="pp">|</span><span class="at"> Create index </span><span class="pp">|</span></span>
+<span id="cb62-629"><a href="#cb62-629" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; </span><span class="pp">|</span><span class="at"> Operational effectiveness </span><span class="pp">|</span><span class="at"> q30–q34 </span><span class="pp">|</span><span class="at"> .54 </span><span class="pp">|</span><span class="at"> .40, .38, .79, .30, .35 </span><span class="pp">|</span><span class="at"> Do not create index </span><span class="pp">|</span></span>
+<span id="cb62-630"><a href="#cb62-630" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb62-631"><a href="#cb62-631" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Indexes.** I created </span><span class="in">`employee_proficiency_index`</span><span class="at"> as the mean of q3 to q6, because reliability is good, all four items load strongly, and they share one meaning (employee service quality). I did not create an operational effectiveness index. Alpha is low, only q32 loads strongly, and the items cover different topics (loan rates, confidentiality, speed, meeting needs, application ease), so I will analyze them separately.</span></span>
+<span id="cb62-632"><a href="#cb62-632" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb62-633"><a href="#cb62-633" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Limitations.** The sample is small (128), and the agreement items are concentrated in the “agree” range (for example, q3 and q5 never go below 3). 16% of q8 is missing, which could bias results if “No opinion” is not random. I also treated ordinal and agreement items as interval for the alpha and factor analysis, which is common but debatable.</span></span>
+<span id="cb62-634"><a href="#cb62-634" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-635"><a href="#cb62-635" aria-hidden="true" tabindex="-1"></a><span class="fu">## 9. Save your work to a new SPSS file</span></span>
+<span id="cb62-636"><a href="#cb62-636" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-637"><a href="#cb62-637" aria-hidden="true" tabindex="-1"></a>**Instructions:**</span>
+<span id="cb62-638"><a href="#cb62-638" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-639"><a href="#cb62-639" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Save the cleaned data to a new SPSS file. The file name must include your initials and the word &quot;cleaned&quot;.</span>
+<span id="cb62-640"><a href="#cb62-640" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-641"><a href="#cb62-641" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The new file must fix all the coding problems, including reverse coding, and improper use of missing values, variable labels, and value labels.</span>
+<span id="cb62-642"><a href="#cb62-642" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-643"><a href="#cb62-643" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>It must also include any new indexes you created.</span>
+<span id="cb62-644"><a href="#cb62-644" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-647"><a href="#cb62-647" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb62-648"><a href="#cb62-648" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: save-spss</span></span>
+<span id="cb62-649"><a href="#cb62-649" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-650"><a href="#cb62-650" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span></span>
+<span id="cb62-651"><a href="#cb62-651" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_sav</span>(<span class="st">&quot;Case 31 Data_efcu_1_DM_cleaned.sav&quot;</span>)</span>
+<span id="cb62-652"><a href="#cb62-652" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb62-653"><a href="#cb62-653" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-654"><a href="#cb62-654" aria-hidden="true" tabindex="-1"></a><span class="fu">## 10. Render and publish your report</span></span>
+<span id="cb62-655"><a href="#cb62-655" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-656"><a href="#cb62-656" aria-hidden="true" tabindex="-1"></a>Your final submission is a rendered HTML report published on GitHub Pages.</span>
+<span id="cb62-657"><a href="#cb62-657" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-658"><a href="#cb62-658" aria-hidden="true" tabindex="-1"></a><span class="fu">### Render locally</span></span>
+<span id="cb62-659"><a href="#cb62-659" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-660"><a href="#cb62-660" aria-hidden="true" tabindex="-1"></a>Save this file in your GitHub repository. In the Positron Terminal, confirm you are in the repository folder and run:</span>
+<span id="cb62-661"><a href="#cb62-661" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-662"><a href="#cb62-662" aria-hidden="true" tabindex="-1"></a><span class="in">``` bash</span></span>
+<span id="cb62-663"><a href="#cb62-663" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render IC-M08-Data-Preparation-Case-31-R.qmd</span>
+<span id="cb62-664"><a href="#cb62-664" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb62-665"><a href="#cb62-665" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-666"><a href="#cb62-666" aria-hidden="true" tabindex="-1"></a>Check that:</span>
+<span id="cb62-667"><a href="#cb62-667" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-668"><a href="#cb62-668" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>all code runs without errors;</span>
+<span id="cb62-669"><a href="#cb62-669" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>tables and output are readable;</span>
+<span id="cb62-670"><a href="#cb62-670" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>the headings and table of contents work;</span>
+<span id="cb62-671"><a href="#cb62-671" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>no local computer paths or private information appear; and</span>
+<span id="cb62-672"><a href="#cb62-672" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>the report makes sense without opening the R console.</span>
+<span id="cb62-673"><a href="#cb62-673" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-674"><a href="#cb62-674" aria-hidden="true" tabindex="-1"></a><span class="fu">### Publish on GitHub Pages</span></span>
+<span id="cb62-675"><a href="#cb62-675" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-676"><a href="#cb62-676" aria-hidden="true" tabindex="-1"></a>Commit and push your QMD file and supporting files. Then publish the rendered report using the method shown in class. With Quarto&#39;s publishing command:</span>
+<span id="cb62-677"><a href="#cb62-677" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-678"><a href="#cb62-678" aria-hidden="true" tabindex="-1"></a><span class="in">``` bash</span></span>
+<span id="cb62-679"><a href="#cb62-679" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> publish gh-pages IC-M08-Data-Preparation-Case-31-R.qmd</span>
+<span id="cb62-680"><a href="#cb62-680" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb62-681"><a href="#cb62-681" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-682"><a href="#cb62-682" aria-hidden="true" tabindex="-1"></a>If your repository uses a different GitHub Pages workflow, follow the course instructions. Confirm the public URL opens in a browser that is not signed in to GitHub.</span>
+<span id="cb62-683"><a href="#cb62-683" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-684"><a href="#cb62-684" aria-hidden="true" tabindex="-1"></a><span class="fu">## Submission requirements</span></span>
+<span id="cb62-685"><a href="#cb62-685" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-686"><a href="#cb62-686" aria-hidden="true" tabindex="-1"></a>Submit:</span>
+<span id="cb62-687"><a href="#cb62-687" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-688"><a href="#cb62-688" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>the QMD source file;</span>
+<span id="cb62-689"><a href="#cb62-689" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>the rendered HTML file, if your course requires it; and</span>
+<span id="cb62-690"><a href="#cb62-690" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>the public GitHub Pages URL in the Appendix below.</span>
+<span id="cb62-691"><a href="#cb62-691" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-692"><a href="#cb62-692" aria-hidden="true" tabindex="-1"></a><span class="fu">## Appendix: Links</span></span>
+<span id="cb62-693"><a href="#cb62-693" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-694"><a href="#cb62-694" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**GitHub Pages:** <span class="co">[</span><span class="ot">View my published report</span><span class="co">](https://dmcpp26.github.io/ibm6500-assignments/IC10-Case31/data-prep-case31-dmeza.html)</span></span>
+<span id="cb62-695"><a href="#cb62-695" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**GitHub Repo:** <span class="co">[</span><span class="ot">dmcpp26/ibm6500-assignments</span><span class="co">](https://github.com/dmcpp26/ibm6500-assignments)</span></span>
+<span id="cb62-696"><a href="#cb62-696" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-697"><a href="#cb62-697" aria-hidden="true" tabindex="-1"></a>*Template and case materials by Jae Jung, licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).*</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
