@@ -1,0 +1,54 @@
+---
+title: "IC10-2-2 Data Analysis Table: Research Questions"
+subtitle: "Case 31: Employees Federal Credit Union"
+author: "Danielle Meza"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    theme: cosmo
+    embed-resources: true
+execute:
+  echo: false
+  warning: false
+---
+
+## Research Questions and Hypotheses
+
+- **R1:** Why do people join the Credit Union?
+- **R2:** Why do members use other financial institutions when they need to borrow funds?
+- **R3:** What are the members' attitudes and beliefs about the proficiencies of credit union employees?
+- **R4:** Are there any perceived differences on (a) attitude towards employee proficiencies, (b) awareness of services, and (c) operational effectiveness between members who live in the area of the firm's headquarters and members who live elsewhere?
+- **R5:** How well are the members aware of the services offered by the credit union?
+- **R6:** What are the members' attitudes and beliefs about how effectively the credit union is operated?
+- **H1:** Members' awareness of the regular share accounts will influence their opinions on how well the current financial services provided by the credit union meet their needs.
+- **H2:** Members will not be different in their opinion on CU's loan rate (Q8r) and the degree to which they agree that CU's loan rate is lower than competitors (Q30).
+
+## Data Analysis Table for Case 31
+
+| Hypothesis / RQ | Constructs & Their Role | Operationalization | Scale | Statistical Test |
+|:--|:----------|:-------|:-----|:----------|
+| **R1** | Reasons to join the Credit Union (descriptive) | Q7 | Interval | Descriptive statistics, followed by one-group t-test |
+| **R2** | Reasons for borrowing from other institutions (descriptive)<br>Borrowed elsewhere in the past year (filter) | Q29 (check all that apply)<br>Q28 | Nominal (multiple response)<br>Nominal (1=yes, 2=no) | Descriptive statistics (frequency and percent for each reason, among members who answered "yes" to Q28) |
+| **R3** | Attitudes towards employee proficiencies | Q3 – Q6 | Interval | Descriptive statistics and reliability / factor analysis, followed by one-group t-test |
+| **R4a** | Member residence (I.V.)<br>Attitudes towards employee proficiencies (D.V.) | Q38<br>Att_Employee | Nominal (1=yes, 2=no)<br>Interval | Descriptive statistics followed by independent-groups t-test |
+| **R4b** | Member residence (I.V.)<br>Awareness of services (D.V.) | Q38<br>Q13r – Q26r | Nominal (1=yes, 2=no)<br>Ordinal | Two-way cross-tabulation followed by chi-square |
+| **R4c** | Member residence (I.V.)<br>Attitude toward operational effectiveness (D.V.) | Q38<br><br>Q9r<br>Q10r<br>Q11 – Q12rc<br>Q31 – Q34<br>Q37r | Nominal (1=yes, 2=no)<br><br>Nominal (about right / not)<br>Interval<br>Nominal<br>Interval<br>Interval | Descriptive statistics, followed by the tests below, respectively:<br><br>Chi-square independence test<br>Independent-groups t-test<br>Chi-square independence test (Fisher's exact if cells are small)<br>Independent-groups t-test (one per item)<br>Independent-groups t-test |
+| **R5** | Awareness of services (descriptive) | Q13r – Q26r | Ordinal | Descriptive statistics (frequency table and percent for each service, mode and median) |
+| **R6** | Attitudes and beliefs about how effectively the credit union is operated (descriptive) | Q9r<br>Q10r<br>Q11 – Q12rc<br>Q31 – Q34<br>Q37r | Nominal (about right / not)<br>Interval<br>Nominal<br>Interval<br>Interval | Descriptive statistics, followed by:<br>One-sample proportion test (chi-square goodness of fit)<br>One-group t-test<br>One-sample proportion test (chi-square goodness of fit)<br>One-group t-test (one per item)<br>One-group t-test |
+| **H1** | Members' awareness of the regular share account (I.V.)<br>The degree to which the current financial services meet the needs of the members (D.V.) | Q13r<br>Q33 | Ordinal<br>Interval | One-way ANOVA across the three awareness groups (Kruskal-Wallis as a check for ordinal data) |
+| **H2** | Member opinion on CU's rate charge (paired measure 1)<br>Member agreement that CU's loan rates are lower than competitors (paired measure 2) | Q8r<br>Q30 | Interval<br>Interval | Paired-samples t-test |
+
+## Notes on the Table
+
+- **R1 and R2:** The direct questions about why people join (Q2) and why they borrow elsewhere (Q28 and Q29) are not in the SPSS data file. R1 uses Q7 as given in the assignment. R2 is shown as the planned operationalization.
+- **Awareness items (Q13r to Q26r):** These are treated as ordinal after recoding so that unaware < aware but not used < aware and used. They are not averaged.
+- **Scale assumptions:** The 1-to-5 agreement items and rating items are treated as approximately interval, and a neutral midpoint (3) is used for the one-group t-tests. Q10r has four points, so its midpoint is 2.5.
+- **Operational effectiveness items:** Reliability for Q31 to Q34 is low (alpha about .47), so each item is analyzed separately and no index is used.
+- **H2 direction check:** Q8r and Q30 must point in the same direction before pairing them. The original q8 and q30 both run in the same direction (higher = lower rates), and the reversed Q8r runs the opposite way.
+
+## Appendix: Links
+
+- **GitHub Pages:** [View my published report](https://dmcpp26.github.io/ibm6500-assignments/IC10-2-2/data-analysis-table-case31-dmeza.html)
+- **GitHub Repo:** [dmcpp26/ibm6500-assignments](https://github.com/dmcpp26/ibm6500-assignments)

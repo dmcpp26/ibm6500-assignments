@@ -111,7 +111,7 @@ If your course materials provide `view_df()` (from the sjPlot package), you can 
 
 5.  Which variables contain missing values?
 
-    >  **variable n_missing**
+    > **variable n_missing**
     >
     > **\<chr\> \<int\>**
     >
@@ -511,7 +511,7 @@ For each candidate measure:
 
 1.  What is the reliability estimate (`raw_alpha`)?
 
-    >  **0.5392198**
+    > **0.5392198**
 
 2.  Do the item-total statistics (`r.drop`) suggest every item contributes? Does any item correlate weakly or negatively with the rest? If so, check its wording to see whether it needs reversing.
 
@@ -586,7 +586,7 @@ Include tables or output that help a reader verify your decisions. Do not paste 
 > **Reliability and factor analysis.**
 >
 > | Measure | Items | raw_alpha | One-factor loadings | Decision |
-> |----|----|----|----|----|
+> |---------------|---------------|---------------|---------------|---------------|
 > | Employee proficiency | q3–q6 | .87 | .72, .92, .79, .73 | Create index |
 > | Operational effectiveness | q30–q34 | .54 | .40, .38, .79, .30, .35 | Do not create index |
 >
