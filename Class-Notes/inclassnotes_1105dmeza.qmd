@@ -1,0 +1,114 @@
+---
+title: Class Notes for Week 11
+date: today
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    toc-expand: 1
+    toc-location: right-body
+    embed-resources: true
+    number-sections: true
+    code-link: true
+    code-fold: true
+    code-tools: true
+    code-overflow: wrap
+    theme: litera
+editor: visual
+execute:
+  freeze: auto
+---
+
+# Annoucements 
+
+- Dr. Jung announces new Podcast studio in the resource center available for free use a upon
+
+- Reviews modules for week 10 and week 11
+
+- 
+
+##### LECTURE - SQL 
+
+- CASE31 • Evaluate candidate multi-item reverse code items
+
+- skimr::skim
+
+- apply this to any survey data
+
+- Data Preparation Guidlines from Dr.Jungs Git Hub.
+
+Classification of Hypothesis testing procedures for Examining the difference
+
+Treat dependent variable in an argument scale.
+
+Ho: Indenpendent\
+Ha: Not Independent (= Associated)
+
+- Hypo tests
+
+  - Parametric Tests
+
+    - One Sample
+
+      - t Test
+
+      - Z test
+
+    - two or more Samples
+
+      - independent Samples
+
+        - two groups t test
+
+        - z test
+
+        - ANOVA (3 or 5 groups use anova)
+
+      - Paired Samples
+
+        - 1 Paired t test
+
+  - Non-Parametric Test
+
+    - One sample
+
+      - chi-square
+
+      - K-5
+
+      - Runs
+
+      - Binomial
+
+    - two or more Samples
+
+      - independent Samples
+
+        - chi-square
+
+      - Paired Samples
+
+Project May require regression
+
+Content review of Chi-square test - of M08-CASE 31 document\
+A summary of Data analysis for R1, R2, R3
+
+Reviewed CASE 31 presentation slides
+
+\<. . . \>
+
+in revealjis shows the items on presentation slides one at a time.
+
+#\| -\> is a HASHTYPE \
+use to give instruxtion to quarto about what you want it to do
+
+echo: (whether or not you want to show the code check or not)\
+this depends on the audience
+
+label: fig-freq
+
+fig-cap: (figure caption)
+
+fig-cap-location: (where you want the caption to appear)
+
+**Brief introduction to upcoming modules**
