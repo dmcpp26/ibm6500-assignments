@@ -202,7 +202,7 @@ gt provides the table engine; gtSummary provides the statistical content.
 ## 2.2 Three New Things I Learned
 
 ::: {.fragment .fade-up}
-**1. `inline_text()` puts table numbers in the report text.** I can write "the odds ratio for age is `r '`r inline_text(...)`'`" and the estimate, confidence interval, and p-value are pulled straight from the table object. A pattern argument controls the format, so the text can never disagree with the table.
+**1. `inline_text()` puts table numbers in the report text.** Instead of typing "the odds ratio for age is 1.02" by hand, I can call `inline_text()` on the table object and the estimate, confidence interval, and p-value are pulled straight from the table. A pattern argument controls the format, so the text can never disagree with the table.
 :::
 
 ::: {.fragment .fade-up}
