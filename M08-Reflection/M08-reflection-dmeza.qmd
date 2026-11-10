@@ -1,0 +1,356 @@
+---
+title: "Summary Tables with gtsummary"
+subtitle: "M08 Reflection | Revealjs Presentation"
+author: "Danielle Meza"
+institute: "IBM 6400, Cal Poly Pomona"
+date: "`r Sys.Date()`"
+format:
+  revealjs:
+    theme: [serif, custom.scss]
+    width: 1600
+    height: 900
+    footer: "M08 Reflection: Publishable Tables with {gtsummary}"
+    logo: ccidm-email.png
+    transition: slide
+    transition-speed: default
+    incremental: false
+    toc: true
+    toc-depth: 1
+    slide-number: true
+    scrollable: true
+    smaller: true
+    code-fold: false
+    code-overflow: wrap
+    code-copy: true
+    number-sections: false
+    number-depth: 5
+    embed-resources: true
+    css: styles.css
+    title-slide-attributes:
+      data-background-color: "#4b1d3f"
+bibliography: references.bib
+editor: visual
+execute:
+  echo: true
+  warning: false
+  message: false
+  freeze: auto
+---
+
+# Introduction {background-color="#a13c65" transition="zoom"}
+
+## What This Report Covers
+
+::: incremental
+- I watched two lectures on `{gtsummary}`: Dr. Jung's module lecture (Step 1) and Daniel Sjoberg's extended talk (Step 2).
+- Below, each essay prompt is shown first, followed by my response.
+- Prompts 3 and 4 use **Case 31** (Employees Federal Credit Union) as a stand-in, because our CEP survey data are not collected yet.
+:::
+
+::: notes
+Speaker notes: press "s" to open the speaker view. The point of this slide is to tell the audience that every prompt is printed before my answer, so someone who has not seen the assignment can follow.
+:::
+
+## Packages and Data
+
+```{r}
+library(tidyverse)
+library(haven)
+library(labelled)
+library(gtsummary)
+library(car)
+
+theme_gtsummary_compact()   # smaller font and padding for slides
+
+case31 <- read_sav("Case 31 Data_efcu_1_DM_cleaned.sav") |>
+  mutate(across(where(is.labelled), as.numeric)) |>
+  mutate(
+    hq   = factor(q38, levels = 1:2, labels = c("Yes", "No")),
+    loan = factor(q27, levels = 1:2, labels = c("Yes", "No"))
+  ) |>
+  set_variable_labels(
+    hq   = "Lives in headquarter area",
+    loan = "Currently has a loan with the CU",
+    q31  = "CU keeps information confidential",
+    q32  = "CU loan processing is prompt",
+    q33  = "CU meets members' needs",
+    q34  = "CU loan applications are simple",
+    q37r = "Overall rating of the CU",
+    employee_proficiency_index = "Employee proficiency index"
+  )
+dim(case31)
+```
+
+::: aside
+Data: Case 31, Employees Federal Credit Union (n = 128). Cleaned in my data preparation assignment.
+:::
+
+# Prompt 1: Capabilities of {gtsummary} {background-color="aquamarine" transition="fade"}
+
+## The Prompt
+
+> **In Step 1, you have seen how to create a summary table and modify it for various statistical analyses. Summarize the package's capabilities as explained by the speaker. How may the {gtsummary} benefit you for your school work or career?**
+
+## What the Package Can Do
+
+::: incremental
+- **Table 1 summaries:** `tbl_summary()` guesses whether each variable is continuous, categorical, or dichotomous and reports median (IQR) or n (%) by default. It can be split with `by =`.
+- **Cross-tabulations:** `tbl_cross()` builds crosstabs with row, column, or cell percents and margins, and `add_p()` adds the right test.
+- **Group comparisons:** `add_p()`, `add_q()` (multiple-comparison correction), `add_overall()`, `add_n()`, and `add_difference()` add columns to a summary.
+- **Models:** `tbl_regression()` summarizes a model with the right header (such as odds ratio) and finds reference rows; `tbl_uvregression()` runs a series of one-variable models.
+- **Other data types:** `tbl_svysummary()` for survey data and `tbl_survfit()` for survival data.
+- **Building and styling:** `tbl_merge()`, `tbl_stack()`, `tbl_strata()`, plus `modify_*()`, `bold_*()`, and `italicize_*()` functions.
+- **Themes:** One line sets defaults for a journal, language, or compact layout.
+:::
+
+## How It Works: The Formula Syntax
+
+::::: columns
+::: {.column width="50%"}
+Left side of the formula **selects** variables, right side gives the **instruction**:
+
+```{r}
+#| eval: false
+tbl_summary(
+  data = case31,
+  by = hq,
+  label = q37r ~ "Overall rating",
+  statistic = all_continuous() ~ "{mean} ({sd})",
+  digits = all_continuous() ~ 2
+)
+```
+:::
+
+::: {.column width="50%"}
+- `label = q37r ~ "..."` renames one variable.
+- `all_continuous()` is a gtsummary selector, and tidyselect helpers like `starts_with()` also work.
+- `"{mean} ({sd})"` is a glue string, so any function (even my own) can be used.
+- Several instructions go in a `list()`.
+:::
+:::::
+
+## Example: A Table 1 in Few Lines
+
+```{r}
+#| label: tbl-demo
+#| tbl-cap: "Member ratings by headquarter-area residence"
+case31 |>
+  tbl_summary(
+    by = hq,
+    include = c(q31, q32, q33, q34, q37r),
+    statistic = all_continuous() ~ "{mean} ({sd})",
+    digits = all_continuous() ~ 2,
+    missing = "no"
+  ) |>
+  add_overall() |>
+  add_p(test = all_continuous() ~ "t.test") |>
+  bold_labels() |>
+  modify_spanning_header(all_stat_cols(stat_0 = FALSE) ~ "**Lives in HQ area**")
+```
+
+::: notes
+Show that one pipe gives labels, n, mean (SD), an Overall column, and p-values. Without being told, the package picked up the variable labels I set earlier.
+:::
+
+## How It Can Help Me
+
+. . .
+
+**School work**
+
+::: incremental
+- Every assignment so far (data preparation, data analysis tables, now the CEP report) needs tables. `{gtsummary}` turns results into a formatted table without copying numbers by hand.
+- Because tables come from code, they stay **reproducible**: if I fix a variable, I re-render and the table updates.
+:::
+
+. . .
+
+**Career**
+
+::: incremental
+- As a digital marketing analyst I report survey and campaign results. Clean tables and `inline_text()` numbers make reports look professional and cut errors.
+- Journal themes and Word output (via flextable) will help when I write the CEP report.
+:::
+
+# Prompt 2: Sjoberg's Extended Talk {background-color="aquamarine" transition="fade"}
+
+## The Prompt (2.1)
+
+> **In Step 2, you watched the extended presentation of the {gtsummary} package by Dr. Daniel Sjoberg, the very creator of the package. 2.1. How does it differ from gt and gtExtras?**
+
+## 2.1 gtsummary vs. gt vs. gtExtras
+
+| Package | What it is | Main job |
+|:-----------------|:--------------------------|:--------------------------|
+| **gt** | Posit's "grammar of tables" | Formats **any** data frame into a table: headers, spanners, footnotes, number formats, colors |
+| **gtExtras** | Add-on for gt | Extra styling: ready-made themes (such as newspaper looks), sparklines, in-cell bars, icons, color helpers |
+| **gtsummary** | Statistical summary package | **Computes** the statistics (summaries, tests, regression results) and then formats them. It uses gt behind the scenes |
+
+. . .
+
+- `gt` and `gtExtras` display numbers I already have. `gtsummary` calculates them from data or from a model object.
+- `as_gt()` converts a gtsummary table to a gt object, so every gt (and gtExtras) function can still be used for extra polish [@sjoberg2021].
+
+::: aside
+gt provides the table engine; gtSummary provides the statistical content.
+:::
+
+## The Prompt (2.2)
+
+> **2.2. Give three things you learned newly that were not explained in the lecture in Step 1.**
+
+## 2.2 Three New Things I Learned
+
+::: {.fragment .fade-up}
+**1. `inline_text()` puts table numbers in the report text.** I can write "the odds ratio for age is `r '`r inline_text(...)`'`" and the estimate, confidence interval, and p-value are pulled straight from the table object. A pattern argument controls the format, so the text can never disagree with the table.
+:::
+
+::: {.fragment .fade-up}
+**2. Print engines.** Tables print with `gt` by default, but gt's PDF and Word (RTF) output is still under construction. For Word, `flextable` is the backup (gtsummary uses it automatically in Word output if installed); `kable` is simplest; and `as_hux_table()` can produce raw LaTeX code. This matters because the CEP report may need Word.
+:::
+
+::: {.fragment .fade-up}
+**3. Building blocks and helpers.** `add_q()` corrects p-values for multiple comparisons (and prints the exact `p.adjust` call so nothing is hidden), `show_header_names()` shows the hidden column names needed by `modify_header()`, and `add_stat()` adds any custom column. Even a custom table (a Cochran-Mantel-Haenszel table) was built by combining `tbl_cross()`, `tbl_merge()`, `add_stat()`, and `tbl_stack()`. Models with no broom method can be used by supplying a `tidy_fun`.
+:::
+
+::: notes
+Be ready to explain that the first item changes my workflow most: copying numbers from tables into sentences is where mistakes happen.
+:::
+
+# Prompt 3: Cross-Tabulation {background-color="aquamarine" transition="fade"}
+
+## The Prompt
+
+> **3. Apply what you learned to your MSDM CEP data. Choose two appropriate variables for cross-tabulation and show if the two variables are associated or not. Use appropriate statistics to test if the two variables are associated. Code, produce the table, and interpret the result.**
+
+::: callout-warning
+## Data note
+
+The CEP survey has not been fielded yet (the IRB review is pending), so I used the **Case 31** credit union data as a stand-in. The same code can be reused on the CEP data once it is collected.
+:::
+
+## Question and Variables
+
+- **Research question:** Are members who live in the headquarter area less likely than members who live elsewhere to have a loan with the credit union?
+- **Variables:** `hq` (lives in HQ area: yes/no) and `loan` (currently has a loan: yes/no)
+- Both variables are nominal, so a **chi-square test of independence** fits.
+- $H_0$: residence and loan status are independent. $H_A$: they are associated.
+
+## Cross-Tabulation with `tbl_cross()`
+
+```{r}
+#| label: tbl-cross
+#| tbl-cap: "Loan status by headquarter-area residence"
+case31 |>
+  tbl_cross(
+    row = hq,
+    col = loan,
+    percent = "row",
+    missing = "no"
+  ) |>
+  add_p(source_note = TRUE) |>
+  bold_labels()
+```
+
+## Chi-Square Details
+
+::::: columns
+::: {.column width="50%"}
+```{r}
+tab <- table(case31$hq, case31$loan)
+chisq.test(tab)
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+chisq.test(tab, correct = FALSE)$expected   # expected counts
+fisher.test(tab)$p.value
+```
+:::
+:::::
+
+## Interpretation
+
+::: callout-note
+## Is residence associated with loan status?
+
+- Among HQ-area members, **35%** have a loan; among members who live elsewhere, **54%** do.
+- The 2×2 chi-square test with continuity correction (the default in `add_p()`) gives χ²(1, N = 128) = 3.62, *p* = .057. Without the correction, χ² = 4.34, *p* = .037, and Fisher's exact test gives *p* = .049.
+- All expected counts are above 5, so the chi-square test is valid.
+- The evidence is **borderline**: at α = .05, the test with correction does not reject independence, while the other two tests barely do. The odds ratio is about 0.47 and Cramér's V is about .18 (a small effect).
+- I would say the data **suggest** HQ-area members are less likely to borrow from the credit union, but the result is not strong and should be confirmed with more data.
+:::
+
+# Prompt 4: Multiple Regression {background-color="aquamarine" transition="fade"}
+
+## The Prompt
+
+> **4. Using the MSDM CEP data, run multiple regression. The dependent variable can be continuous or dichotomous. Regress a dependent variable on a set of independent variables. Code, produce the table, and interpret the result.**
+
+## Model
+
+- **Dependent variable (continuous):** `q37r`, overall rating of the credit union (1 = Very Poor to 5 = Excellent)
+- **Independent variables:** confidentiality (q31), promptness (q32), meeting needs (q33), simple applications (q34), employee proficiency index, and residence (`hq`)
+
+```{r}
+m1 <- lm(q37r ~ q31 + q32 + q33 + q34 + employee_proficiency_index + hq,
+         data = case31)
+```
+
+## Regression Table with `tbl_regression()`
+
+```{r}
+#| label: tbl-reg
+#| tbl-cap: "OLS regression predicting overall rating of the credit union"
+tbl_regression(
+  m1,
+  intercept = TRUE,
+  estimate_fun = \(x) style_number(x, digits = 2)
+) |>
+  bold_p(t = 0.05) |>
+  bold_labels() |>
+  add_glance_source_note(include = c(r.squared, adj.r.squared, nobs))
+```
+
+## Checking Multicollinearity
+
+```{r}
+vif(m1)
+```
+
+All VIF values are below 1.6, so multicollinearity is not a concern.
+
+## Interpretation
+
+::: callout-note
+## What predicts the overall rating?
+
+- The model is significant, *F*(6, 114) = 11.96, *p* \< .001, and explains about **39%** of the variance (adjusted R² = .35, n = 121; 7 cases dropped because of missing q37r).
+- **Employee proficiency** is the strongest predictor: a one-point higher index goes with a 0.42-point higher overall rating (*p* \< .001), holding the other variables constant.
+- **Prompt loan processing** (b = 0.21, *p* = .014) and **meeting members' needs** (b = 0.20, *p* = .023) are also significant positive predictors.
+- Confidentiality (b = 0.14, *p* = .122), simple applications (b = −0.05, *p* = .513), and residence (b = 0.18, *p* = .101) are not significant.
+- **Practical meaning:** Members' overall rating depends most on how they see employees, speed, and whether needs are met. This is an association, not proof of cause.
+:::
+
+# Conclusion {background-color="#a13c65" transition="zoom"}
+
+## Key Takeaways
+
+::: incremental
+- `{gtsummary}` calculates and formats tables in one pipeline, which saves time and reduces copy-paste errors.
+- It differs from `gt` and `gtExtras` because it computes the statistics.
+- Cross-tabulation: HQ-area members were less likely to have a loan, but the evidence is borderline.
+- Regression: employee proficiency, promptness, and meeting needs predict overall rating.
+:::
+
+## References
+
+::: {#refs}
+:::
+
+## Appendix: Links {.unnumbered}
+
+- **Lecture notes (Step 1):** [Customizable Tables with gtsummary](https://jaejungca.github.io/gtsummary/M08-Customizable%20Tables-gtsummary.html)
+- **GitHub Pages:** [View my published report](https://dmcpp26.github.io/ibm6500-assignments/M08-Reflection/M08-reflection-gtsummary-dmeza.html)
+- **GitHub Repo:** [dmcpp26/ibm6500-assignments](https://github.com/dmcpp26/ibm6500-assignments)
