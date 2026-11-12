@@ -207,7 +207,6 @@ Key points to remember:
 3. How are X and the third variable measured? Pick the case (1 to 4) or the three-regression procedure.
 4. Check measurement error, direction of causation, and whether the relation between predictor and outcome is strong enough for mediation.
 
-**Limitations to keep in mind (my own reading):** The mediation steps in the article rely on regression and statistical significance. They show consistency with a mediated model, but they do not prove causation unless the design (for example random assignment of the predictor) supports it. The article also recommends latent-variable modeling when measurement error is a concern. Later work has refined these methods (for example by emphasizing the indirect effect and bootstrapped confidence intervals), so I should check newer sources before relying on this article alone.
 
 # Reference
 
