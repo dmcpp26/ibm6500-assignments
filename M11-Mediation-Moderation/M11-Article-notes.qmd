@@ -1,0 +1,221 @@
+---
+title: "Moderator and Mediator Variables: Article Summary"
+subtitle: "Baron and Kenny (1986)"
+author: "Danielle Meza"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    code-copy: true
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Article Information
+
+**Citation:** Baron, R. M., & Kenny, D. A. (1986). The moderator-mediator variable distinction in social psychological research: Conceptual, strategic, and statistical considerations. *Journal of Personality and Social Psychology, 51*(6), 1173-1182. <https://doi.org/10.1037/0022-3514.51.6.1173>
+
+**One-sentence summary:** Moderators and mediators are different kinds of "third variables" that answer different questions (*when* does an effect hold versus *how or why* does it happen), so they need different theory, research design, and statistics.
+
+This is my own summary for future reference. Page numbers in parentheses point to the article.
+
+# Why This Article Matters
+
+- Researchers often used "moderator" and "mediator" as if they meant the same thing. The authors give examples of published studies that mixed them up (p. 1173).
+- The article's main goal is to separate the two functions **conceptually**, **strategically**, and **statistically**, and then to show how both can be tested in one causal system.
+- The authors aim the article at social psychology, but the ideas apply to any field that studies effects (for example marketing and consumer behavior).
+
+# Quick Comparison
+
+| | **Moderator** | **Mediator** |
+|:--|:----------------------|:----------------------|
+| Question answered | **When** or **for whom** does the effect hold? | **How** or **why** does the effect happen? |
+| What it does | Changes the **direction and/or strength** of the relation between a predictor and an outcome (p. 1174) | **Transmits** the effect: it is the mechanism through which the predictor affects the outcome (pp. 1173, 1176) |
+| Role in the causal order | Same level as the predictor; it does not sit between predictor and outcome | Sits **between** predictor and outcome (predictor causes mediator, mediator causes outcome) |
+| Relation to the predictor | Ideally **uncorrelated** with the predictor and the outcome (p. 1174) | Should be **correlated** with the predictor (the predictor causes it) |
+| Statistical signature | A significant **interaction** (predictor × moderator) | A **reduced (or zero) direct effect** of the predictor once the mediator is controlled |
+| Typical research interest | The predictor itself, and its domain of effectiveness | The mechanism, and the construct's meaning (p. 1178) |
+| Example from the article | Controllability of noise changes how much noise intensity hurts task performance | Perceived control is the mechanism through which a stressor affects the outcome |
+
+# Moderator Variables
+
+## Definition
+
+A moderator is a qualitative (for example sex or class) or quantitative (for example level of reward) variable that affects the **direction and/or strength** of the relation between an independent variable and a dependent variable (p. 1174). In correlational terms, it is a third variable that changes the zero-order correlation between two other variables. A moderator effect can also appear as a **change in the direction** of the relation (a crossover interaction).
+
+## The Moderator Model (Figure 1)
+
+Three paths lead into the outcome: the predictor (path *a*), the moderator (path *b*), and the **interaction** of predictor × moderator (path *c*). The moderator hypothesis is supported if the **interaction (path *c*) is significant**. Significant main effects of the predictor and moderator may also appear, but they are not what tests moderation (p. 1174).
+
+```{mermaid}
+flowchart LR
+  P[Predictor] -->|a| Y[Outcome]
+  M[Moderator] -->|b| Y
+  PM["Predictor × Moderator"] -->|c| Y
+```
+
+Extra point: for a clean interpretation, the moderator should be uncorrelated with both the predictor and the outcome. Moderators and predictors are at the same level, so a moderator is always an *independent variable* in the model, whereas a mediator switches roles (effect of the predictor, cause of the outcome) (p. 1174).
+
+## How to Test Moderation: Four Cases (pp. 1174-1176)
+
+The right analysis depends on how the predictor (X) and moderator (Z) are measured.
+
+| Case | Predictor | Moderator | Analysis |
+|:--|:--------|:--------|:------------------------------|
+| 1 | Categorical | Categorical | **2 × 2 ANOVA**; moderation is the interaction. Check simple effects only if the interaction is significant |
+| 2 | Continuous | Categorical | Compare the **regression slopes** of the outcome on X across levels of the moderator. Prefer unstandardized slopes to correlations (see below) |
+| 3 | Categorical | Continuous | Add the **product** of X and Z to the regression (Y on X, Z, and XZ). Moderation is indicated by a significant XZ term |
+| 4 | Continuous | Continuous | If the effect is linear: regression with the **product term** XZ. If a step is expected: dichotomize the moderator (becomes Case 2). For a quadratic effect add Z² and XZ² terms |
+
+**Why correlations are not enough for Case 2:** comparing correlations across groups can mislead because correlations change when the variance of the predictor differs between groups (restriction of range), or when measurement error differs. Regression coefficients are not affected by these variance differences, so comparing **unstandardized slopes** is preferred (p. 1175).
+
+**Shapes of moderation (Figure 2):** the moderator can change the effect of X **linearly**, **quadratically**, or as a **step** function. A researcher must know the expected shape in advance in order to test it (p. 1175). Simple effects at different levels of the moderator can be tested following Aiken and West.
+
+**Measurement error:** error in the predictor or moderator can hide an interaction and lowers power. The authors point to latent-variable methods for adjusting for it (for example LISREL, Kenny and Judd's approach) (pp. 1175-1176).
+
+# Mediator Variables
+
+## Definition
+
+A variable is a mediator to the extent that it **accounts for the relation** between the predictor and the criterion. Mediators explain **how** external events take on internal meaning, whereas moderators specify **when** effects hold (p. 1176). The idea goes back to the S-O-R model: an active organism intervenes between stimulus and response.
+
+## The Mediation Model (Figure 3)
+
+There are two causal paths feeding into the outcome: the **direct effect** of the predictor (path *c*) and the effect of the mediator (path *b*). There is also a path from the predictor to the mediator (path *a*).
+
+```{mermaid}
+flowchart LR
+  X[Independent variable] -->|a| M[Mediator]
+  M -->|b| Y[Outcome]
+  X -->|c| Y
+```
+
+## Conditions for Mediation (p. 1176)
+
+A variable is a mediator when:
+
+1. Changes in the predictor significantly account for changes in the presumed mediator (path *a*).
+2. Changes in the mediator significantly account for changes in the outcome (path *b*).
+3. When paths *a* and *b* are controlled, the previously significant relation between predictor and outcome is **no longer significant** (**perfect mediation**: path *c* drops to zero).
+
+If path *c* is reduced but not zero, there are likely **multiple mediators**. Because most psychological outcomes have many causes, the more realistic goal is usually to show a **significant reduction** in path *c*, rather than elimination (p. 1176).
+
+## How to Test Mediation: Three Regression Equations (p. 1177)
+
+The authors recommend estimating separate regressions (no stepwise or hierarchical regression needed):
+
+| Step | Regression | What must be true |
+|:--|:------------------------|:------------------------------------------|
+| 1 | **Mediator on predictor** | Predictor significantly affects the mediator (path *a*) |
+| 2 | **Outcome on predictor** | Predictor significantly affects the outcome (the total effect, path *c* before controlling the mediator) |
+| 3 | **Outcome on predictor and mediator** | The mediator significantly affects the outcome (path *b*), **and** the predictor's effect is **smaller** than in Step 2 |
+
+If all conditions hold in the predicted direction, mediation is supported. If the predictor has **no effect** in Step 3 when the mediator is controlled, mediation is **perfect (complete)**.
+
+Notes from the article:
+
+- **Multicollinearity:** the predictor causes the mediator, so they are correlated. This lowers power for the Step 3 coefficients. So look at the **size** of the coefficients as well as their significance (p. 1177).
+- **Sobel test:** Sobel (1982) gave an approximate significance test for the indirect effect *ab*. The standard error uses the paths *a* and *b* and their standard errors (*s~a~*, *s~b~*). The article gives the formula as $\sqrt{b^2 s_a^2 + a^2 s_b^2 + s_a^2 s_b^2}$, and notes that Sobel's approximation omits the last term, which is usually small (p. 1177).
+- **Assumptions of the regression approach:** (1) the mediator is measured **without error**, and (2) the **outcome does not cause the mediator** (no feedback) (p. 1177).
+- **Measurement error in the mediator:** underestimates the mediator's effect and **overestimates** the direct effect of the predictor on the outcome, so real mediators can be missed. The remedy is **multiple indicators** with latent-variable (structural equation) modeling, which also handles correlated errors and feedback (p. 1177).
+- **Feedback:** if the mediator and outcome could be mixed up in direction, designs such as Smith's two-stage least squares approach can help (p. 1177).
+
+```{r}
+#| eval: false
+# Illustration only (placeholder names), the three regressions in R:
+step1 <- lm(mediator ~ predictor, data = d)              # path a
+step2 <- lm(outcome  ~ predictor, data = d)              # total effect
+step3 <- lm(outcome  ~ predictor + mediator, data = d)   # paths b and c' (direct effect)
+
+# Indirect effect and Sobel-type standard error (using the article's formula)
+a <- coef(step1)["predictor"];  sa <- summary(step1)$coefficients["predictor", "Std. Error"]
+b <- coef(step3)["mediator"];   sb <- summary(step3)$coefficients["mediator", "Std. Error"]
+se_ab <- sqrt(b^2 * sa^2 + a^2 * sb^2 + sa^2 * sb^2)
+z <- (a * b) / se_ab
+```
+
+# Strategic Considerations (pp. 1177-1178)
+
+- **When moderators are introduced:** when there is an unexpectedly **weak or inconsistent** relation between a predictor and a criterion (it holds in one setting or subgroup but not another). Example: self-monitoring improved prediction of behavior from personality traits.
+- **When mediation is best:** when there is a **strong relation** between predictor and criterion that you want to explain.
+- **Level of analysis:** mediators are not only "in the head." They can be group-level constructs (for example cohesiveness, norms) or environmental ones.
+- **Interest in the predictor:** moderator research is usually interested in the **predictor itself**, whereas mediator research focuses on the **mechanism** (the same mediator, such as dissonance or personal control, can be proposed for many different predictors).
+- **Moving between the two:**
+    - *Moderator to mediator:* a good moderator can point to an underlying process. Choose moderators that do more than improve prediction. For example, evaluative anxiety might explain why an instructional technique works differently for two groups.
+    - *Mediator to moderator:* a mediator can suggest an **intervention** (for example, increasing perceived controllability in housing to reduce the harm of crowding).
+- **Operational implications:** if control is a *moderator*, it is enough to **manipulate** it experimentally (perceived control is just a manipulation check). If control is a *mediator*, the researcher needs an **independent assessment** of perceived control (construct validity, multiple measures), because the claim is that perceived control is the mechanism (pp. 1178-1179).
+
+# Combining Moderation and Mediation (Figure 4, pp. 1178-1179)
+
+The authors present a framework in which one variable (control) has both roles. The setup has a manipulated variable **C** (control), a stressor **S**, their interaction **CS**, a measured mediator **P** (perceived control), the **PS** interaction, and the outcome **O**.
+
+```{mermaid}
+flowchart LR
+  C[Manipulation of control C] --> P[Perceived control P]
+  S[Stressor S] --> P
+  CS["C × S"] --> P
+  C --> O[Outcome O]
+  S --> O
+  CS --> O
+  P --> O
+```
+
+| Step | Analysis | Interpretation |
+|:--|:-------------------------------|:---------------------------------------------------|
+| 1 | Regress **O** on C, S, and CS (a 2 × 2 ANOVA) | C affects O: control may be a mediator of the stressor effect. S affects O: it makes sense to look for mediating effects of perceived control. **CS** significant: **moderation** |
+| 2 | (a) Regress **P** on C, S, CS. (b) Regress **O** on C, S, **P**, and CS | For P to mediate the S to O relation, S must affect P and P must affect O. Complete mediation if S no longer affects O once P is controlled. If CS affects P, the control manipulation works differently across levels of the stressor. If CS's effect on O gets weaker in the second equation, P mediates the CS effect (**mediated moderation**) |
+| 3 | Regress **O** on C, S, P, CS, and **PS** | The key question is whether the CS effect on O is **smaller** than in Step 2. If it is, perceived control (P) explains the moderating effect of control on the stressor. For this to happen, PS must affect O, and in Step 2 CS must affect P (which makes CS and PS correlated) |
+
+Two possible explanations when CS affects O:
+
+1. **P carries the effect** because the control manipulation changes perceived control differently at each level of the stressor (this would turn a moderator effect into a mediator effect).
+2. The **CS interaction operates through the PS interaction** (the moderator explanation stays, but is enriched).
+
+Related terms: **mediated moderation** (the moderator effect is transmitted through a mediator) and **moderated mediation** (the mediation effect varies with the level of a moderator, James & Brett, 1984) (p. 1179).
+
+# Applications in the Article (pp. 1179-1181)
+
+1. **Personal control:** many studies manipulated control but treated its status ambiguously. To claim that perceived control is a *mediator* (for example in crowding research), an **independent measure** of perceived control is needed. A study that only manipulates control without measuring perceived control cannot support that claim, and a study without the control × density interaction cannot support moderation either. The authors judge that the evidence favors control as a **moderator** of crowding effects (p. 1180).
+2. **Behavior intention to behavior (Fishbein and Ajzen):** behavioral intention is a clear mediator, but the model treated very different variables (gender, time delay, likelihood of co-workers complying, skill, resources) alike. Some are best treated as **moderators** (for example gender, tested with a Gender × BI interaction term) and others as **mediators**. Adding or dropping a variable and checking the change in R is a strategy suited to testing mediation, not moderation.
+3. **Linking traits and attitudes to behavior:** self-monitoring and self-consciousness have been used as **moderators** of the trait-behavior and attitude-behavior relations. The combined framework asks for more: show the moderator role **and** the process (mediator) behind it, for example differential attention or impression management for high and low self-monitors.
+
+# Summary and Takeaways (p. 1181)
+
+The authors' three goals were to (1) show how moderators and mediators differ so that the terms are not used interchangeably, (2) explain the conceptual and strategic implications of the distinction, and (3) provide the first compendium of analytic procedures for each, separately and in a combined causal system.
+
+Key points to remember:
+
+- **Moderator = "when/for whom"**, tested with an **interaction**. **Mediator = "how/why"**, tested by the **drop in the direct effect** when the mediator is added.
+- A moderator is independent of the predictor; a mediator is **caused by** the predictor.
+- Choose the analysis by how the variables are measured (the four moderation cases).
+- For mediation, run the **three regressions** and check **a**, **b**, and the **reduction in c**. Look at effect sizes as well as significance, and use the Sobel test for the indirect effect.
+- Measurement error and feedback are the main threats to the regression approach to mediation; use multiple indicators or latent-variable models when they are a concern.
+- The same variable can play both roles in a study, so decide which role a theory assigns before choosing the design.
+
+# My Notes for Future Use
+
+**Checklist for choosing moderation or mediation**
+
+1. Is my question "when/for whom" (moderator) or "how/why" (mediator)?
+2. Is the third variable *caused by* my predictor? If yes, think mediator. If it is independent of the predictor and the outcome, think moderator.
+3. How are X and the third variable measured? Pick the case (1 to 4) or the three-regression procedure.
+4. Check measurement error, direction of causation, and whether the relation between predictor and outcome is strong enough for mediation.
+
+**Limitations to keep in mind (my own reading):** The mediation steps in the article rely on regression and statistical significance. They show consistency with a mediated model, but they do not prove causation unless the design (for example random assignment of the predictor) supports it. The article also recommends latent-variable modeling when measurement error is a concern. Later work has refined these methods (for example by emphasizing the indirect effect and bootstrapped confidence intervals), so I should check newer sources before relying on this article alone.
+
+# Reference
+
+Baron, R. M., & Kenny, D. A. (1986). The moderator-mediator variable distinction in social psychological research: Conceptual, strategic, and statistical considerations. *Journal of Personality and Social Psychology, 51*(6), 1173-1182. <https://doi.org/10.1037/0022-3514.51.6.1173>
+
+# Appendix
+
+## Project Links
+
+- [GitHub Repository](https://github.com/dmcpp26/ibm6500-assignments)
+- [GitHub Pages Website](https://dmcpp26.github.io/ibm6500-assignments/M11-Mediation-Moderation/baron-kenny-summary-dmeza.html)
