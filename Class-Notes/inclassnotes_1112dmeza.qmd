@@ -24,17 +24,17 @@ execute:
 
 - there is a widespread outage of Microsoft but it does not affect canvas and much of the my cpp website
 
-##  Introduction 
+## Introduction
 
 - Many people were missing the "embed resources" so their class notes were rendering correctly\
 
-## Testing Hypothesis (Cont'd) 
+## Testing Hypothesis (Cont'd)
 
 <https://jaejungca.github.io/case31/Jung_Jae_case31_analysis_present-all.html#/12/3>
 
 ## EFA (Exploratory Factor Analysis)
 
-### W12-1 
+### W12-1
 
 - PCA & EFA
 
@@ -48,7 +48,7 @@ execute:
 
 - Unidemnsional & Reliable –\> Composite Index
 
-### W12-2: Hypothesis Testing 
+### W12-2: Hypothesis Testing
 
 - t-tests
 
@@ -64,7 +64,7 @@ execute:
 
 - H1, H2
 
-### W12-2: Hypothesis Testing 
+### W12-2: Hypothesis Testing
 
 - Step 1: regression - Ch18
 
@@ -74,7 +74,7 @@ execute:
 
 ## CFA (Confrimatory Analysis)
 
-Case 31 presetnation QMD analysis: \
+Case 31 presetnation QMD analysis:\
 **Revealjs slide effects**
 
 - Each H2 (`##`) is one slide, and everything under it stays on that slide until the next H2.
@@ -115,4 +115,64 @@ Case 31 presetnation QMD analysis: \
 
 - Sample characteristics slide: counts `q38` (lives in the headquarter area). He asked why `q38` is special, but the transcript cuts off before his answer. The Case 31 PDF
 
-You can run each line by using command + enter or Crt + enter.
+`You can run each line by using command + enter or Crt + enter.`
+
+**Setup / variables**
+
+- Know your IV and DV scale first, because that decides the test.
+
+- Q38 (lives in HQ area, yes/no) is the nominal IV. The employee proficiency index is the interval DV, built from 4 items.
+
+- Interval DV means a t-test. Ordinal or nominal DV means chi-square.
+
+**One-sample t-tests (R1-R3)**
+
+- Compare one sample mean to a fixed benchmark.
+
+- Use a histogram for a metric/interval variable and a bar chart for categories.
+
+**Two-group comparison (R4a, HQ vs. non-HQ)**
+
+- Run the plots first (boxplot and bar of means) to see whether a difference looks real. Then test whether it is statistically significant.
+
+- Check the variances before the t-test. Levene’s test and `var.test()` both have H0: equal variances. A big p-value (here \~0.68) means you fail to reject, so assume equal variances.
+
+- Then run `t.test(DV ~ IV, var.equal = TRUE)`. R’s default is Welch (`var.equal = FALSE`).
+
+- Result: HQ mean 4.28 vs. non-HQ 4.14, p is large, so we fail to reject. Perceived employee proficiency doesn’t differ by residence.
+
+- Wording matters. Say “we fail to reject H0 that μ1 = μ2,” not “the means are equal.”
+
+- Turn the IV into a factor so labels read “Yes/No” instead of 1/2.
+
+**gtsummary shortcut**
+
+- One `tbl_summary()` call gives the whole table: `by =` the IV, mean (SD) and median (min, max), then add `add_difference()` (95% CI and p-value), `add_overall()`, and `add_n()`.
+
+- Polish it with `modify_caption()` and `modify_spanning_header()`. The default column names are `stat_1` and `stat_2`.
+
+- It uses Welch by default, so the numbers can differ slightly from the equal-variance t-test.
+
+**Chi-square independence (R4b)**
+
+- The DV is awareness of services, Q13-Q26 (14 ordinal items), and the IV is still HQ residence.
+
+- Two categorical variables mean a chi-square test of independence. H0 is no association.
+
+- Don’t mix this up with goodness-of-fit, which is for one variable only.
+
+- Descriptives for this test are a cross-tab. The transcript ends here.
+
+**Slide and Quarto tips**
+
+- `---` starts a new slide, and `. . .` (with spaces) is a pause.
+
+- `echo: false` hides the code.
+
+- Figure labels start with `fig-` and table labels with `tbl-`. Numbering is automatic. Table captions sit on top by default and figure captions on the bottom.
+
+- `output-location: column-fragment` puts the code on the left and the output on the right.
+
+- Use CSS (`styles.css`) for heading colors and `small-text`.
+
+- Math uses LaTeX: `$ … $` inline and `$$ … $$` as a block.
