@@ -1,0 +1,118 @@
+---
+title: Class Notes for Week 12
+author: "Danielle Meza"
+date: today
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    toc-expand: 1
+    toc-location: right-body
+    embed-resources: true
+    number-sections: true
+    code-link: true
+    code-fold: true
+    code-tools: true
+    code-overflow: wrap
+    theme: litera
+editor: visual
+execute:
+  freeze: auto
+---
+
+# Annoucements
+
+- there is a widespread outage of Microsoft but it does not affect canvas and much of the my cpp website
+
+##  Introduction 
+
+- Many people were missing the "embed resources" so their class notes were rendering correctly\
+
+## Testing Hypothesis (Cont'd) 
+
+<https://jaejungca.github.io/case31/Jung_Jae_case31_analysis_present-all.html#/12/3>
+
+## EFA (Exploratory Factor Analysis)
+
+### W12-1 
+
+- PCA & EFA
+
+- Reliabilty
+
+- Case 31 - Reliabilty & Factor Analysis for R3 & R6
+
+  - R3: Attitude toward employee Proficiency
+
+  - R6: Attitude toward Credit unions' Operational Efficiency
+
+- Unidemnsional & Reliable –\> Composite Index
+
+### W12-2: Hypothesis Testing 
+
+- t-tests
+
+  - one-group t-test
+
+  - twp-group t-test
+
+  - paired group t-test
+
+- ANOVA
+
+- R3, R6, and R4
+
+- H1, H2
+
+### W12-2: Hypothesis Testing 
+
+- Step 1: regression - Ch18
+
+- Step 2: Regression - Assumptions - IBM 6510
+
+- H5a - H5d: Same DV, Different Iv's
+
+## CFA (Confrimatory Analysis)
+
+Case 31 presetnation QMD analysis: \
+**Revealjs slide effects**
+
+- Each H2 (`##`) is one slide, and everything under it stays on that slide until the next H2.
+
+- Fragments: pressing the arrow key reveals content one piece at a time. He used a highlight-red fragment that changes color as it appears.
+
+- Incremental lists show one line per click. He sometimes likes it and sometimes doesn’t, and usually prefers showing the whole list at once.
+
+**Code chunk settings**
+
+- `echo: false` hides the code and shows only the output. Use it for chunks like loading data that mean little to the audience.
+
+- `output: false` hides the output but still runs the code (nothing shows in the Viewer).
+
+- If you’re using `echo: false` a lot, put it once in the main YAML header and switch on `echo: true` only for the chunks you want to show.
+
+- Setup chunks load the data and packages (labelled for variable and value labels, gtsummary for tables).
+
+**Data and file setup**
+
+- He used `Case 31 Data_efcu_Prepped.sav` (his prepared file) so he wouldn’t redo the prep work. You can use your own cleaned file from the data preparation assignment, `Case 31 Data_efcu_1_DM_cleaned.sav`.
+
+- The data won’t load on your computer unless the file is in your project folder.
+
+- You must run the chunk (Cmd/Ctrl + Enter, one line at a time) before objects like `case31` exist.
+
+- Dimensions of his file: 54 columns and 128 rows, so the sample size is 128.
+
+**Reproducibility tip: inline code**
+
+- Don’t type numbers like “54 variables” by hand. Use inline R code: a backtick, `r`, a space, the code (for example `ncol(case31)`), then a closing backtick.
+
+- That prints the value in the text and updates automatically if the data change.
+
+**Other slides he covered**
+
+- Data dictionary slide: generated with `view_df()` (I think this is what “VUDF” meant), with `echo: false` so the code doesn’t show.
+
+- Sample characteristics slide: counts `q38` (lives in the headquarter area). He asked why `q38` is special, but the transcript cuts off before his answer. The Case 31 PDF
+
+You can run each line by using command + enter or Crt + enter.
