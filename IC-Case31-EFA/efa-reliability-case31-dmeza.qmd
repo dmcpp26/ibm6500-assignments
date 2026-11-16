@@ -1,0 +1,243 @@
+---
+title: "Case 31: Reliability and Factor Analysis"
+subtitle: "R3 (Attitude Toward Employee Proficiency) and R6 (Operational Effectiveness)"
+author: "Danielle Meza"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: false
+    code-fold: true
+    code-summary: "Show code"
+    embed-resources: true
+    theme: cosmo
+execute:
+  warning: false
+  message: false
+---
+
+# Purpose
+
+Before building a composite (average) score from a multi-item scale, I need to check two things: do the items measure **one underlying factor** (exploratory factor analysis, EFA), and are they **internally consistent** (Cronbach's alpha)? This report covers the two multi-item scales in Case 31 only. It is about whether to build the composite. It is not about the insights for R3 and R6, which come later (M13).
+
+```{r}
+#| label: setup
+library(haven)
+library(psych)
+library(dplyr)
+library(knitr)
+
+set.seed(123)  # parallel analysis uses random data, so fix the seed
+
+efcu <- read_sav("Case 31 Data_efcu_1_DM_cleaned.sav")
+
+r3_items <- c("q3", "q4", "q5", "q6")      # employee proficiency
+r6_items <- c("q31", "q32", "q33", "q34")  # operational effectiveness (metric items)
+
+r3 <- as.data.frame(efcu[, r3_items])
+r6 <- as.data.frame(efcu[, r6_items])
+
+# helper: pull the key numbers so the text below is never typed by hand
+kmo_bart <- function(x) {
+  k <- KMO(x)
+  b <- cortest.bartlett(cor(x), n = nrow(x))
+  list(kmo = k$MSA, msa = k$MSAi, chisq = b$chisq, df = b$df, p = b$p.value)
+}
+r3_kb <- kmo_bart(r3); r6_kb <- kmo_bart(r6)
+r3_a  <- psych::alpha(r3); r6_a <- psych::alpha(r6)
+r3_pa <- fa.parallel(r3, fa = "both", plot = FALSE)
+r6_pa <- fa.parallel(r6, fa = "both", plot = FALSE)
+```
+
+**Sample:** n = `r nrow(efcu)` credit union members. All items are 5-point agreement scales (1 = Strongly Disagree, 5 = Strongly Agree), so I treat them as metric.
+
+**How I read the results:**
+
+| Check | Rule of thumb I used |
+|---|---|
+| KMO | ≥ .60 acceptable, ≥ .70 good, < .50 unacceptable |
+| Bartlett's test | p < .05 means items are correlated enough to factor |
+| Number of factors | Eigenvalue > 1 (Kaiser), scree plot, and parallel analysis |
+| Loadings | ≥ .40 acceptable, ≥ .70 strong |
+| Cronbach's alpha | ≥ .70 acceptable |
+
+---
+
+# R3: Attitude Toward Employee Proficiency
+
+**Items:** Q3 courteous, Q4 helpful, Q5 professional, Q6 available.
+
+## Correlations and descriptives
+
+```{r}
+#| label: r3-desc
+kable(describe(r3)[, c("n", "mean", "sd", "min", "max")], digits = 2,
+      caption = "R3 item descriptives")
+kable(cor(r3), digits = 2, caption = "R3 inter-item correlations")
+```
+
+All four items correlate positively (.46 to .72), which is what we want before factoring.
+
+## Is the data suitable for factor analysis?
+
+```{r}
+#| label: r3-suit
+cat("KMO overall MSA =", round(r3_kb$kmo, 2), "\n")
+cat("Item MSAs:", paste(names(r3_kb$msa), round(r3_kb$msa, 2), collapse = ", "), "\n")
+cat("Bartlett: chi-square(", r3_kb$df, ") = ", round(r3_kb$chisq, 1),
+    ", p ", ifelse(r3_kb$p < .001, "< .001", paste("=", round(r3_kb$p, 3))), "\n", sep = "")
+```
+
+KMO is **`r round(r3_kb$kmo, 2)`** ("middling to good"), and every item is above .70. Bartlett's test is significant, so the correlation matrix is not an identity matrix. **The data are suitable for factor analysis.**
+
+## How many factors?
+
+```{r}
+#| label: fig-r3-scree
+#| fig-cap: "Scree plot with parallel analysis for the R3 items"
+#| fig-width: 6
+#| fig-height: 4
+fa.parallel(r3, fa = "both", main = "R3 scree / parallel analysis")
+ev3 <- eigen(cor(r3))$values
+```
+
+The eigenvalues are `r paste(round(ev3, 2), collapse = ", ")`. Only the first is above 1, the scree plot bends sharply after factor 1, and parallel analysis also suggests **`r r3_pa$nfact` factor**. All three rules agree.
+
+## Factor loadings (one factor, maximum likelihood)
+
+```{r}
+#| label: r3-efa
+efa3 <- fa(r3, nfactors = 1, fm = "ml")
+load3 <- data.frame(Item = r3_items,
+                    Loading = round(as.numeric(efa3$loadings), 2),
+                    Communality = round(efa3$communality, 2),
+                    Uniqueness = round(efa3$uniquenesses, 2))
+kable(load3, caption = "R3 one-factor solution")
+```
+
+The single factor explains **`r round(efa3$Vaccounted[2, 1] * 100, 0)`%** of the variance (ML), or `r round(ev3[1] / 4 * 100, 0)`% with PCA. Loadings range from `r min(load3$Loading)` to `r max(load3$Loading)`, all well above .40 and mostly strong. Q4 (helpful) is the strongest. With one factor, no rotation is needed.
+
+## Reliability
+
+```{r}
+#| label: r3-alpha
+cat("Cronbach's alpha (raw)  =", round(r3_a$total$raw_alpha, 2), "\n")
+cat("Cronbach's alpha (std)  =", round(r3_a$total$std.alpha, 2), "\n")
+cat("Average inter-item r    =", round(r3_a$total$average_r, 2), "\n")
+kable(r3_a$alpha.drop[, c("raw_alpha", "std.alpha")], digits = 2,
+      caption = "Alpha if item dropped")
+kable(r3_a$item.stats[, c("r.cor", "r.drop")], digits = 2,
+      caption = "Corrected item-total correlations")
+```
+
+Cronbach's alpha is **`r round(r3_a$total$raw_alpha, 2)`**, which is above .70 (good internal consistency). Dropping any item would **lower** alpha, so every item is pulling its weight and none should be removed.
+
+## Decision for R3
+
+::: {.callout-note}
+**Build the composite.** One clear factor, strong loadings, and alpha of `r round(r3_a$total$raw_alpha, 2)` support averaging Q3 to Q6 into a single **attitude toward employee proficiency** score and using that score in the R3 analysis.
+:::
+
+---
+
+# R6: Operational Effectiveness (metric items Q31 to Q34)
+
+**Items:** Q31 confidential, Q32 prompt, Q33 meets members' needs, Q34 loan applications simple.
+
+## Correlations and descriptives
+
+```{r}
+#| label: r6-desc
+kable(describe(r6)[, c("n", "mean", "sd", "min", "max")], digits = 2,
+      caption = "R6 item descriptives")
+kable(cor(r6), digits = 2, caption = "R6 inter-item correlations")
+```
+
+The correlations are **weak and uneven** (0.00 to .39). Q32 is the only item that correlates with more than one other item. Q31 with Q34 and Q33 with Q34 are close to zero.
+
+## Is the data suitable for factor analysis?
+
+```{r}
+#| label: r6-suit
+cat("KMO overall MSA =", round(r6_kb$kmo, 2), "\n")
+cat("Item MSAs:", paste(names(r6_kb$msa), round(r6_kb$msa, 2), collapse = ", "), "\n")
+cat("Bartlett: chi-square(", r6_kb$df, ") = ", round(r6_kb$chisq, 1),
+    ", p ", ifelse(r6_kb$p < .001, "< .001", paste("=", round(r6_kb$p, 3))), "\n", sep = "")
+```
+
+Bartlett's test is significant, so there is *some* shared variance. But KMO is only **`r round(r6_kb$kmo, 2)`**, which is right at the bare minimum, and three of the four item MSAs are at or below .50. **The data are marginal at best for factor analysis**, so I treat the loadings below with caution.
+
+## How many factors?
+
+```{r}
+#| label: fig-r6-scree
+#| fig-cap: "Scree plot with parallel analysis for the R6 items"
+#| fig-width: 6
+#| fig-height: 4
+fa.parallel(r6, fa = "both", main = "R6 scree / parallel analysis")
+ev6 <- eigen(cor(r6))$values
+```
+
+The eigenvalues are `r paste(round(ev6, 2), collapse = ", ")`. Kaiser's rule would keep two factors, but the second is barely above 1 (`r round(ev6[2], 2)`), and the scree plot has no clear elbow. Parallel analysis is borderline (it points to `r r6_pa$nfact` factor(s) here and can flip between 1 and 2 across runs). With a second eigenvalue that close to random-data levels and only four items, **one factor is the most defensible choice**, so I test one factor below.
+
+## Factor loadings (one factor, maximum likelihood)
+
+```{r}
+#| label: r6-efa
+efa6 <- fa(r6, nfactors = 1, fm = "ml")
+pca6 <- principal(r6, nfactors = 1)
+load6 <- data.frame(Item = r6_items,
+                    `ML loading` = round(as.numeric(efa6$loadings), 2),
+                    `PCA loading` = round(as.numeric(pca6$loadings), 2),
+                    Communality = round(efa6$communality, 2),
+                    check.names = FALSE)
+kable(load6, caption = "R6 one-factor solution")
+```
+
+The one factor explains only **`r round(efa6$Vaccounted[2, 1] * 100, 0)`%** of the variance (ML), or `r round(ev6[1] / 4 * 100, 0)`% with PCA. The ML solution is unstable: Q32 loads at about 1.00 (a Heywood case, which means the model is putting nearly all the common variance on one item), while Q31 and Q33 load only about .2 to .3. PCA is more forgiving (loadings .5 to .8), but it tells the same story: **Q32 carries the factor and the other items hang on loosely.** The items do not look like one clean construct.
+
+## Reliability
+
+```{r}
+#| label: r6-alpha
+cat("Cronbach's alpha (raw)  =", round(r6_a$total$raw_alpha, 2), "\n")
+cat("Cronbach's alpha (std)  =", round(r6_a$total$std.alpha, 2), "\n")
+cat("Average inter-item r    =", round(r6_a$total$average_r, 2), "\n")
+kable(r6_a$alpha.drop[, c("raw_alpha", "std.alpha")], digits = 2,
+      caption = "Alpha if item dropped")
+kable(r6_a$item.stats[, c("r.cor", "r.drop")], digits = 2,
+      caption = "Corrected item-total correlations")
+```
+
+Cronbach's alpha is only **`r round(r6_a$total$raw_alpha, 2)`**, well below the .70 cutoff, and the average inter-item correlation is just `r round(r6_a$total$average_r, 2)`. Dropping an item does not rescue it: alpha stays around .44 to .47 for every item except Q32, and removing Q32 drops it to about .14. Corrected item-total correlations are low (about .19 to .23) for Q31, Q33, and Q34.
+
+## Decision for R6
+
+
+**Do not build a composite.** Alpha of `r round(r6_a$total$raw_alpha, 2)` is poor, KMO is marginal, the loadings are unstable, and no item deletion fixes it. Averaging Q31 to Q34 would blend items that do not measure one construct. In the next step I analyze **each item (Q31, Q32, Q33, Q34) on its own** for R6.
+
+---
+
+# Summary
+
+```{r}
+#| label: summary-table
+sumtab <- data.frame(
+  Scale = c("R3 Employee proficiency (Q3 to Q6)", "R6 Operational effectiveness (Q31 to Q34)"),
+  KMO = round(c(r3_kb$kmo, r6_kb$kmo), 2),
+  `Bartlett p` = c("< .001", "< .001"),
+  `Factors retained` = c(1, 1),
+  `Alpha` = round(c(r3_a$total$raw_alpha, r6_a$total$raw_alpha), 2),
+  Decision = c("Build composite", "Keep items separate"),
+  check.names = FALSE
+)
+kable(sumtab, caption = "Reliability and factor analysis summary")
+```
+
+**Takeaway:** R3 is a clean, reliable one-factor scale, so I average its four items. R6 is not, so I analyze its items separately.
+
+# Appendix
+
+- GitHub repo: <https://github.com/dmcpp26/ibm6500-assignments>
+- GitHub Pages: <https://dmcpp26.github.io/ibm6500-assignments/IC-Case31-EFA/efa-reliability-case31-dmeza.html>
