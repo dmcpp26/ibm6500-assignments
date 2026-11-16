@@ -1,0 +1,504 @@
+---
+title: "Case 31: Summary of Data Analysis for R3, R6, R4a, R4b, and R4c"
+subtitle: "Employees Federal Credit Union (EFCU)"
+author: "Danielle Meza"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-fold: true
+    code-summary: "Show code"
+    embed-resources: true
+    theme: cosmo
+execute:
+  warning: false
+  message: false
+---
+
+# Introduction
+
+EFCU surveyed 128 members. This report answers the following research questions. For each one, I look at frequencies and means first, describe the story, and then use a test to check whether the pattern is real. Test statistics appear in parentheses so they do not get in the way of the story.
+
+- **R3:** What are the members' attitudes and beliefs about the proficiencies of credit union employees?
+- **R6:** What are the members' attitudes and beliefs about how effectively the credit union is operated?
+- **R4a, R4b, R4c:** Are there any perceived differences on (a) attitude toward employee proficiency, (b) awareness of services, and (c) operational effectiveness between members who live in the area of the firm's headquarters and members who live elsewhere?
+
+The earlier factor and reliability analysis gave two decisions that I use here. The four employee items (Q3 to Q6) form one reliable scale (alpha = .87), so I average them into one score called `att_employee`. The four operations items (Q31 to Q34) do not form a reliable scale (alpha = .47), so I analyze each one separately.
+
+```{r}
+#| label: setup
+library(tidyverse)
+library(haven)
+library(psych)
+library(car)      # Levene's test
+library(knitr)
+theme_set(theme_minimal(base_size = 13))
+
+case31 <- read_sav("Case 31 Data_efcu_1_DM_cleaned.sav") |>
+  mutate(across(where(is.labelled), as.numeric))
+
+aw_levels <- c("Unaware", "Aware but Have Not Used", "Aware and Have Used")
+
+case31 <- case31 |>
+  mutate(
+    att_employee = rowMeans(across(c(q3, q4, q5, q6))),   # R3 composite
+    q9r   = factor(if_else(q9 == 3, "About right", "Not right"),
+                   levels = c("About right", "Not right")),
+    q11   = factor(case_match(q11, 1 ~ "Yes", 2 ~ "No", .default = NA_character_),
+                   levels = c("Yes", "No")),
+    q12rc = factor(case_match(q12, 1 ~ "Yes", 2 ~ "No", .default = NA_character_),
+                   levels = c("Yes", "No")),
+    across(q13:q26,
+           \(x) factor(4 - x, levels = 1:3, labels = aw_levels, ordered = TRUE),
+           .names = "{.col}r"),
+    residence = factor(q38, levels = 1:2,
+                       labels = c("Lives near HQ", "Lives elsewhere"))
+  )
+
+fmt_p <- function(p) if_else(p < .001, "< .001", sprintf("%.3f", p))
+pct <- function(x) round(100 * x)
+
+# one-sample t-test summary row
+tt <- function(x, mu, label) {
+  res <- t.test(x, mu = mu)
+  tibble(Item = label, n = sum(!is.na(x)), Mean = mean(x, na.rm = TRUE),
+         SD = sd(x, na.rm = TRUE), `Test value` = mu,
+         t = unname(res$statistic), df = unname(res$parameter), p = fmt_p(res$p.value),
+         `95% CI` = sprintf("[%.2f, %.2f]", res$conf.int[1], res$conf.int[2]))
+}
+
+# chi-square independence; Fisher's exact when any expected count is below 5
+ind_test <- function(x, g, label) {
+  tab <- table(g, droplevels(x))
+  exp_min <- suppressWarnings(min(chisq.test(tab)$expected))
+  if (exp_min >= 5) {
+    ct <- chisq.test(tab, correct = FALSE)
+    stat <- unname(ct$statistic); df <- unname(ct$parameter)
+    p <- ct$p.value; used <- "Chi-square"
+  } else {
+    stat <- NA_real_; df <- NA_real_
+    p <- fisher.test(tab)$p.value; used <- "Fisher's exact"
+  }
+  tibble(Item = label, n = sum(tab), Test = used, `Chi-square` = stat, df = df, p = p)
+}
+
+# two-group t-test; Levene's test decides pooled vs. Welch
+grp_t <- function(y, g, label) {
+  lev <- leveneTest(y ~ g)$`Pr(>F)`[1]
+  res <- t.test(y ~ g, var.equal = lev > .05)
+  m <- tapply(y, g, mean, na.rm = TRUE)
+  tibble(Item = label, `Mean (near HQ)` = m[1], `Mean (elsewhere)` = m[2],
+         Diff = m[1] - m[2], `Levene p` = fmt_p(lev),
+         Test = if_else(lev > .05, "Pooled t", "Welch t"),
+         t = unname(res$statistic), df = unname(res$parameter), p = res$p.value)
+}
+```
+
+# R3: Attitudes Toward Employee Proficiency
+
+## R3 Descriptive Statistics
+
+Members rated four statements about employees (1 = Strongly Disagree, 5 = Strongly Agree).
+
+```{r}
+#| label: tbl-r3-freq
+#| tbl-cap: "R3: Percent of members choosing each response"
+r3_items <- c(q3 = "Courteous (Q3)", q4 = "Helpful (Q4)",
+              q5 = "Professional (Q5)", q6 = "Available (Q6)")
+r3_freq <- map_dfr(names(r3_items), \(v) {
+  x <- factor(case31[[v]], levels = 1:5)
+  p <- 100 * prop.table(table(x))
+  tibble(Statement = r3_items[[v]],
+         `1` = p[1], `2` = p[2], `3` = p[3], `4` = p[4], `5` = p[5],
+         `Agree or strongly agree` = p[4] + p[5])
+})
+kable(r3_freq, digits = 1)
+```
+
+```{r}
+#| label: tbl-r3-desc
+#| tbl-cap: "R3: Descriptive statistics for the four items and the composite"
+r3_desc <- describe(case31[, c("q3", "q4", "q5", "q6", "att_employee")])
+kable(r3_desc[, c("n", "mean", "sd", "median", "min", "max")], digits = 2)
+```
+
+```{r}
+#| label: fig-r3-items
+#| fig-cap: "Percent of members at each response level for the four employee statements"
+#| fig-height: 4
+case31 |>
+  select(q3, q4, q5, q6) |>
+  pivot_longer(everything(), names_to = "item", values_to = "value") |>
+  mutate(item = dplyr::recode(item, q3 = "Courteous", q4 = "Helpful",
+                              q5 = "Professional", q6 = "Available"),
+         value = factor(value, 1:5)) |>
+  count(item, value, .drop = FALSE) |>
+  group_by(item) |>
+  mutate(pct = 100 * n / sum(n)) |>
+  ggplot(aes(value, pct, fill = item)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~item, nrow = 1) +
+  labs(x = "1 = Strongly Disagree ... 5 = Strongly Agree", y = "% of members")
+```
+
+## R3 One-Sample t-Test
+
+Does the composite differ from the neutral midpoint of 3?
+
+```{r}
+#| label: tbl-r3-t
+#| tbl-cap: "R3: One-sample t-tests against the neutral value of 3"
+bind_rows(
+  tt(case31$att_employee, 3, "Composite (Q3 to Q6)"),
+  tt(case31$q3, 3, "Courteous (Q3)"),
+  tt(case31$q4, 3, "Helpful (Q4)"),
+  tt(case31$q5, 3, "Professional (Q5)"),
+  tt(case31$q6, 3, "Available (Q6)")
+) |> kable(digits = 2)
+```
+
+```{r}
+#| label: r3-numbers
+r3_t <- t.test(case31$att_employee, mu = 3)
+```
+
+## R3 Insight
+
+::: {.callout-note}
+**Members have a very positive view of credit union employees.** Between `r pct(min(r3_freq[["Agree or strongly agree"]]) / 100)`% and `r pct(max(r3_freq[["Agree or strongly agree"]]) / 100)`% of members agree or strongly agree that employees are courteous, helpful, professional, and available, and almost no one disagrees (@tbl-r3-freq, @fig-r3-items). Courteous (`r pct(r3_freq[["Agree or strongly agree"]][1] / 100)`%) and helpful (`r pct(r3_freq[["Agree or strongly agree"]][2] / 100)`%) get the strongest marks. Availability is the weakest of the four, though still strong (`r pct(r3_freq[["Agree or strongly agree"]][4] / 100)`%). The average score is `r round(mean(case31$att_employee), 2)` out of 5, well above the neutral midpoint (*t*(`r r3_t$parameter`) = `r round(r3_t$statistic, 2)`, *p* < .001; @tbl-r3-t).
+
+*So what:* Employees are an asset. If members are not borrowing, staff attitude is unlikely to be the reason.
+:::
+
+# R6: Attitudes and Beliefs About Operational Effectiveness
+
+## R6 Descriptive Statistics
+
+I look at three groups of items: yes/no style items (Q9r, Q11, Q12rc), the accuracy rating (Q10r, 1 = Poor to 4 = Excellent), and the agreement items and overall rating (Q31 to Q34, Q37r, 1 to 5).
+
+```{r}
+#| label: tbl-r6-nom
+#| tbl-cap: "R6: Frequencies and percents for the nominal items"
+nom <- c(q9r = "Statement frequency is about right (Q9r)",
+         q11 = "Statements are understandable (Q11)",
+         q12rc = "Account information is kept confidential (Q12rc)")
+r6_nom <- map_dfr(names(nom), \(v) {
+  tab <- table(case31[[v]])
+  tibble(Item = nom[[v]], n = sum(tab),
+         `Category 1` = paste0(names(tab)[1], ": ", tab[1], " (", pct(tab[1] / sum(tab)), "%)"),
+         `Category 2` = paste0(names(tab)[2], ": ", tab[2], " (", pct(tab[2] / sum(tab)), "%)"))
+})
+kable(r6_nom)
+```
+
+```{r}
+#| label: tbl-r6-freq
+#| tbl-cap: "R6: Percent of members agreeing or strongly agreeing, and item means"
+r6_items <- c(q31 = "CU keeps information confidential (Q31)", q32 = "CU is prompt (Q32)",
+              q33 = "CU meets members' needs (Q33)", q34 = "CU loan applications are simple (Q34)")
+r6_freq <- map_dfr(names(r6_items), \(v) {
+  tibble(Item = r6_items[[v]],
+         `% Agree or strongly agree` = 100 * mean(case31[[v]] >= 4, na.rm = TRUE),
+         `% Neutral` = 100 * mean(case31[[v]] == 3, na.rm = TRUE),
+         `% Disagree or strongly disagree` = 100 * mean(case31[[v]] <= 2, na.rm = TRUE),
+         Mean = mean(case31[[v]], na.rm = TRUE))
+})
+kable(r6_freq, digits = 1)
+```
+
+```{r}
+#| label: fig-r6-means
+#| fig-cap: "Item means with 95% confidence intervals (dashed line = neutral point 3)"
+#| fig-height: 3.5
+case31 |>
+  select(q31, q32, q33, q34, q37r) |>
+  pivot_longer(everything(), names_to = "item", values_to = "value") |>
+  group_by(item) |>
+  summarise(mean = mean(value, na.rm = TRUE),
+            se = sd(value, na.rm = TRUE) / sqrt(sum(!is.na(value)))) |>
+  ggplot(aes(mean, item)) +
+  geom_col(fill = "lightblue") +
+  geom_errorbarh(aes(xmin = mean - 1.96 * se, xmax = mean + 1.96 * se), height = .2) +
+  geom_vline(xintercept = 3, linetype = "dashed", color = "red") +
+  coord_cartesian(xlim = c(1, 5)) +
+  labs(x = "Mean (1 to 5)", y = NULL)
+```
+
+## R6 Chi-Square Goodness-of-Fit Test
+
+For the yes/no style items, I test whether responses depart from a 50/50 split.
+
+```{r}
+#| label: tbl-r6-gof
+#| tbl-cap: "R6: Chi-square goodness-of-fit tests (50/50 benchmark)"
+r6_gof <- map_dfr(names(nom), \(v) {
+  ct <- chisq.test(table(case31[[v]]), p = c(.5, .5))
+  tibble(Item = nom[[v]], `Chi-square` = unname(ct$statistic),
+         df = unname(ct$parameter), p = fmt_p(ct$p.value))
+})
+kable(r6_gof, digits = 1)
+```
+
+## R6 One-Sample t-Tests
+
+Q10r has four points, so its neutral value is 2.5. The other items use 3.
+
+```{r}
+#| label: tbl-r6-t
+#| tbl-cap: "R6: One-sample t-tests"
+r6_int <- bind_rows(
+  tt(case31$q10r, 2.5, "Statement accuracy (Q10r, 1 to 4)"),
+  tt(case31$q31, 3, "Confidential (Q31)"),
+  tt(case31$q32, 3, "Prompt (Q32)"),
+  tt(case31$q33, 3, "Meets needs (Q33)"),
+  tt(case31$q34, 3, "Simple loan applications (Q34)"),
+  tt(case31$q37r, 3, "Overall rating (Q37r)")
+)
+kable(r6_int, digits = 2)
+```
+
+## R6 Insight
+
+::: {.callout-note}
+**Members see the credit union as well run.** Most members say statements arrive about as often as they should (`r pct(mean(case31$q9r == "About right", na.rm = TRUE))`%), nearly all find them understandable (`r pct(mean(case31$q11 == "Yes", na.rm = TRUE))`%), and `r pct(mean(case31$q10r >= 3, na.rm = TRUE))`% rate their accuracy good or excellent (@tbl-r6-nom, @tbl-r6-t). Seven in ten (`r pct(mean(case31$q12rc == "Yes", na.rm = TRUE))`%) of those who answered believe their account information is kept confidential, and `r round(r6_freq[["% Agree or strongly agree"]][1])`% agree the credit union keeps information confidential. All of these are well away from a 50/50 split or a neutral rating (all *p* < .001; @tbl-r6-gof).
+
+On service, agreement falls from confidentiality (`r round(r6_freq[["% Agree or strongly agree"]][1])`%) to promptness (`r round(r6_freq[["% Agree or strongly agree"]][2])`%) and meeting needs (`r round(r6_freq[["% Agree or strongly agree"]][3])`%), and is lowest for simple loan applications (`r round(r6_freq[["% Agree or strongly agree"]][4])`%). That last item also has the most disagreement (`r round(r6_freq[["% Disagree or strongly disagree"]][4])`%; @tbl-r6-freq, @fig-r6-means). Every item still averages above neutral (all *p* < .001). The overall rating is high (mean `r round(mean(case31$q37r, na.rm = TRUE), 2)` of 5). Because the four service items did not form a reliable scale, I report them one by one.
+
+*So what:* Operations are viewed favorably, so weak borrowing is probably not about how the credit union is run. Loan applications are the one place with room to improve.
+:::
+
+# R4a: Attitude Toward Employee Proficiency by Residence
+
+Members are split into those who live in the area of the headquarters (Q38 = yes) and those who live elsewhere.
+
+## R4a Descriptive Statistics
+
+```{r}
+#| label: tbl-r4a-desc
+#| tbl-cap: "R4a: Attitude toward employee proficiency by residence"
+case31 |>
+  group_by(Residence = residence) |>
+  summarise(n = n(), Mean = mean(att_employee), SD = sd(att_employee),
+            Median = median(att_employee),
+            `% scoring 4 or higher` = 100 * mean(att_employee >= 4)) |>
+  kable(digits = 2)
+```
+
+```{r}
+#| label: fig-r4a-box
+#| fig-cap: "Attitude toward employee proficiency by residence (diamond = mean)"
+#| fig-height: 3.5
+ggplot(case31, aes(residence, att_employee, fill = residence)) +
+  geom_boxplot(show.legend = FALSE) +
+  stat_summary(fun = mean, geom = "point", shape = 23, size = 3, fill = "white") +
+  labs(x = NULL, y = "Attitude toward employee proficiency (1 to 5)")
+```
+
+## R4a Independent-Groups t-Test
+
+Levene's test and the F-test both check whether the two groups have equal variances. The variances are similar, so I use the equal-variance t-test.
+
+```{r}
+#| label: r4a-test
+leveneTest(att_employee ~ residence, data = case31)
+var.test(att_employee ~ residence, data = case31)
+r4a <- t.test(att_employee ~ residence, data = case31, var.equal = TRUE)
+r4a
+```
+
+## R4a Insight
+
+::: {.callout-note}
+**Where members live does not change how they see employees.** Members near headquarters score slightly higher (`r round(r4a$estimate[1], 2)` vs. `r round(r4a$estimate[2], 2)`), but the gap is small and could easily be chance (*t*(`r r4a$parameter`) = `r round(r4a$statistic, 2)`, *p* = `r sprintf('%.2f', r4a$p.value)`; @tbl-r4a-desc, @fig-r4a-box). Both groups rate employees highly.
+
+*So what:* Staff service is seen as strong across the whole membership, so there is no need to tailor employee-related messages by location.
+:::
+
+# R4b: Awareness of Services by Residence
+
+## R4b Cross-Tabulation
+
+For each of the 14 services, I compare the share of members in each awareness level across the two residence groups (row percentages, so each residence group adds to 100%).
+
+```{r}
+#| label: tbl-r4b-xtab
+#| tbl-cap: "R4b: Awareness of services by residence (row percent)"
+svc_names <- c(
+  q13r = "Regular share account", q14r = "Special subaccounts", q15r = "Christmas club account",
+  q16r = "IRA", q17r = "Master credit card", q18r = "Signature loans",
+  q19r = "New car loans", q20r = "Late model car loans", q21r = "Older model car loans",
+  q22r = "Household goods loans", q23r = "Recreational loans",
+  q24r = "Share collateralized loan", q25r = "IRA loans", q26r = "Line of credit loans"
+)
+r4b_pct <- map_dfr(names(svc_names), \(v) {
+  p <- 100 * prop.table(table(case31$residence, factor(case31[[v]], levels = aw_levels)), 1)
+  tibble(Service = svc_names[[v]],
+         `Near HQ: Unaware` = p[1, 1], `Near HQ: Aware, not used` = p[1, 2], `Near HQ: Aware, used` = p[1, 3],
+         `Elsewhere: Unaware` = p[2, 1], `Elsewhere: Aware, not used` = p[2, 2], `Elsewhere: Aware, used` = p[2, 3])
+})
+kable(r4b_pct, digits = 0)
+```
+
+Example, regular share account (counts):
+
+```{r}
+#| label: r4b-example
+table(Residence = case31$residence, `Awareness (Q13r)` = case31$q13r)
+```
+
+```{r}
+#| label: fig-r4b
+#| fig-cap: "Awareness of services by residence (percent within group)"
+#| fig-height: 8
+case31 |>
+  select(residence, all_of(names(svc_names))) |>
+  pivot_longer(-residence, names_to = "item", values_to = "level") |>
+  mutate(Service = factor(svc_names[item], levels = svc_names)) |>
+  count(Service, residence, level) |>
+  group_by(Service, residence) |>
+  mutate(pct = n / sum(n)) |>
+  ggplot(aes(pct, residence, fill = level)) +
+  geom_col() +
+  facet_wrap(~Service, ncol = 2) +
+  scale_x_continuous(labels = scales::percent) +
+  scale_fill_manual(values = c("#d95f02", "#7570b3", "#1b9e77")) +
+  labs(x = "Percent of members", y = NULL, fill = "Awareness")
+```
+
+## R4b Chi-Square Test of Independence
+
+Awareness is ordinal, so I test whether awareness is associated with residence. Fisher's exact test replaces the chi-square test where expected counts are below 5.
+
+```{r}
+#| label: tbl-r4b-test
+#| tbl-cap: "R4b: Test of association between awareness and residence"
+r4b <- map_dfr(names(svc_names), \(v) ind_test(case31[[v]], case31$residence, svc_names[[v]]))
+r4b |> mutate(p = fmt_p(p)) |> kable(digits = 2)
+```
+
+## R4b Insight
+
+
+**Awareness of services looks the same near headquarters and elsewhere.** For almost every service the two groups are within a few percentage points of each other (@tbl-r4b-xtab, @fig-r4b). For example, `r round(r4b_pct[[2]][1])`% of members near headquarters and `r round(r4b_pct[[5]][1])`% of members elsewhere are unaware of the regular share account. For signature loans, about eight in ten in both groups know about the product but have not used it. The largest gap is for the master credit card, where more members near headquarters are unaware (`r round(r4b_pct[[2]][5])`% vs. `r round(r4b_pct[[5]][5])`%), but that gap is not statistically significant either. None of the 14 services shows a real association between awareness and residence (smallest *p* = `r round(min(r4b$p), 2)`; @tbl-r4b-test).
+
+*So what:* The awareness gap is a membership-wide issue, not a local one. The same message is needed everywhere: many members do not know about the regular share account and know about loans but have not used them.
+
+# R4c: Operational Effectiveness by Residence
+
+## R4c Descriptive Statistics
+
+```{r}
+#| label: tbl-r4c-pct
+#| tbl-cap: "R4c: Percent giving the favorable response, by residence"
+fav <- function(x, level) tapply(x == level, case31$residence, \(z) 100 * mean(z, na.rm = TRUE))
+r4c_pct <- tibble(
+  Item = c("Statement frequency about right (Q9r)", "Statements understandable (Q11)",
+           "Account information kept confidential (Q12rc)"),
+  `Near HQ (%)` = c(fav(case31$q9r, "About right")[1], fav(case31$q11, "Yes")[1], fav(case31$q12rc, "Yes")[1]),
+  `Elsewhere (%)` = c(fav(case31$q9r, "About right")[2], fav(case31$q11, "Yes")[2], fav(case31$q12rc, "Yes")[2])
+)
+kable(r4c_pct, digits = 0)
+```
+
+```{r}
+#| label: tbl-r4c-means
+#| tbl-cap: "R4c: Item means and standard deviations by residence"
+r4c_vars <- c(q10r = "Statement accuracy (Q10r, 1 to 4)", q31 = "Confidential (Q31)",
+              q32 = "Prompt (Q32)", q33 = "Meets needs (Q33)",
+              q34 = "Simple loan applications (Q34)", q37r = "Overall rating (Q37r)")
+map_dfr(names(r4c_vars), \(v) {
+  tibble(Item = r4c_vars[[v]],
+         `n (near HQ)` = sum(!is.na(case31[[v]][case31$residence == "Lives near HQ"])),
+         `Mean (near HQ)` = mean(case31[[v]][case31$residence == "Lives near HQ"], na.rm = TRUE),
+         `SD (near HQ)` = sd(case31[[v]][case31$residence == "Lives near HQ"], na.rm = TRUE),
+         `n (elsewhere)` = sum(!is.na(case31[[v]][case31$residence == "Lives elsewhere"])),
+         `Mean (elsewhere)` = mean(case31[[v]][case31$residence == "Lives elsewhere"], na.rm = TRUE),
+         `SD (elsewhere)` = sd(case31[[v]][case31$residence == "Lives elsewhere"], na.rm = TRUE))
+}) |> kable(digits = 2)
+```
+
+```{r}
+#| label: fig-r4c
+#| fig-cap: "Operational effectiveness items by residence (mean and 95% CI)"
+#| fig-height: 4
+case31 |>
+  select(residence, q31, q32, q33, q34, q37r) |>
+  pivot_longer(-residence, names_to = "item", values_to = "value") |>
+  group_by(item, residence) |>
+  summarise(mean = mean(value, na.rm = TRUE),
+            se = sd(value, na.rm = TRUE) / sqrt(sum(!is.na(value))), .groups = "drop") |>
+  ggplot(aes(item, mean, color = residence)) +
+  geom_pointrange(aes(ymin = mean - 1.96 * se, ymax = mean + 1.96 * se),
+                  position = position_dodge(width = .4)) +
+  labs(x = NULL, y = "Mean (1 to 5)", color = NULL)
+```
+
+## R4c Chi-Square Tests of Independence
+
+```{r}
+#| label: tbl-r4c-chi
+#| tbl-cap: "R4c: Nominal items by residence (chi-square, or Fisher's exact test when cells are small)"
+r4c_nom <- bind_rows(
+  ind_test(case31$q9r, case31$residence, "Statement frequency (Q9r)"),
+  ind_test(case31$q11, case31$residence, "Statements understandable (Q11)"),
+  ind_test(case31$q12rc, case31$residence, "Account kept confidential (Q12rc)")
+)
+r4c_nom |> mutate(p = fmt_p(p)) |> kable(digits = 2)
+```
+
+## R4c Independent-Groups t-Tests
+
+Levene's test decides between the pooled and Welch version for each item.
+
+```{r}
+#| label: tbl-r4c-t
+#| tbl-cap: "R4c: Independent-groups t-tests by residence"
+r4c_int <- bind_rows(
+  grp_t(case31$q10r, case31$residence, "Statement accuracy (Q10r)"),
+  grp_t(case31$q31, case31$residence, "Confidential (Q31)"),
+  grp_t(case31$q32, case31$residence, "Prompt (Q32)"),
+  grp_t(case31$q33, case31$residence, "Meets needs (Q33)"),
+  grp_t(case31$q34, case31$residence, "Simple loan applications (Q34)"),
+  grp_t(case31$q37r, case31$residence, "Overall rating (Q37r)")
+)
+r4c_int |> mutate(p = fmt_p(p)) |> kable(digits = 2)
+```
+
+```{r}
+#| label: r4c-q34
+q34_row <- r4c_int |> filter(startsWith(Item, "Simple"))
+```
+
+## R4c Insight
+
+::: {.callout-note}
+**Members near headquarters and elsewhere see operations the same way, with one exception.** The favorable shares are close for statement frequency, understandability, and confidentiality (@tbl-r4c-pct), and the means for accuracy, confidentiality, promptness, meeting needs, and the overall rating are nearly identical across groups (@tbl-r4c-means, @fig-r4c). None of these differences is statistically significant (all *p* > .05; @tbl-r4c-chi, @tbl-r4c-t).
+
+The exception is **simple loan applications (Q34)**. Members who live elsewhere agree more (mean `r round(q34_row$"Mean (elsewhere)", 2)`) than members near headquarters (mean `r round(q34_row$"Mean (near HQ)", 2)`; *t*(`r round(q34_row$df, 1)`) = `r round(q34_row$t, 2)`, *p* = `r round(q34_row$p, 3)`). This is a small and fairly marginal result. I tested nine items for R4c, and a single *p*-value near .02 among that many tests can happen by chance and would not survive a Bonferroni correction (.05 / 9 = .006). I treat it as a lead to follow up, not a firm finding.
+
+*So what:* Operations are viewed the same way across the membership. If the credit union wants to dig further, it could ask members near headquarters what makes the loan application process harder.
+:::
+
+# Summary of Insights
+
+| RQ | Insight |
+|:--|:------------|
+| **R3** | Members think highly of employees (about 8 in 10 or more agree on every statement; composite mean `r round(mean(case31$att_employee), 2)` of 5). |
+| **R6** | Operations are viewed favorably. Loan applications are the weakest area (`r round(r6_freq[["% Agree or strongly agree"]][4])`% agree they are simple). |
+| **R4a** | Attitude toward employees is about the same near headquarters and elsewhere. |
+| **R4b** | Awareness of all 14 services is about the same in both groups. |
+| **R4c** | Views of operations are the same in both groups, except a small, likely chance difference on simple loan applications. |
+
+**Bottom line for EFCU:** Members like the staff and the way the credit union is run, and where they live makes little difference. The more useful opportunity is raising awareness and use of loan products, which applies to all members.
+
+## Notes and Limits
+
+- 128 respondents, with some missing values (for example Q37r, Q12rc), so some tests use fewer cases.
+- The 1-to-5 agreement items are treated as interval, with 3 as the neutral midpoint.
+- Many tests were run for R4, so a single marginal result should be read with caution.
+
+# Appendix {.unnumbered}
+
+- **GitHub Repo:** <https://github.com/dmcpp26/ibm6500-assignments>
+- **GitHub Pages:** <https://dmcpp26.github.io/ibm6500-assignments/IC-Case31-R3-R6-R4/summary-r3-r6-r4-case31-dmeza.html>
