@@ -1,0 +1,264 @@
+---
+title: "Case 31: Summary of Data Analysis for H5a to H5d"
+subtitle: "Employees Federal Credit Union (EFCU)"
+author: "Danielle Meza"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    code-fold: true
+    code-summary: "Show code"
+    embed-resources: true
+    theme: cosmo
+execute:
+  warning: false
+  message: false
+---
+
+# Introduction
+
+This report tests four hypotheses about what drives members' **overall attitude toward the credit union's operational efficiency** (n = 128 EFCU members). As in the earlier reports, I start with frequencies and means, describe the story, and then use the test to check it. Test statistics appear in parentheses.
+
+- **H5a:** Members' belief that the credit union keeps their personal financial information confidential will positively influence the overall attitude toward the credit union's operational efficiency.
+- **H5b:** Loan application processing promptness will positively influence the overall attitude toward the credit union's operational efficiency.
+- **H5c:** Members' satisfaction with how well the financial services meet their needs will positively influence the overall attitude toward the credit union's operational efficiency.
+- **H5d:** Loan application simplicity and easiness will positively influence the overall attitude toward the credit union's operational efficiency.
+
+| Role | Construct | Variable | Scale |
+|:--|:----------|:---------|:------|
+| Dependent variable | Overall attitude toward operational efficiency | Q37r (1 = Very Poor to 5 = Excellent) | Interval |
+| H5a (independent) | Confidentiality of personal financial information | Q31 (1 to 5 agreement) | Interval |
+| H5b (independent) | Loan application processing promptness | Q32 (1 to 5 agreement) | Interval |
+| H5c (independent) | Financial services meet members' needs | Q33 (1 to 5 agreement) | Interval |
+| H5d (independent) | Loan application simplicity and easiness | Q34 (1 to 5 agreement) | Interval |
+
+## Why multiple regression?
+
+All four hypotheses share the **same dependent variable** (Q37r), and every variable is interval. Four separate tests would ignore that the predictors overlap (for example, members who find loans prompt may also find them simple). A **multiple regression** puts all four predictors in one model, so each coefficient shows the effect of one predictor **holding the other three constant**. The model also tells us how much of the overall attitude the four predictors explain together.
+
+```{r}
+#| label: setup
+library(tidyverse)
+library(haven)
+library(psych)
+library(car)       # VIF, Levene-type tests, influence plots
+library(lmtest)    # Breusch-Pagan test
+library(sandwich)  # robust standard errors
+library(broom)
+library(knitr)
+theme_set(theme_minimal(base_size = 13))
+
+case31 <- read_sav("Case 31 Data_efcu_1_DM_cleaned.sav") |>
+  mutate(across(where(is.labelled), as.numeric))
+
+fmt_p <- function(p) if_else(p < .001, "< .001", sprintf("%.3f", p))
+pct <- function(x) round(100 * x)
+
+vars <- c(q37r = "Overall efficiency (Q37r)", q31 = "Confidential (Q31)",
+          q32 = "Prompt loan processing (Q32)", q33 = "Meets needs (Q33)",
+          q34 = "Simple loan applications (Q34)")
+```
+
+## Data preparation
+
+Q37r has 7 "No answer" responses that were set to missing, so the regression uses the **`r sum(complete.cases(case31[, names(vars)]))` members** who answered all five questions.
+
+```{r}
+#| label: data
+reg_data <- case31 |>
+  select(all_of(names(vars))) |>
+  drop_na()
+n_reg <- nrow(reg_data)
+```
+
+# H5 Descriptive Statistics
+
+## Frequencies and means
+
+```{r}
+#| label: tbl-h5-desc
+#| tbl-cap: "H5: Descriptive statistics and percent favorable for each variable"
+h5_desc <- map_dfr(names(vars), \(v) {
+  x <- reg_data[[v]]
+  tibble(Variable = vars[[v]], n = length(x), Mean = mean(x), SD = sd(x),
+         `% Agree/Good or higher (4 or 5)` = 100 * mean(x >= 4),
+         `% Neutral/Average (3)` = 100 * mean(x == 3),
+         `% Disagree/Poor (1 or 2)` = 100 * mean(x <= 2))
+})
+kable(h5_desc, digits = 1)
+```
+
+```{r}
+#| label: fig-h5-dist
+#| fig-cap: "Distribution of responses for the dependent variable and the four predictors (percent of members)"
+#| fig-height: 4
+reg_data |>
+  pivot_longer(everything(), names_to = "v", values_to = "value") |>
+  mutate(v = factor(vars[v], levels = vars), value = factor(value, 1:5)) |>
+  count(v, value, .drop = FALSE) |>
+  group_by(v) |>
+  mutate(pct = 100 * n / sum(n)) |>
+  ggplot(aes(value, pct)) +
+  geom_col(fill = "steelblue") +
+  facet_wrap(~v, nrow = 1) +
+  labs(x = "Response (1 to 5)", y = "% of members") +
+  theme(strip.text = element_text(size = 8))
+```
+
+## Relationships between the variables
+
+```{r}
+#| label: tbl-h5-cor
+#| tbl-cap: "H5: Correlations among the dependent variable and the predictors"
+cor_mat <- cor(reg_data)
+rownames(cor_mat) <- colnames(cor_mat) <- c("Q37r", "Q31", "Q32", "Q33", "Q34")
+kable(cor_mat, digits = 2)
+```
+
+```{r}
+#| label: fig-h5-scatter
+#| fig-cap: "Overall efficiency (Q37r) against each predictor, with a smooth trend line"
+#| fig-height: 4
+reg_data |>
+  pivot_longer(c(q31, q32, q33, q34), names_to = "predictor", values_to = "x") |>
+  mutate(predictor = dplyr::recode(predictor, q31 = "Q31 Confidential", q32 = "Q32 Prompt",
+                            q33 = "Q33 Meets needs", q34 = "Q34 Simple applications")) |>
+  ggplot(aes(x, q37r)) +
+  geom_jitter(width = .15, height = .15, alpha = .4) +
+  geom_smooth(method = "loess", se = TRUE, color = "blue", formula = y ~ x) +
+  facet_wrap(~predictor, nrow = 1) +
+  labs(x = "Predictor (1 to 5)", y = "Overall efficiency (Q37r)")
+```
+
+# H5 Multiple Regression
+
+## Model
+
+$$Q37r = b_0 + b_1 Q31 + b_2 Q32 + b_3 Q33 + b_4 Q34 + \varepsilon$$
+
+```{r}
+#| label: model
+h5_model <- lm(q37r ~ q31 + q32 + q33 + q34, data = reg_data)
+summary(h5_model)
+```
+
+```{r}
+#| label: tbl-h5-reg
+#| tbl-cap: "H5: Regression of overall efficiency (Q37r) on the four predictors"
+sd_y <- sd(reg_data$q37r)
+h5_tab <- tidy(h5_model, conf.int = TRUE) |>
+  filter(term != "(Intercept)") |>
+  mutate(Predictor = vars[term],
+         Hypothesis = c("H5a", "H5b", "H5c", "H5d"),
+         `Std. beta` = estimate * map_dbl(term, \(t) sd(reg_data[[t]])) / sd_y,
+         VIF = as.numeric(vif(h5_model)[term]),
+         `95% CI` = sprintf("[%.2f, %.2f]", conf.low, conf.high)) |>
+  transmute(Hypothesis, Predictor, B = estimate, SE = std.error, `Std. beta`,
+            `95% CI`, t = statistic, p = fmt_p(p.value), VIF)
+kable(h5_tab, digits = 2)
+```
+
+```{r}
+#| label: h5-fit
+h5_sum <- summary(h5_model)
+h5_f <- h5_sum$fstatistic
+h5_fp <- pf(h5_f[1], h5_f[2], h5_f[3], lower.tail = FALSE)
+```
+
+Model fit: *R*² = `r sprintf("%.2f", h5_sum$r.squared)`, adjusted *R*² = `r sprintf("%.2f", h5_sum$adj.r.squared)`, *F*(`r h5_f[2]`, `r h5_f[3]`) = `r round(h5_f[1], 2)`, *p* `r if (h5_fp < .001) "< .001" else paste("=", round(h5_fp, 3))`.
+
+# H5 Checking the Regression Assumptions
+
+## Linearity
+
+The smooth lines in @fig-h5-scatter are close to straight for Q31, Q32, and Q33, so a linear relationship is reasonable. For Q34 the line is nearly flat.
+
+## Normality of residuals
+
+```{r}
+#| label: fig-h5-qq
+#| fig-cap: "Normal Q-Q plot and histogram of the regression residuals"
+#| fig-height: 3.8
+par(mfrow = c(1, 2))
+qqnorm(residuals(h5_model), main = "Normal Q-Q plot"); qqline(residuals(h5_model))
+hist(residuals(h5_model), main = "Residuals", xlab = "Residual", col = "lightblue")
+par(mfrow = c(1, 1))
+shapiro.test(residuals(h5_model))
+```
+
+## Constant variance (homoscedasticity)
+
+```{r}
+#| label: fig-h5-resid
+#| fig-cap: "Residuals against fitted values"
+#| fig-height: 3.8
+ggplot(tibble(fitted = fitted(h5_model), resid = residuals(h5_model)), aes(fitted, resid)) +
+  geom_jitter(width = .02, alpha = .5) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  geom_smooth(method = "loess", se = FALSE, formula = y ~ x) +
+  labs(x = "Fitted values", y = "Residuals")
+bptest(h5_model)
+ncvTest(h5_model)
+```
+
+## Multicollinearity
+
+```{r}
+#| label: h5-vif
+vif(h5_model)
+```
+
+## Influential cases
+
+```{r}
+#| label: fig-h5-cook
+#| fig-cap: "Cook's distance for each member"
+#| fig-height: 3.5
+cd <- cooks.distance(h5_model)
+plot(cd, type = "h", ylab = "Cook's distance", xlab = "Observation")
+abline(h = 4 / n_reg, lty = 2, col = "red")
+```
+
+```{r}
+#| label: h5-robust
+# Robust (HC3) standard errors, as a check on non-constant variance and non-normal residuals
+robust <- coeftest(h5_model, vcov = sandwich::vcovHC(h5_model, type = "HC3"))
+robust
+```
+
+**Assumption summary.** The relationships look linear, and multicollinearity is not a problem (all VIF below `r ceiling(max(h5_tab$VIF) * 10) / 10`). No single member is influential (the largest Cook's distance is `r round(max(cd), 2)`, far below 1). The residuals are not perfectly normal (Shapiro-Wilk *p* < .001), mostly because of one member whose overall rating is far below what the model predicts. The two tests of constant variance disagree (Breusch-Pagan *p* = `r round(bptest(h5_model)$p.value, 2)`, score test *p* = `r round(ncvTest(h5_model)$p, 2)`). To be safe, I re-ran the model with robust standard errors, and **every conclusion stays the same** (see the robust output above). With 121 members, the regression is fairly tolerant of mild non-normality.
+
+# H5 Insight
+
+
+**Members judge the credit union's overall efficiency mostly by whether it meets their needs, whether loans are processed promptly, and whether their information stays confidential. Loan application simplicity does not add anything.** About `r round(h5_desc[["% Agree/Good or higher (4 or 5)"]][1])`% of members rate overall efficiency good or excellent (@tbl-h5-desc, @fig-h5-dist). Confidentiality (Q31), promptness (Q32), and meeting needs (Q33) each go hand in hand with a higher overall rating (correlations of `r round(cor_mat[1, 2], 2)`, `r round(cor_mat[1, 3], 2)`, and `r round(cor_mat[1, 4], 2)`), while simple loan applications (Q34) barely do (`r round(cor_mat[1, 5], 2)`; @tbl-h5-cor, @fig-h5-scatter). The regression confirms this pattern, and together the four predictors explain about `r pct(h5_sum$r.squared)`% of the differences in the overall rating (@tbl-h5-reg).
+
+- **H5a is supported.** Members who believe their information is kept confidential rate the credit union's efficiency higher (*B* = `r round(h5_tab$B[1], 2)`, *p* = `r round(tidy(h5_model)$p.value[2], 3)`).
+- **H5b is supported.** Prompt loan processing has a clear positive effect (*B* = `r round(h5_tab$B[2], 2)`, *p* < .001). It has the largest standardized effect of the four (std. beta = `r round(h5_tab[["Std. beta"]][2], 2)`).
+- **H5c is supported.** Members who feel services meet their needs rate efficiency higher (*B* = `r round(h5_tab$B[3], 2)`, *p* < .001; std. beta = `r round(h5_tab[["Std. beta"]][3], 2)`).
+- **H5d is not supported.** Simple loan applications show no relationship once the other three predictors are accounted for (*B* = `r round(h5_tab$B[4], 2)`, *p* = `r round(tidy(h5_model)$p.value[5], 2)`). Q34 is related to promptness (r = `r round(cor_mat[3, 5], 2)`), so members who find applications simple also tend to find them prompt, and promptness is what drives the overall rating.
+
+*So what:* To improve members' view of how efficiently the credit union runs, focus on **speed of loan processing**, **meeting member needs**, and **keeping information confidential**. Making the application form simpler by itself is unlikely to move the overall rating.
+
+
+# Summary of Insights
+
+| Hypothesis | Predictor | Result |
+|:--|:----------|:------------|
+| **H5a** | Confidentiality (Q31) | Supported. Positive effect on overall efficiency. |
+| **H5b** | Prompt loan processing (Q32) | Supported. Positive effect, the strongest of the four. |
+| **H5c** | Services meet needs (Q33) | Supported. Positive effect. |
+| **H5d** | Simple loan applications (Q34) | Not supported. No significant effect. |
+
+## Notes and Limits
+
+- The regression uses `r n_reg` of the 128 members, because 7 did not answer Q37r.
+- The model explains about `r pct(h5_sum$r.squared)`% of the variation in the overall rating, so other factors matter too.
+- This is survey data, so the results show associations. They do not prove that improving one item will cause a higher overall rating.
+- The one-to-five items are treated as interval, which is common in survey research.
+
+# Appendix {.unnumbered}
+
+- **GitHub Repo:** <https://github.com/dmcpp26/ibm6500-assignments>
+- **GitHub Pages:** <https://dmcpp26.github.io/ibm6500-assignments/IC-Case31-H5/summary-h5-case31-dmeza.html>
