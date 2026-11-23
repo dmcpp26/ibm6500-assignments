@@ -20,7 +20,7 @@ execute:
   freeze: auto
 ---
 
-# Annoucements
+# nAnnoucements
 
 - there is a widespread outage of Microsoft but it does not affect canvas and much of the my cpp website
 

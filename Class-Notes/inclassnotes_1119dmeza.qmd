@@ -1,0 +1,177 @@
+---
+title: Class Notes for Week 13
+author: "Danielle Meza"
+date: today
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    toc-expand: 1
+    toc-location: right-body
+    embed-resources: true
+    number-sections: true
+    code-link: true
+    code-fold: true
+    code-tools: true
+    code-overflow: wrap
+    theme: litera
+editor: visual
+execute:
+  freeze: auto
+---
+
+# Overview of Week 13 through Week15
+
+# Assignments on 
+
+- M15-SEM & Hypothesis Testing with Case 31
+Extrenal factors
+- Demographics
+ - Age
+ - Education
+ - Income
+
+- Psychographics
+ - Need for Cognition 
+ - Civic consciousness
+
+- Social Influences
+ - Online support Community
+
+- Moderators
+ - Age(H9)
+ - Civic Consciousness
+
+# Review Qualtrics
+
+- You can auto number questions, but it is betst to use descrtiptive varible names for convience. 
+
+- Side by side can be easily mixed up with Matrix. 
+
+- You can recode values 
+
+- You should refmort the cover letter intro page
+
+- You can use libraries to commonly used ddrop down answers instead of manually typing it in
+
+
+
+## Presentations 
+
+- There is smaple presenations for us to watch on canva to use a guidlines
+
+- Watch them!! 
+
+- It should be very similar to our first presentation 
+
+- Might be better to start from scratch to not get confused 
+
+- follow the guideline for the content listed on canva
+
+- Same grading rubric as last time but Is the ready and described?
+
+## SEM
+
+moderators
+- Age
+- H9a - relatioship will be stronger with increasing age
+- H9b - will be stronger with increasing civic consiusness
+- H10a - 
+- H10b - will be weaker with increasing civic consiusness ( not followers)
+
+
+Full SEM in - W15-2 - SEM - Full SEM - Theory (2-2): Testing Significance of Moderation Hypotheses
+
+But data can't be shared
+
+Lavan Plot is HARD to memorized so you have to us AI to help get it right and make the readabilty easier
+
+
+Created a function calle "fitmeasures" that helps creat ena compare side byt side models based on the core figures 
+
+
+Full SEM, Mediation-Moderation Concept, Mediation Test, Indirect/Total Effects
+We will deal with a modified conceptual model, which is below. Download this graphics file and insert it into your Quarto notebook.
+
+Hypotheses:
+Impact of External Factors on Attitudes towards Behavior
+
+Impact of Demographics.  
+
+H1a:       Consumers’ age will be negatively related to attitudes towards buying the brands that use realistic ads.
+
+H1b:      Consumers’ education will be positively related to attitudes towards buying the brands that use realistic ads.
+
+H1c:       Consumers’ income will be positively related to attitudes towards buying the brands that use realistic ads.     
+
+Impact of Psychographics.
+
+H1d:      Consumers’ need for cognition will be positively related to attitudes towards buying the brands that use realistic ads.
+
+H1e:       Consumers’ civic consciousness will be positively related to attitudes towards buying the brands that use realistic ads.
+
+Impact of Social Influences.
+
+H1f:       Consumers’ social community engagement will be positively related to their attitudes towards buying the brands that use realistic ads.
+
+H1g:       Consumers’ subjective norm will be positively related to their attitudes towards buying the brands that use realistic ads.
+
+ 
+
+Mediating Role of Civic Conscientiousness
+
+H2a:       Consumers’ need for cognition will be positively related to their civic consciousness.
+
+H2b:       Consumers’ social community engagement will be positively related to their civic consciousness.*
+
+H3:         Consumers’ civic consciousness will mediate the impact of (a) the need for cognition and (b) social community engagement on the attitudes towards buying the brands that use realistic ads.
+
+ 
+
+Factors that Affect Perceived Subjective Norm
+
+H4a: Consumers’ civic consciousness will be positively related to subjective norm.
+
+H4b: Consumers’ online community engagement will be positively related to subjective norm.
+
+ 
+
+Factors that Affect Perceived Behavioral Control
+
+H5a: Consumers’ age will be negatively related to perceived behavioral control.
+
+H5b: Consumers’ education will be positively related to perceived behavioral control.
+
+H5c: Consumers’ income will be positively related to perceived behavioral control.
+
+ 
+
+Determinants of Behavioral Intentions
+
+Impact of attitudes towards behavior on Behavioral Intention
+
+ H6: Consumers’ attitudes towards buying from the brands that use realistic ads will be positively related to their intention to buy from the brands that use realistic ads.
+
+ Impact of Subjective Norm on Behavioral Intention
+
+ H7: Consumers’ subjective norm will be positively related to their intention to buy from the brands that use realistic ads.
+
+ Impact of perceived behavioral control on Behavioral Intention
+
+H8: Consumers’ perceived behavioral control will be positively related to the intention to buy from the brands that use realistic ads.
+
+ 
+
+Moderators
+
+Age.
+
+H9a: Consumers’ age will moderate the relationships depicted in H1g (the positive impact of subjective norms on attitudes), such that the relationship will be stronger with increasing age.
+
+H9b: Consumers’ age will moderate the relationships depicted in H7 (the positive impact of subjective norms on intentions), such that the relationship will be stronger with increasing age
+
+Civic Consciousness.
+
+H10a: Consumers’ civic consciousness will moderate the relationships depicted in H1g (the positive impact of subjective norms on purchase attitudes), such that the relationship will be weaker with increasing civic consciousness.
+
+H10b: Consumers’ civic consciousness will moderate the relationships depicted in H6 (the positive impact of subjective norm on purchase intentions), such that the relationship will be weaker with increasing civic consciousness.
