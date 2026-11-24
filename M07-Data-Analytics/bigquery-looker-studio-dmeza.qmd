@@ -1,0 +1,379 @@
+---
+title: "Data Analytics with Google Cloud BigQuery and Looker Studio: Study Note"
+author: "Danielle Meza"
+date: today
+format:
+  html:
+    toc: true
+    toc-title: "Contents"
+    toc-depth: 3
+    number-sections: true
+    smooth-scroll: true
+    embed-resources: true
+execute:
+  echo: true
+  warning: false
+  message: false
+  eval: false
+---
+
+# Introduction
+
+## Purpose
+
+This note summarizes the LinkedIn Learning course *Data Analytics with Google Cloud BigQuery and Looker Studio*. I followed the instructor in BigQuery and Looker Studio and wrote down what each step does, why it is done, and what I should remember for future projects (for example, the CEP survey data and any Google Cloud work).
+
+The code blocks in this note are shown for reference and are not executed when the report renders, because they need a Google Cloud login.
+
+## The Running Story
+
+The course is built around one challenge: **you are a data journalist writing about how global temperature changed over the past 100 years.** Three questions drive everything:
+
+1.  Where do I find data to support the research?
+2.  How do I analyze it and find the insights?
+3.  How do I visualize the findings for readers?
+
+The answers are a public dataset (data), BigQuery with SQL (analysis), and Looker Studio (visualization).
+
+## The Tools
+
+| Tool | What it is | How I use it |
+|:-------------|:-----------------------|:---------------------------------|
+| **BigQuery** | Google Cloud's fully managed, cloud-native data warehouse. No servers to manage; it can scan gigabytes in seconds. | Store and analyze data with SQL |
+| **SQL** | Structured Query Language, the most widely used language for relational databases | Write the queries |
+| **Looker Studio** | A free, browser-based, self-service business intelligence tool | Turn query results into charts: bar, line, column, heat map, geo |
+
+Together they make a pipeline: **data in BigQuery, query with SQL, connect to Looker Studio, plot.**
+
+# Finding and Exploring a Public Dataset
+
+## Public datasets
+
+Google Cloud hosts more than 200 free public datasets, which makes them good for practice (full list at cloud.google.com/datasets). This course uses **NOAA GSOD** (Global Surface Summary of the Day): daily weather observations (temperature, wind speed, air pressure) from more than 9,000 stations worldwide, from 1929 to the present. It is roughly 30 GB, which is no problem for BigQuery.
+
+## Vocabulary: project, dataset, table
+
+- **Project**: my own Google Cloud project, which is where my work and billing live.
+- **Dataset**: a container of tables, for example `noaa_gsod`.
+- **Table**: one set of rows and columns, for example `gsod1929`. GSOD has one table per year (`gsod1929`, `gsod1930`, ... up to the current year).
+
+## How to find the data in BigQuery
+
+1.  In the Google Cloud console, switch to my course project and open **BigQuery, then SQL Workspace**.
+2.  In the **Explorer** panel, click **Add data, then Star a project by name**, and enter `bigquery-public-data`. The public project is now starred in my own project, which makes it easy to find.
+3.  Search for `noaa_gsod` and star that dataset too.
+
+## Getting a first impression of a table
+
+Click a table such as `gsod1929` and use its tabs:
+
+| Tab | What it tells me |
+|:-------------|:---------------------------------------------------------|
+| **Preview** | A peek at the actual rows (the best way to look at data, and free) |
+| **Schema** | Each field's name, type, and description. For example, `temp` is the mean temperature in degrees Fahrenheit. |
+| **Details** | Where the table is stored, its size, and its full table ID |
+
+# Running SQL Queries in BigQuery
+
+## The query editor and the minimal query
+
+Click the **plus (+)** button to open a new query tab. The smallest useful query is `SELECT ... FROM ...`. A table outside my own project has to be referenced by its full ID, `projectID.datasetID.tableID`, wrapped in **backticks** (not single quotes).
+
+**Trick:** click the table, open the **Details** tab, and copy the table ID from there.
+
+``` sql
+SELECT *
+FROM `bigquery-public-data.noaa_gsod.gsod1929`
+```
+
+## Cost-saving habits
+
+BigQuery charges mainly by the **amount of data a query processes** (and compute used). It shows an estimate of the data to be processed *before* I run the query. The rules I took away:
+
+1.  **Avoid `SELECT *` on large tables.** BigQuery stores data **by column** (it is columnar), so it only reads the columns I ask for. Replacing `*` with `temp` cut the estimate from 374 KB to 16 KB.
+2.  **Use the Preview tab** instead of `SELECT *` to look at a table.
+3.  **`LIMIT` does not reduce the data processed.** In a columnar warehouse the columns are still scanned, so I should not rely on `LIMIT` to save money.
+4.  **Check the estimate** shown in the editor before clicking Run.
+
+## Aggregation functions
+
+Aggregation combines many rows into one value, for example `SUM`, `MAX`, or `AVG`. To answer the central question, I need the **average temperature per year**.
+
+``` sql
+SELECT AVG(temp) AS mean_temp
+FROM `bigquery-public-data.noaa_gsod.gsod1929`
+```
+
+- `AVG(temp)` returns the average temperature (about 49 °F for 1929).
+- Without an alias, BigQuery names the column something meaningless like `f0_`. **`AS mean_temp`** gives the column a readable name.
+
+## Querying many tables at once
+
+Because the tables are named `gsod` plus the year, a **wildcard** (`*`) in the table name queries them all in one go:
+
+``` sql
+SELECT AVG(temp) AS mean_temp
+FROM `bigquery-public-data.noaa_gsod.gsod*`
+```
+
+This scanned more than 90 tables (over 1 GB) in a few seconds and returned a single global average (about 53 °F). To get the trend, I need one average per year, which brings in `GROUP BY`.
+
+## GROUP BY and ORDER BY
+
+- **`GROUP BY`** tells BigQuery how to group rows before aggregating. It goes after `FROM`.
+- **`ORDER BY`** sorts the results. It goes after `GROUP BY`.
+- Adding `year` pulled in another column, so the data processed rose to over 2 GB.
+
+``` sql
+SELECT
+  year,
+  AVG(temp) AS mean_temp
+FROM `bigquery-public-data.noaa_gsod.gsod*`
+GROUP BY year
+ORDER BY year ASC
+```
+
+## Saving a view
+
+**Save, then Save view**, choose a dataset, and name it (for example, `average temperature globally by year`). A **view** is a saved reference to the query: it does not store results physically, but I can reuse it and connect it to Looker Studio later.
+
+# Visualizing in Looker Studio
+
+## Getting started with a CSV file
+
+Go to **lookerstudio.google.com** and create a **blank report**. The first step is always to **connect a data source** using **Add data**. Looker Studio supports many connectors, including Google Analytics, Google Sheets, and BigQuery. The course starts with the simplest, a **file upload** of a CSV (monthly sales revenue for a fictitious ice cream shop).
+
+## Building a line chart
+
+1.  After uploading, click **Add, then Add to report**. Looker Studio creates a table automatically.
+2.  It is easiest to start with a table to make sure the right data is there. Keep **months** as the dimension and change the metric from the record count to **sales**.
+3.  Change the chart type to a **line chart** to see the trend more clearly.
+4.  Fix the month order: set **Sort** to months, **Ascending**.
+
+The result shows a clear sales spike in the summer months.
+
+## BigQuery as a live data source
+
+Unlike a CSV, **BigQuery is a live data source**: when the data changes at the source, the report can update too, which gives near real-time reporting. A CSV is a static snapshot.
+
+## Dimensions and metrics
+
+| Concept | Meaning | Example |
+|:-------------|:----------------------------|:----------------------------|
+| **Dimension** | A way to slice and dice the data (categories, dates) | year, country, decade |
+| **Metric** | A number being measured and aggregated | average temperature, sales revenue |
+| **Breakdown dimension** | Splits one chart into several series (one line per category) | one line per country |
+
+The metric's **aggregation** matters. For example, set it to **Average** when several rows share one dimension value. Otherwise, Looker Studio may sum them.
+
+## Line charts vs. column charts
+
+- **Line chart**: best for emphasizing a **trend** over time.
+- **Column chart**: best for **comparing values side by side**.
+- Switching between them only requires changing the chart type, and the same data and settings carry over.
+
+# Joining Tables to Add Location
+
+## The problem
+
+The GSOD observation tables have a **station ID** but no country or location field. The dataset includes a reference table called **`stations`**, where the `usaf` column matches the station ID in the observations, and a `country` column tells where the station is.
+
+## Using JOIN
+
+A **join** looks up information in one table using a matching field in another. BigQuery's default join type is an **inner join** (only rows that match in both tables are kept). I must say which fields link the tables with `ON`.
+
+``` sql
+SELECT
+  gsod.year,
+  gsod.temp,
+  stations.country
+FROM `bigquery-public-data.noaa_gsod.gsod194*` AS gsod
+JOIN `bigquery-public-data.noaa_gsod.stations` AS stations
+  ON gsod.stn = stations.usaf
+```
+
+Things to remember:
+
+- **Aliases** (`AS gsod`, `AS stations`) give tables short names to use in the rest of the query.
+- **Joins are resource-intensive.** They take much more compute and time than a simple aggregation. The query above only handled about 40 MB but ran noticeably slower than earlier queries that scanned 1 to 2 GB. The **execution graph** showed most of the time was spent in the join.
+- Test joins on a **small slice** first. Here, `gsod194*` limits the data to the 1940s only.
+- Only select the columns needed, because BigQuery is columnar.
+
+# Filtering, Aggregating by Country, and Charting
+
+## WHERE and IN
+
+I only need three countries. The `WHERE` clause filters rows. The `IN` operator is a shorthand for several `OR` conditions:
+
+``` sql
+SELECT
+  year,
+  country,
+  AVG(temp) AS mean_temp
+FROM ( ... joined data from above ... )
+WHERE country IN ('US', 'UK', 'IN')
+GROUP BY year, country
+ORDER BY year, country
+```
+
+I do not need to memorize syntax. The instructor's advice is to look it up in the reference documentation whenever needed.
+
+## Charting it
+
+1.  Save the query as a view and add it as a data source in Looker Studio.
+2.  Add a **line chart**: dimension = **year**, metric = average temperature (set aggregation to **Average**), sort by year ascending.
+3.  Add **country** as the **breakdown dimension** to get one line per country.
+4.  For a side-by-side comparison, change the chart type to a **column chart**.
+
+# Extracting Decades with String Functions
+
+A single decade is not very informative, so the next goal is the whole 20th century grouped by **decade** (1920s, 1930s, 1940s, and so on).
+
+## String functions used
+
+| Function | What it does | Example |
+|:-------------|:--------------------------|:------------------------------|
+| `LOWER(x)` | Changes text to lowercase | `LOWER('UK')` gives `uk` |
+| `SUBSTR(x, start, length)` | Takes part of a string | `SUBSTR('1921', 1, 3)` gives `192` |
+| `CONCAT(a, b)` or `a \|\| b` | Joins strings together (concatenation) | `'192' \|\| '0s'` gives `1920s` |
+
+Since `year` is stored as a string, the decade is the first three characters plus `0s`:
+
+``` sql
+SELECT
+  SUBSTR(year, 1, 3) || '0s' AS decade,
+  country,
+  AVG(temp) AS mean_temp
+FROM ( ... )
+GROUP BY decade, country
+ORDER BY decade, country
+```
+
+I also widened the query to the whole 1900s (`gsod19*`) so the chart covers the full century, and then **updated the existing view** with the new query.
+
+# Updating a BigQuery Data Source in Looker Studio
+
+When a view changes, I should **update the existing data source** and not add a new one, so existing charts keep working.
+
+1.  In Looker Studio's top menu, choose **Resource, then Manage added data sources**.
+2.  Find the data source and click **Edit**.
+3.  Click **Edit connection** (top left). This is less intuitive, but it is the step back in the original connection flow.
+4.  Click **Reconnect** (top right) to refresh the view.
+5.  New columns (for example, `decade`) now appear in the fields list. Close the menu.
+
+**Rule:** I need to **reconnect only when the schema changes** (new or renamed columns). I do **not** need to reconnect when the data just updates.
+
+# Geo Charts
+
+## Preparing the data
+
+The example plots the **average temperature across all countries in 2022**.
+
+1.  Run the query that averages the temperature by country for 2022 (copied from the course materials).
+2.  Download the **ISO country codes** reference CSV from the course materials, because geo charts need standard country codes, and upload it to BigQuery: **Add data, then Local file**, pick `iso-country-codes.csv`, choose the same dataset, name the table, set **Schema to Auto detect**, and click **Create table**.
+3.  Replace the table ID in the query with the ID of the uploaded table, then **save the query as a view**.
+
+## Building the chart
+
+1.  Connect the view to Looker Studio as a data source.
+2.  Add a **Geo chart**. Use the **location** field for the location dimension.
+3.  Use `mean_temp` as the metric, with the aggregation set to **Average**. Countries are shaded in blue: the darker the blue, the higher the value.
+
+# The Final Challenge: Comparing Each Year to a Baseline
+
+## The goal
+
+Plot a geo chart showing how each country's average temperature in a given year **compares with its average over the past 50 years** (the baseline, since 1973). This shows how much temperature has *changed*, not only its level.
+
+## Planning the query
+
+Two numbers are needed per country, plus their difference:
+
+1.  The country's average temperature in a given year.
+2.  The country's **baseline** (the average since 1973).
+3.  The **difference** (`temp_delta`) between the two.
+
+The steps: join GSOD with `stations` to get the country, average by year and country once (so there is one value per country and year, which makes later steps faster), and compute the baseline and the difference from that smaller table.
+
+## Anatomy of the query
+
+The structure below follows the instructor's description. The exact query is in the course materials; this version is my reconstruction to show how the pieces fit together.
+
+``` sql
+WITH temperature_data AS (            -- 1. WITH: a named temporary table
+  SELECT
+    CAST(gsod.year AS INT64) AS year,  --    year turned from string to integer
+    stations.country,
+    AVG(gsod.temp) AS mean_temp
+  FROM `bigquery-public-data.noaa_gsod.gsod*` AS gsod
+  JOIN `bigquery-public-data.noaa_gsod.stations` AS stations
+    ON gsod.stn = stations.usaf
+  GROUP BY year, country
+)
+
+SELECT
+  DATE(t.year, 1, 1) AS year_date,     -- 2. a real date field so Looker Studio reads it correctly
+  t.country,
+  t.mean_temp,
+  b.baseline_temp,
+  t.mean_temp - b.baseline_temp AS temp_delta   -- 4. the difference
+FROM temperature_data AS t
+JOIN (                                 -- 3. a second sub-query: the baseline
+  SELECT country, AVG(mean_temp) AS baseline_temp
+  FROM temperature_data
+  WHERE year >= 1973
+  GROUP BY country
+) AS b
+  USING (country)                      --    USING = shorthand for ON when both columns share a name
+ORDER BY year_date, country
+```
+
+| Piece | Why it is used |
+|:------------|:----------------------------------------------------------|
+| **`WITH` (common table expression)** | Defines a named sub-query that only exists inside this query, like a temporary table. Later parts can reuse it. |
+| **`CAST(year AS INT64)`** | Turns the string year into an integer so I can filter on it (`year >= 1973`). |
+| **Date field** | A true date type lets Looker Studio interpret the time dimension correctly. |
+| **Baseline sub-query** | Averages the yearly values since 1973 for each country. |
+| **`JOIN ... USING (country)`** | A shorter way to join when the join columns have the same name on both sides. |
+| **`temp_delta`** | Year average minus the baseline, so positive means warmer than the 50-year normal. |
+
+## Saving the result as a table instead of a view
+
+This query processes about **4 GB** and takes time, so instead of a view I save the **results as a table**:
+
+1.  Click **More, then Query settings**.
+2.  Choose the **destination dataset** and name the **destination table**.
+3.  Set the write preference to **Overwrite table**, so re-running replaces old results.
+4.  Allow large results, and save.
+5.  Run the query (about 30 seconds). The results table appears in the Explorer, and Looker Studio can reference it directly.
+
+**View vs. table:** a view re-runs its query every time it is used, so it is always current but can be slow and costly for heavy queries. A saved table stores the results, so reading it is quick and cheap, but it only updates when I re-run the query.
+
+# Summary of Important Lessons
+
+1.  **Pipeline:** public data in BigQuery, SQL analysis, Looker Studio visualization.
+2.  **Cost control:** BigQuery bills by data processed. Select only the columns I need, avoid `SELECT *`, and use the Preview tab. `LIMIT` does not cut the data scanned. Check the estimate before running.
+3.  **Core SQL:** `SELECT ... FROM ... WHERE ... GROUP BY ... ORDER BY`, in that order. `AVG` and friends aggregate, `AS` renames, and `IN` is a shorthand for several `OR`s.
+4.  **Wildcard tables** (`gsod*`) query many tables at once, and a narrower wildcard (`gsod194*`) is a good way to test a heavy query.
+5.  **Joins** add information from a reference table (stations gives countries) but cost much more compute. Test on a small slice first.
+6.  **String functions** (`SUBSTR`, `CONCAT` / `||`, `LOWER`) turn raw fields into useful dimensions, such as decades.
+7.  **`WITH` clauses** break a complex query into readable steps and avoid repeating sub-queries.
+8.  **Views vs. tables:** use views for light, always-current queries, and save results as a table for heavy queries.
+9.  **Looker Studio:** dimensions slice the data, metrics are what is measured, and the aggregation (Average vs. Sum) must be set correctly. Use a **breakdown dimension** for one line per category, **line** charts for trends, **column** charts for comparisons, and **geo** charts for country comparisons (with ISO country codes).
+10. **Reconnect** a data source only when the schema changes (new or renamed columns), not when the data updates.
+11. BigQuery is a **live** data source (reports update with the data), while a CSV is a one-time snapshot.
+
+# Certificate of Completion
+
+![](CertificateOfCompletion_Data Analytics with Google Cloud BigQuery and Looker Studio.png){width="565"}
+
+# References
+
+- LinkedIn Learning. *Data Analytics with Google Cloud BigQuery and Looker Studio.* Course videos and course materials. <https://www.linkedin.com/learning/data-analytics-with-google-cloud-bigquery-and-looker-studio>
+- Google Cloud. *BigQuery public datasets.* <https://cloud.google.com/datasets>
+- Google Cloud. *BigQuery documentation (SQL reference).* <https://cloud.google.com/bigquery/docs>
+
+# Appendix: Publication Links {.unnumbered}
+
+- [GitHub Repository](https://github.com/dmcpp26/ibm6500-assignments)
+- [GitHub Pages Website](https://dmcpp26.github.io/ibm6500-assignments/M07-Data-Analytics/bigquery-looker-studio-dmeza.html)
